@@ -1,5 +1,10 @@
 export type TableauRow = number[];
 
+export interface Pivot {
+  column: number | null;
+  row: number | null;
+}
+
 export class Tableau implements Tableau {
   rows: TableauRow[];
   varRow: string[];
