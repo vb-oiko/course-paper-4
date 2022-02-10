@@ -1,10 +1,10 @@
 import { Layout } from "./components/Layout";
 import { TableauComponent } from "./components/TableauComponent";
-import { sampleTableau1 } from "./const/tableaus";
+import { sampleTableau2 } from "./const/tableaus";
 import { solve } from "./core/solve";
 
 const App = () => {
-  const tableaus = solve(sampleTableau1);
+  const tableaus = solve(sampleTableau2);
 
   return (
     <Layout>
