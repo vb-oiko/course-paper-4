@@ -15,3 +15,5 @@
 - https://cbom.atozmath.com/example/CBOM/Simplex.aspx?he=e&q=is
 - https://zweigmedia.com/simplex/simplex.php?lang=en
 - https://zweigmedia.com/RealWorld/tutorialsf4/framesSimplexg.html
+- https://math.semestr.ru/simplex/pmethod.php
+- https://math.semestr.ru/simplex/integer.php
