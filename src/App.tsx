@@ -8,8 +8,8 @@ const App = () => {
 
   return (
     <Layout>
-      {tableaus.map((tableau) => (
-        <TableauComponent tableau={tableau} pivot={tableau.pivot()} />
+      {tableaus.map((tableau, idx) => (
+        <TableauComponent tableau={tableau} pivot={tableau.pivot()} key={idx} />
       ))}
     </Layout>
   );

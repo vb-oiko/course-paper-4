@@ -1,3 +1,5 @@
+import { gcd } from "./utils";
+
 export type TableauRow = number[];
 
 export interface Pivot {
@@ -92,12 +94,17 @@ export class Tableau implements Tableau {
         return pivotRow;
       }
 
-      const ratio = Math.abs(pivotValue / row[pivotColumnIdx]);
+      const absCoefficient = Math.abs(row[pivotColumnIdx]);
+
+      const gcdValue = gcd(pivotValue, absCoefficient);
+
+      const currentRowMultiplier = pivotValue / gcdValue;
+      const pivotRowMultiplier = absCoefficient / gcdValue;
 
       return row.map((element, jdx) =>
         row[pivotColumnIdx] > 0
-          ? ratio * element - pivotRow[jdx]
-          : ratio * element + pivotRow[jdx]
+          ? currentRowMultiplier * element - pivotRow[jdx] * pivotRowMultiplier
+          : currentRowMultiplier * element + pivotRow[jdx] * pivotRowMultiplier
       );
     });
 
