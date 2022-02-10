@@ -69,7 +69,45 @@ export class Tableau implements Tableau {
     return index;
   }
 
-  next(): Tableau | undefined {
-    return;
+  pivot(): Pivot {
+    return {
+      row: this.pivotRow(),
+      column: this.pivotColumn(),
+    };
+  }
+
+  next(): Tableau | null {
+    const pivotColumnIdx = this.pivotColumn();
+    const pivotRowIdx = this.pivotRow();
+
+    if (this.isOptimal() || pivotColumnIdx === null || pivotRowIdx === null) {
+      return null;
+    }
+
+    const pivotValue = this.rows[pivotRowIdx][pivotColumnIdx];
+    const pivotRow = [...this.rows[pivotRowIdx]];
+
+    const rows = this.rows.map((row, idx) => {
+      if (idx === pivotRowIdx) {
+        return pivotRow;
+      }
+
+      const ratio = Math.abs(pivotValue / row[pivotColumnIdx]);
+
+      return row.map((element, jdx) =>
+        row[pivotColumnIdx] > 0
+          ? ratio * element - pivotRow[jdx]
+          : ratio * element + pivotRow[jdx]
+      );
+    });
+
+    const varRow = this.varRow;
+    const varColumn = this.varColumn.map((varName, idx) =>
+      idx === pivotRowIdx ? varRow[pivotColumnIdx] : varName
+    );
+    const varCount = this.varCount;
+    const equationCount = this.equationCount;
+
+    return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
   }
 }
