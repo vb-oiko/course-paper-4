@@ -1,4 +1,4 @@
-import { gcd } from "./utils";
+import { gcd, getFractionPart, getPositiveRemainder } from "./utils";
 
 export type TableauRow = number[];
 
@@ -189,6 +189,30 @@ export class Tableau {
     const equationCount = this.equationCount;
 
     return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
+  }
+
+  selectRowForCuttingPlane(): number[] | null {
+    let varCoeff = 0;
+    let maxRatioRow: number[] | null = null;
+    let maxRatio = 0;
+
+    for (let i = 0; i < this.equationCount; i += 1) {
+      const row = this.rows[i];
+      const planColumnIdx = this.varRow.findIndex(
+        (varName) => varName === this.varColumn[i]
+      );
+      const planVarCoeff = row[planColumnIdx];
+      const ratio = getFractionPart(row[this.varCount] / planVarCoeff);
+      if (ratio > maxRatio) {
+        maxRatio = ratio;
+        maxRatioRow = row;
+        varCoeff = planVarCoeff;
+      }
+    }
+
+    return maxRatioRow
+      ? maxRatioRow.map((element) => getPositiveRemainder(element, varCoeff))
+      : null;
   }
 
   addCuttingPlane(newRow: number[]) {}
