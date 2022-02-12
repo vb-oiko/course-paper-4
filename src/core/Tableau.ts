@@ -15,6 +15,7 @@ export class Tableau {
   equationCount: number;
   starredRows: boolean[];
   phase1: boolean;
+  solution: number[];
 
   constructor(tableau: {
     rows: TableauRow[];
@@ -30,6 +31,19 @@ export class Tableau {
     this.varRow = tableau.varRow;
     this.starredRows = this.getStarredRows();
     this.phase1 = this.starredRows.some((starredRow) => starredRow === true);
+    this.solution = this.getSolution();
+  }
+
+  getSolution(): number[] {
+    return this.varColumn.map((basisVarName, rowIdx) => {
+      const columnIdx = this.varRow.findIndex(
+        (varName) => varName === basisVarName
+      );
+
+      const currentRow = this.rows[rowIdx];
+
+      return currentRow[currentRow.length - 1] / currentRow[columnIdx];
+    });
   }
 
   getStarredRows(): boolean[] {

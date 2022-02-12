@@ -38,7 +38,7 @@ export const TableauComponent: React.FC<TableauComponentProps> = ({
             <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
               {`${tableau.starredRows[idx] ? "*" : ""}${
                 tableau.varColumn[idx]
-              }`}
+              } = ${tableau.solution[idx].toFixed(3)}`}
             </td>
             {row.map((element, jdx) => (
               <td
