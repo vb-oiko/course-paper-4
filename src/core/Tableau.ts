@@ -7,12 +7,14 @@ export interface Pivot {
   row: number | null;
 }
 
-export class Tableau implements Tableau {
+export class Tableau {
   rows: TableauRow[];
   varRow: string[];
   varColumn: string[];
   varCount: number;
   equationCount: number;
+  starredRows: boolean[];
+  phase1: boolean;
 
   constructor(tableau: {
     rows: TableauRow[];
@@ -26,6 +28,18 @@ export class Tableau implements Tableau {
     this.varColumn = tableau.varColumn;
     this.varCount = tableau.varCount;
     this.varRow = tableau.varRow;
+    this.starredRows = this.getStarredRows();
+    this.phase1 = this.starredRows.some((starredRow) => starredRow === true);
+  }
+
+  getStarredRows(): boolean[] {
+    return this.varColumn.map((basisVarName, rowIdx) => {
+      const columnIdx = this.varRow.findIndex(
+        (varName) => varName === basisVarName
+      );
+
+      return this.rows[rowIdx][columnIdx] < 0;
+    });
   }
 
   isOptimal(): boolean {
@@ -33,6 +47,27 @@ export class Tableau implements Tableau {
   }
 
   pivotColumn(): number | null {
+    if (this.phase1) {
+      return this.pivotColumnPhase1();
+    }
+    return this.pivotColumnPhase2();
+  }
+
+  pivotColumnPhase1(): number | null {
+    const firstStaredRow = this.rows[this.starredRows.findIndex(Boolean)];
+
+    let value = 0;
+    let index: number | null = null;
+    for (let i = 0; i < this.varCount; i += 1) {
+      if (firstStaredRow[i] > value) {
+        value = firstStaredRow[i];
+        index = i;
+      }
+    }
+    return index;
+  }
+
+  pivotColumnPhase2(): number | null {
     const lastRow = this.rows[this.equationCount];
     let value = 0;
     let index: number | null = null;
@@ -46,6 +81,10 @@ export class Tableau implements Tableau {
   }
 
   pivotRow(): number | null {
+    return this.pivotRowPhase2();
+  }
+
+  pivotRowPhase2(): number | null {
     const pivotColumn = this.pivotColumn();
     if (pivotColumn === null) {
       return null;
@@ -53,6 +92,7 @@ export class Tableau implements Tableau {
 
     let index: number | null = null;
     let ratio: number | null = null;
+    let ratios: { ratio: number; idx: number; starred: boolean }[] = [];
 
     for (let i = 0; i < this.equationCount; i += 1) {
       if (this.rows[i][pivotColumn] <= 0) {
@@ -61,11 +101,26 @@ export class Tableau implements Tableau {
 
       const currentRatio =
         this.rows[i][this.varCount] / this.rows[i][pivotColumn];
+      ratios.push({
+        ratio: currentRatio,
+        idx: i,
+        starred: this.starredRows[i],
+      });
 
       if (ratio === null || currentRatio < ratio) {
         ratio = currentRatio;
         index = i;
       }
+    }
+
+    if (this.phase1) {
+      const bestRatio = ratios
+        .filter((ratio$) => ratio$.ratio === ratio)
+        .sort((ratio) => (ratio.starred ? -1 : 1));
+      if (bestRatio.length === 0) {
+        return null;
+      }
+      return bestRatio[0].idx;
     }
 
     return index;
@@ -82,7 +137,11 @@ export class Tableau implements Tableau {
     const pivotColumnIdx = this.pivotColumn();
     const pivotRowIdx = this.pivotRow();
 
-    if (this.isOptimal() || pivotColumnIdx === null || pivotRowIdx === null) {
+    if (
+      (this.isOptimal() && !this.phase1) ||
+      pivotColumnIdx === null ||
+      pivotRowIdx === null
+    ) {
       return null;
     }
 
@@ -101,11 +160,25 @@ export class Tableau implements Tableau {
       const currentRowMultiplier = pivotValue / gcdValue;
       const pivotRowMultiplier = absCoefficient / gcdValue;
 
-      return row.map((element, jdx) =>
+      const pivotedRow = row.map((element, jdx) =>
         row[pivotColumnIdx] > 0
           ? currentRowMultiplier * element - pivotRow[jdx] * pivotRowMultiplier
           : currentRowMultiplier * element + pivotRow[jdx] * pivotRowMultiplier
       );
+
+      const gcdRow = pivotedRow.filter((value) => value !== 0).map(Math.abs);
+      if (gcdRow.length) {
+        const rowGcd = gcdRow.reduce(
+          (previous, current) => gcd(previous, current),
+          gcdRow[0]
+        );
+
+        if (rowGcd > 1) {
+          return pivotedRow.map((value) => value / rowGcd);
+        }
+      }
+
+      return pivotedRow;
     });
 
     const varRow = this.varRow;
