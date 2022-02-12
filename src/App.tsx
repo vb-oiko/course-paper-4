@@ -14,14 +14,10 @@ const App = () => {
   return (
     <Layout>
       {tableaus.map((tableau, idx) => (
-        <>
+        <div key={idx}>
           <div>{`Iteration: ${idx}`}</div>
-          <TableauComponent
-            tableau={tableau}
-            pivot={tableau.pivot()}
-            key={idx}
-          />
-        </>
+          <TableauComponent tableau={tableau} pivot={tableau.pivot()} />
+        </div>
       ))}
     </Layout>
   );
