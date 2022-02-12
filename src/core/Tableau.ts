@@ -190,4 +190,6 @@ export class Tableau {
 
     return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
   }
+
+  addCuttingPlane(newRow: number[]) {}
 }
