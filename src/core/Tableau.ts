@@ -1,4 +1,4 @@
-import { gcd, getFractionPart, getPositiveRemainder } from "./utils";
+import { gcd, getFractionPart, getPositiveRemainder, insert } from "./utils";
 
 export type TableauRow = number[];
 
@@ -215,5 +215,21 @@ export class Tableau {
       : null;
   }
 
-  addCuttingPlane(newRow: number[]) {}
+  addCuttingPlane(newRow: number[]): Tableau {
+    const newSlackVarName = `s_${this.equationCount + 1}`;
+
+    const extendedRows = this.rows.map((row) => insert(row, 0, -2));
+
+    const extendedNewRow = insert(newRow, -1, -2);
+
+    const rows = insert(extendedRows, extendedNewRow, -1);
+
+    const varRow = insert(this.varRow, newSlackVarName, -1);
+
+    const varColumn = insert(this.varColumn, newSlackVarName, -1);
+    const varCount = this.varCount + 1;
+    const equationCount = this.equationCount + 1;
+
+    return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
+  }
 }

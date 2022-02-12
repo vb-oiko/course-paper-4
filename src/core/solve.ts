@@ -9,9 +9,13 @@ export const solve = (tableau: Tableau): Tableau[] => {
 
   const rowForCuttingPlane = lastTableau.selectRowForCuttingPlane();
 
-  console.warn({ rowForCuttingPlane });
+  if (!rowForCuttingPlane) {
+    return [];
+  }
 
-  return tableaus;
+  const newTableau = lastTableau.addCuttingPlane(rowForCuttingPlane);
+
+  return [lastTableau, newTableau];
 };
 
 export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
