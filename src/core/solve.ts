@@ -1,6 +1,6 @@
 import { Tableau } from "./Tableau";
 
-const MAX_ITERATIONS = 10;
+const MAX_ITERATIONS = 20;
 
 export const solve = (tableau: Tableau): Tableau[] => {
   const tableaus = [tableau];
