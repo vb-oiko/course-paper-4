@@ -20,7 +20,7 @@ export const solve = (tableau: Tableau): Tableau[] => {
       break;
     }
 
-    currentTableau.comments.push("Adding a cutting plane");
+    currentTableau.comments.push("Plan is not integer, adding a cutting plane");
 
     nextTableau = currentTableau.addCuttingPlane(rowForCuttingPlane);
     resultTableaus.push(nextTableau);

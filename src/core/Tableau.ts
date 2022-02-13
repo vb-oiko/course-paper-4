@@ -74,7 +74,9 @@ export class Tableau {
 
   checkIfOptimal(): boolean {
     const isOptimal = this.rows[this.equationCount].every((el) => el >= 0);
-    this.comments.push(isOptimal ? "Plan is optimal" : "Plan is not optimal");
+    if (!this.phase1) {
+      this.comments.push(isOptimal ? "Plan is optimal" : "Plan is not optimal");
+    }
     return isOptimal;
   }
 
@@ -204,7 +206,7 @@ export class Tableau {
     const pivotRowIdx = this.pivotRow();
 
     if (this.isOptimal && !this.phase1) {
-      this.comments.push("A cutting plane equation should be added");
+      // this.comments.push("A cutting plane equation should be added");
       const varToRemove = this.findCuttingPlaneVarInBasis();
       if (varToRemove) {
         this.comments.push(
@@ -277,6 +279,7 @@ export class Tableau {
     let varCoeff = 0;
     let maxRatioRow: number[] | null = null;
     let maxRatio = 0;
+    let maxRatioRowIdx: number | null = null;
 
     for (let i = 0; i < this.equationCount; i += 1) {
       const row = this.rows[i];
@@ -286,11 +289,15 @@ export class Tableau {
       const planVarCoeff = row[planColumnIdx];
       const ratio = getFractionPart(row[this.varCount] / planVarCoeff);
       if (ratio > maxRatio) {
+        // && this.varColumn[i].startsWith("x")
         maxRatio = ratio;
         maxRatioRow = row;
         varCoeff = planVarCoeff;
+        maxRatioRowIdx = i;
       }
     }
+
+    console.warn(maxRatioRowIdx);
 
     if (!maxRatioRow) {
       return null;
@@ -311,10 +318,7 @@ export class Tableau {
         .filter((idx) => !isNaN(idx))
     );
 
-    const varName = `s_${maxIdx + 1}`;
-    this.comments.push(`New cutting plane var added: ${varName}`);
-
-    return varName;
+    return `g_${maxIdx + 1}`;
   }
 
   addCuttingPlane(newRow: number[]): Tableau {
