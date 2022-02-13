@@ -5,11 +5,12 @@ import {
   sampleTableau2,
   sampleTableau3,
   sampleTableau4,
+  sampleTableau5,
 } from "./const/tableaus";
 import { solve } from "./core/solve";
 
 const App = () => {
-  const tableaus = solve(sampleTableau4);
+  const tableaus = solve(sampleTableau5);
 
   return (
     <Layout>

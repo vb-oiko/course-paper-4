@@ -110,3 +110,15 @@ export const sampleTableau4 = new Tableau({
   varCount: 25,
   equationCount: 8,
 });
+
+export const sampleTableau5 = new Tableau({
+  varRow: ["x_1", "x_2", "x_3", "x_4", "p"],
+  rows: [
+    [6, 5, 1, 0, 0, 20],
+    [2, 3, 0, 1, 0, 10],
+    [-1, -1, 0, 0, 1, 0],
+  ],
+  varColumn: ["x_1", "x_2", "p"],
+  varCount: 5,
+  equationCount: 2,
+});
