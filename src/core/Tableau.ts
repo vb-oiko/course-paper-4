@@ -178,13 +178,6 @@ export class Tableau {
     const rowIdx = this.varColumn.findIndex(
       (varName) => varName === varToRemove
     );
-    console.warn({
-      varToRemove,
-      rowIdx,
-      columnIdx,
-      varRow: this.varRow,
-      varColumn: this.varColumn,
-    });
 
     const rows = remove(this.rows, rowIdx).map((row) => remove(row, columnIdx));
     const varRow = remove(this.varRow, columnIdx);
@@ -279,7 +272,6 @@ export class Tableau {
     let varCoeff = 0;
     let maxRatioRow: number[] | null = null;
     let maxRatio = 0;
-    let maxRatioRowIdx: number | null = null;
 
     for (let i = 0; i < this.equationCount; i += 1) {
       const row = this.rows[i];
@@ -288,16 +280,12 @@ export class Tableau {
       );
       const planVarCoeff = row[planColumnIdx];
       const ratio = getFractionPart(row[this.varCount] / planVarCoeff);
-      if (ratio > maxRatio) {
-        // && this.varColumn[i].startsWith("x")
+      if (ratio > maxRatio && this.varColumn[i].startsWith("x")) {
         maxRatio = ratio;
         maxRatioRow = row;
         varCoeff = planVarCoeff;
-        maxRatioRowIdx = i;
       }
     }
-
-    console.warn(maxRatioRowIdx);
 
     if (!maxRatioRow) {
       return null;
