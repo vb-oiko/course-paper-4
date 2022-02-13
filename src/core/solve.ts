@@ -3,19 +3,29 @@ import { Tableau } from "./Tableau";
 const MAX_ITERATIONS = 20;
 
 export const solve = (tableau: Tableau): Tableau[] => {
-  const tableaus = solveByTwoPhaseMethod(tableau);
+  let iterations = 0;
+  let currentTableau = null;
+  let nextTableau = tableau;
+  let resultTableaus = [];
+  do {
+    const tableaus = solveByTwoPhaseMethod(nextTableau);
 
-  const lastTableau = tableaus[tableaus.length - 1];
+    currentTableau = tableaus[tableaus.length - 1];
+    resultTableaus.push(currentTableau);
 
-  const rowForCuttingPlane = lastTableau.selectRowForCuttingPlane();
+    const rowForCuttingPlane = currentTableau.selectRowForCuttingPlane();
 
-  if (!rowForCuttingPlane) {
-    return [];
-  }
+    if (!rowForCuttingPlane) {
+      break;
+    }
 
-  const newTableau = lastTableau.addCuttingPlane(rowForCuttingPlane);
+    nextTableau = currentTableau.addCuttingPlane(rowForCuttingPlane);
+    resultTableaus.push(nextTableau);
 
-  return [lastTableau, newTableau];
+    iterations += 1;
+  } while (iterations < 3);
+
+  return resultTableaus;
 };
 
 export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
