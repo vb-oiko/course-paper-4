@@ -1,3 +1,4 @@
+import { GdcCalculationStrategy } from "../core/CalculationStrategy/GdcCalculationStrategy";
 import { Tableau } from "../core/Tableau";
 
 export const sampleTableau1 = new Tableau({
@@ -11,6 +12,7 @@ export const sampleTableau1 = new Tableau({
   varColumn: ["s", "t", "u", "p"],
   varCount: 7,
   equationCount: 3,
+  calculationStrategy: GdcCalculationStrategy,
 });
 
 export const sampleTableau2 = new Tableau({
@@ -24,6 +26,7 @@ export const sampleTableau2 = new Tableau({
   varColumn: ["s", "t", "u", "p"],
   varCount: 7,
   equationCount: 3,
+  calculationStrategy: GdcCalculationStrategy,
 });
 
 export const sampleTableau3 = new Tableau({
@@ -38,6 +41,7 @@ export const sampleTableau3 = new Tableau({
   varColumn: ["s", "t", "u", "v", "p"],
   varCount: 8,
   equationCount: 4,
+  calculationStrategy: GdcCalculationStrategy,
 });
 
 export const sampleTableau4 = new Tableau({
@@ -109,6 +113,7 @@ export const sampleTableau4 = new Tableau({
   varColumn: ["s_1", "s_2", "s_3", "s_4", "s_5", "s_6", "s_7", "s_8", "p"],
   varCount: 25,
   equationCount: 8,
+  calculationStrategy: GdcCalculationStrategy,
 });
 
 export const sampleTableau5 = new Tableau({
@@ -121,4 +126,5 @@ export const sampleTableau5 = new Tableau({
   varColumn: ["x_1", "x_2", "p"],
   varCount: 5,
   equationCount: 2,
+  calculationStrategy: GdcCalculationStrategy,
 });

@@ -1,3 +1,4 @@
+import { CalculationStrategy } from "./CalculationStrategy/CalculationStrategy";
 import {
   gcd,
   getFractionPart,
@@ -24,6 +25,7 @@ export class Tableau {
   solution: number[];
   comments: string[];
   isOptimal: boolean;
+  calculationStrategy: CalculationStrategy;
 
   constructor(tableau: {
     rows: TableauRow[];
@@ -31,6 +33,7 @@ export class Tableau {
     varColumn: string[];
     varCount: number;
     equationCount: number;
+    calculationStrategy: CalculationStrategy;
   }) {
     this.comments = [];
     this.rows = tableau.rows;
@@ -42,6 +45,7 @@ export class Tableau {
     this.phase1 = this.checkPhase();
     this.isOptimal = this.checkIfOptimal();
     this.solution = this.getSolution();
+    this.calculationStrategy = tableau.calculationStrategy;
   }
 
   checkPhase() {
@@ -191,6 +195,7 @@ export class Tableau {
       varColumn,
       varCount,
       equationCount,
+      calculationStrategy: this.calculationStrategy,
     });
   }
 
@@ -203,7 +208,7 @@ export class Tableau {
       const varToRemove = this.findCuttingPlaneVarInBasis();
       if (varToRemove) {
         this.comments.push(
-          `Basis includes cutting plane var: ${varToRemove}, removing corresponding row and column`
+          `Plan includes cutting plane var: ${varToRemove}, removing corresponding row and column`
         );
 
         return this.removeCuttingPlaneVarAndCreateNewTableau(varToRemove);
@@ -216,41 +221,11 @@ export class Tableau {
       return null;
     }
 
-    const pivotValue = this.rows[pivotRowIdx][pivotColumnIdx];
-    const pivotRow = [...this.rows[pivotRowIdx]];
-
-    const rows = this.rows.map((row, idx) => {
-      if (idx === pivotRowIdx) {
-        return pivotRow;
-      }
-
-      const absCoefficient = Math.abs(row[pivotColumnIdx]);
-
-      const gcdValue = gcd(pivotValue, absCoefficient);
-
-      const currentRowMultiplier = pivotValue / gcdValue;
-      const pivotRowMultiplier = absCoefficient / gcdValue;
-
-      const pivotedRow = row.map((element, jdx) =>
-        row[pivotColumnIdx] > 0
-          ? currentRowMultiplier * element - pivotRow[jdx] * pivotRowMultiplier
-          : currentRowMultiplier * element + pivotRow[jdx] * pivotRowMultiplier
-      );
-
-      const gcdRow = pivotedRow.filter((value) => value !== 0).map(Math.abs);
-      if (gcdRow.length) {
-        const rowGcd = gcdRow.reduce(
-          (previous, current) => gcd(previous, current),
-          gcdRow[0]
-        );
-
-        if (rowGcd > 1) {
-          return pivotedRow.map((value) => value / rowGcd);
-        }
-      }
-
-      return pivotedRow;
-    });
+    const rows = this.calculationStrategy.pivot(
+      this.rows,
+      pivotRowIdx,
+      pivotColumnIdx
+    );
 
     const varRow = this.varRow;
     const varColumn = this.varColumn.map((varName, idx) =>
@@ -265,6 +240,7 @@ export class Tableau {
       varColumn,
       varCount,
       equationCount,
+      calculationStrategy: this.calculationStrategy,
     });
   }
 
@@ -291,11 +267,10 @@ export class Tableau {
       return null;
     }
 
-    const newRow = maxRatioRow.map((element) =>
-      getPositiveRemainder(element, varCoeff)
+    return this.calculationStrategy.createCuttingPlaneRow(
+      maxRatioRow,
+      varCoeff
     );
-
-    return insert(newRow, -varCoeff, -2);
   }
 
   createCuttingPlaneVarName() {
@@ -328,6 +303,7 @@ export class Tableau {
       varColumn,
       varCount,
       equationCount,
+      calculationStrategy: this.calculationStrategy,
     });
   }
 }
