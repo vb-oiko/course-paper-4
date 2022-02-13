@@ -224,9 +224,15 @@ export class Tableau {
       }
     }
 
-    return maxRatioRow
-      ? maxRatioRow.map((element) => getPositiveRemainder(element, varCoeff))
-      : null;
+    if (!maxRatioRow) {
+      return null;
+    }
+
+    const newRow = maxRatioRow.map((element) =>
+      getPositiveRemainder(element, varCoeff)
+    );
+
+    return insert(newRow, -varCoeff, -2);
   }
 
   addCuttingPlane(newRow: number[]): Tableau {
@@ -234,9 +240,7 @@ export class Tableau {
 
     const extendedRows = this.rows.map((row) => insert(row, 0, -2));
 
-    const extendedNewRow = insert(newRow, -1, -2);
-
-    const rows = insert(extendedRows, extendedNewRow, -1);
+    const rows = insert(extendedRows, newRow, -1);
 
     const varRow = insert(this.varRow, newSlackVarName, -1);
 
