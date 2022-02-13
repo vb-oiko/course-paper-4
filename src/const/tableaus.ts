@@ -57,7 +57,7 @@ export const sampleTableau4 = new Tableau({
     "x_{33}",
     "x_{34}",
     "x_{35}",
-    "z",
+    "x",
     "s_1",
     "s_2",
     "s_3",
