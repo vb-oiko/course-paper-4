@@ -112,7 +112,7 @@ export const sampleTableau4 = new Tableau({
 });
 
 export const sampleTableau5 = new Tableau({
-  varRow: ["x_1", "x_2", "x_3", "x_4", "p"],
+  varRow: ["x_1", "x_2", "s_1", "s_2", "p"],
   rows: [
     [6, 5, 1, 0, 0, 20],
     [2, 3, 0, 1, 0, 10],

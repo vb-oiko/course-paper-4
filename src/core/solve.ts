@@ -9,13 +9,14 @@ export const solve = (tableau: Tableau): Tableau[] => {
   let resultTableaus = [tableau];
   do {
     const tableaus = solveByTwoPhaseMethod(nextTableau);
+    resultTableaus.push(...tableaus);
 
     currentTableau = tableaus[tableaus.length - 1];
-    resultTableaus.push(...tableaus);
 
     const rowForCuttingPlane = currentTableau.selectRowForCuttingPlane();
 
     if (!rowForCuttingPlane) {
+      currentTableau.comments.push("Cannot find a row for cutting plane");
       break;
     }
 

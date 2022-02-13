@@ -1,4 +1,10 @@
-import { gcd, getFractionPart, getPositiveRemainder, insert } from "./utils";
+import {
+  gcd,
+  getFractionPart,
+  getPositiveRemainder,
+  insert,
+  remove,
+} from "./utils";
 
 export type TableauRow = number[];
 
@@ -16,7 +22,6 @@ export class Tableau {
   starredRows: boolean[];
   phase1: boolean;
   solution: number[];
-  cuttingPlaneVars: number[];
   comments: string[];
   isOptimal: boolean;
 
@@ -26,7 +31,6 @@ export class Tableau {
     varColumn: string[];
     varCount: number;
     equationCount: number;
-    cuttingPlaneVars?: number[];
   }) {
     this.comments = [];
     this.rows = tableau.rows;
@@ -34,13 +38,10 @@ export class Tableau {
     this.varColumn = tableau.varColumn;
     this.varCount = tableau.varCount;
     this.varRow = tableau.varRow;
-    this.isOptimal = this.checkIfOptimal();
     this.starredRows = this.getStarredRows();
     this.phase1 = this.checkPhase();
+    this.isOptimal = this.checkIfOptimal();
     this.solution = this.getSolution();
-    this.cuttingPlaneVars = tableau.cuttingPlaneVars
-      ? tableau.cuttingPlaneVars
-      : [];
   }
 
   checkPhase() {
@@ -164,15 +165,59 @@ export class Tableau {
     };
   }
 
+  findCuttingPlaneVarInBasis() {
+    return this.varColumn.find((varName) => varName.startsWith("g"));
+  }
+
+  removeCuttingPlaneVarAndCreateNewTableau(varToRemove: string) {
+    const columnIdx = this.varRow.findIndex(
+      (varName) => varName === varToRemove
+    );
+    const rowIdx = this.varColumn.findIndex(
+      (varName) => varName === varToRemove
+    );
+    console.warn({
+      varToRemove,
+      rowIdx,
+      columnIdx,
+      varRow: this.varRow,
+      varColumn: this.varColumn,
+    });
+
+    const rows = remove(this.rows, rowIdx).map((row) => remove(row, columnIdx));
+    const varRow = remove(this.varRow, columnIdx);
+    const varColumn = remove(this.varColumn, rowIdx);
+    const varCount = this.varCount - 1;
+    const equationCount = this.equationCount - 1;
+
+    return new Tableau({
+      rows,
+      varRow,
+      varColumn,
+      varCount,
+      equationCount,
+    });
+  }
+
   next(): Tableau | null {
     const pivotColumnIdx = this.pivotColumn();
     const pivotRowIdx = this.pivotRow();
 
-    if (
-      (this.isOptimal && !this.phase1) ||
-      pivotColumnIdx === null ||
-      pivotRowIdx === null
-    ) {
+    if (this.isOptimal && !this.phase1) {
+      this.comments.push("A cutting plane equation should be added");
+      const varToRemove = this.findCuttingPlaneVarInBasis();
+      if (varToRemove) {
+        this.comments.push(
+          `Basis includes cutting plane var: ${varToRemove}, removing corresponding row and column`
+        );
+
+        return this.removeCuttingPlaneVarAndCreateNewTableau(varToRemove);
+      }
+      return null;
+    }
+
+    if (pivotColumnIdx === null || pivotRowIdx === null) {
+      this.comments.push("Cannot select pivot element");
       return null;
     }
 
@@ -219,7 +264,13 @@ export class Tableau {
     const varCount = this.varCount;
     const equationCount = this.equationCount;
 
-    return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
+    return new Tableau({
+      rows,
+      varRow,
+      varColumn,
+      varCount,
+      equationCount,
+    });
   }
 
   selectRowForCuttingPlane(): number[] | null {
@@ -252,8 +303,22 @@ export class Tableau {
     return insert(newRow, -varCoeff, -2);
   }
 
+  createCuttingPlaneVarName() {
+    const maxIdx = Math.max(
+      ...this.varRow
+        .map((varName) => varName.split("_"))
+        .map(([_, index]) => Number(index))
+        .filter((idx) => !isNaN(idx))
+    );
+
+    const varName = `s_${maxIdx + 1}`;
+    this.comments.push(`New cutting plane var added: ${varName}`);
+
+    return varName;
+  }
+
   addCuttingPlane(newRow: number[]): Tableau {
-    const newSlackVarName = `s_${this.equationCount + 1}`;
+    const newSlackVarName = this.createCuttingPlaneVarName();
 
     const extendedRows = this.rows.map((row) => insert(row, 0, -2));
 
@@ -265,6 +330,12 @@ export class Tableau {
     const varCount = this.varCount + 1;
     const equationCount = this.equationCount + 1;
 
-    return new Tableau({ rows, varRow, varColumn, varCount, equationCount });
+    return new Tableau({
+      rows,
+      varRow,
+      varColumn,
+      varCount,
+      equationCount,
+    });
   }
 }

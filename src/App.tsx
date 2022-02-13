@@ -19,7 +19,7 @@ const App = () => {
           <div>{`Iteration: ${idx}`}</div>
           <TableauComponent tableau={tableau} pivot={tableau.pivot()} />
           {tableau.comments.map((comment, commentIdx) => (
-            <div key={commentIdx}>{comment}</div>
+            <div key={comment}>{comment}</div>
           ))}
         </div>
       ))}
