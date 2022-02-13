@@ -16,6 +16,9 @@ export class Tableau {
   starredRows: boolean[];
   phase1: boolean;
   solution: number[];
+  cuttingPlaneVars: number[];
+  comments: string[];
+  isOptimal: boolean;
 
   constructor(tableau: {
     rows: TableauRow[];
@@ -23,15 +26,27 @@ export class Tableau {
     varColumn: string[];
     varCount: number;
     equationCount: number;
+    cuttingPlaneVars?: number[];
   }) {
+    this.comments = [];
     this.rows = tableau.rows;
     this.equationCount = tableau.equationCount;
     this.varColumn = tableau.varColumn;
     this.varCount = tableau.varCount;
     this.varRow = tableau.varRow;
+    this.isOptimal = this.checkIfOptimal();
     this.starredRows = this.getStarredRows();
-    this.phase1 = this.starredRows.some((starredRow) => starredRow === true);
+    this.phase1 = this.checkPhase();
     this.solution = this.getSolution();
+    this.cuttingPlaneVars = tableau.cuttingPlaneVars
+      ? tableau.cuttingPlaneVars
+      : [];
+  }
+
+  checkPhase() {
+    const isPhase1 = this.starredRows.some((starredRow) => starredRow === true);
+    this.comments.push(isPhase1 ? "First phase" : "Second phase");
+    return isPhase1;
   }
 
   getSolution(): number[] {
@@ -56,8 +71,10 @@ export class Tableau {
     });
   }
 
-  isOptimal(): boolean {
-    return this.rows[this.equationCount].every((el) => el >= 0);
+  checkIfOptimal(): boolean {
+    const isOptimal = this.rows[this.equationCount].every((el) => el >= 0);
+    this.comments.push(isOptimal ? "Plan is optimal" : "Plan is not optimal");
+    return isOptimal;
   }
 
   pivotColumn(): number | null {
@@ -152,7 +169,7 @@ export class Tableau {
     const pivotRowIdx = this.pivotRow();
 
     if (
-      (this.isOptimal() && !this.phase1) ||
+      (this.isOptimal && !this.phase1) ||
       pivotColumnIdx === null ||
       pivotRowIdx === null
     ) {

@@ -6,12 +6,12 @@ export const solve = (tableau: Tableau): Tableau[] => {
   let iterations = 0;
   let currentTableau = null;
   let nextTableau = tableau;
-  let resultTableaus = [];
+  let resultTableaus = [tableau];
   do {
     const tableaus = solveByTwoPhaseMethod(nextTableau);
 
     currentTableau = tableaus[tableaus.length - 1];
-    resultTableaus.push(currentTableau);
+    resultTableaus.push(...tableaus);
 
     const rowForCuttingPlane = currentTableau.selectRowForCuttingPlane();
 
@@ -19,17 +19,19 @@ export const solve = (tableau: Tableau): Tableau[] => {
       break;
     }
 
+    currentTableau.comments.push("Adding a cutting plane");
+
     nextTableau = currentTableau.addCuttingPlane(rowForCuttingPlane);
     resultTableaus.push(nextTableau);
 
     iterations += 1;
-  } while (iterations < 3);
+  } while (iterations < MAX_ITERATIONS);
 
   return resultTableaus;
 };
 
 export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
-  const tableaus = [tableau];
+  const tableaus = [];
 
   let iterations = 0;
   let currentTableau = tableau;

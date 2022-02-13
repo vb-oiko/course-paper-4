@@ -15,9 +15,12 @@ const App = () => {
   return (
     <Layout>
       {tableaus.map((tableau, idx) => (
-        <div key={idx}>
+        <div key={idx} className="mb-6">
           <div>{`Iteration: ${idx}`}</div>
           <TableauComponent tableau={tableau} pivot={tableau.pivot()} />
+          {tableau.comments.map((comment, commentIdx) => (
+            <div key={commentIdx}>{comment}</div>
+          ))}
         </div>
       ))}
     </Layout>
