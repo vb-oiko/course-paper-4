@@ -1,15 +1,21 @@
 import { Tableau } from "./Tableau";
 
-const MAX_ITERATIONS = 20;
+const MAX_ITERATIONS = 2500;
+const SHOW_ALL_TABLEAUS = false;
 
 export const solve = (tableau: Tableau): Tableau[] => {
   let iterations = 0;
-  let currentTableau = null;
+  let currentTableau = tableau;
   let nextTableau = tableau;
   let resultTableaus = [tableau];
   do {
     const tableaus = solveByTwoPhaseMethod(nextTableau);
-    resultTableaus.push(...tableaus);
+    if (!tableaus.length) {
+      break;
+    }
+    if (SHOW_ALL_TABLEAUS) {
+      resultTableaus.push(...tableaus);
+    }
 
     currentTableau = tableaus[tableaus.length - 1];
 
@@ -28,7 +34,7 @@ export const solve = (tableau: Tableau): Tableau[] => {
     iterations += 1;
   } while (iterations < MAX_ITERATIONS);
 
-  return resultTableaus;
+  return SHOW_ALL_TABLEAUS ? resultTableaus : [currentTableau];
 };
 
 export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
