@@ -13,7 +13,7 @@ import { solveByTwoPhaseMethod } from "./core/solve";
 const App = () => {
   const tableaus = [
     sampleTableau6,
-    ...solveByTwoPhaseMethod(sampleTableau6, 20, true),
+    ...solveByTwoPhaseMethod(sampleTableau6, 20, false),
   ];
 
   return (

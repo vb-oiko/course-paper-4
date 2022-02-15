@@ -20,6 +20,7 @@ export class Tableau {
   comments: string[];
   isOptimal: boolean;
   calculationStrategy: CalculationStrategy;
+  solvable: boolean;
 
   constructor(tableau: {
     rows: TableauRow[];
@@ -40,6 +41,7 @@ export class Tableau {
     this.isOptimal = this.checkIfOptimal();
     this.solution = this.getSolution();
     this.calculationStrategy = tableau.calculationStrategy;
+    this.solvable = true;
   }
 
   checkPhase() {
@@ -212,6 +214,7 @@ export class Tableau {
 
     if (pivotColumnIdx === null || pivotRowIdx === null) {
       this.comments.push("Cannot select pivot element");
+      this.solvable = false;
       return null;
     }
 
