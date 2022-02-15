@@ -1,19 +1,26 @@
 import { Tableau } from "./Tableau";
 
-const MAX_ITERATIONS = 2500;
-const SHOW_ALL_TABLEAUS = false;
+const MAX_ITERATIONS = 20;
 
-export const solve = (tableau: Tableau): Tableau[] => {
+export const solveByGomoryMethod = (
+  tableau: Tableau,
+  maxIterations: number = MAX_ITERATIONS,
+  showAllTableaus: boolean = false
+): Tableau[] => {
   let iterations = 0;
   let currentTableau = tableau;
   let nextTableau = tableau;
   let resultTableaus = [tableau];
   do {
-    const tableaus = solveByTwoPhaseMethod(nextTableau);
+    const tableaus = solveByTwoPhaseMethod(
+      nextTableau,
+      maxIterations,
+      showAllTableaus
+    );
     if (!tableaus.length) {
       break;
     }
-    if (SHOW_ALL_TABLEAUS) {
+    if (showAllTableaus) {
       resultTableaus.push(...tableaus);
     }
 
@@ -32,12 +39,18 @@ export const solve = (tableau: Tableau): Tableau[] => {
     resultTableaus.push(nextTableau);
 
     iterations += 1;
-  } while (iterations < MAX_ITERATIONS);
+  } while (iterations < maxIterations);
 
-  return SHOW_ALL_TABLEAUS ? resultTableaus : [currentTableau];
+  return showAllTableaus
+    ? [...resultTableaus, currentTableau]
+    : [currentTableau];
 };
 
-export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
+export const solveByTwoPhaseMethod = (
+  tableau: Tableau,
+  maxIterations: number = MAX_ITERATIONS,
+  showAllTableaus: boolean = false
+): Tableau[] => {
   const tableaus = [];
 
   let iterations = 0;
@@ -50,7 +63,7 @@ export const solveByTwoPhaseMethod = (tableau: Tableau): Tableau[] => {
       currentTableau = nextTableau;
     }
     iterations += 1;
-  } while (iterations < MAX_ITERATIONS && nextTableau !== null);
+  } while (iterations < maxIterations && nextTableau !== null);
 
-  return tableaus;
+  return showAllTableaus ? tableaus : [tableaus[tableaus.length - 1]];
 };

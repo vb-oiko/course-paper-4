@@ -7,10 +7,10 @@ import {
   sampleTableau4,
   sampleTableau5,
 } from "./const/tableaus";
-import { solve } from "./core/solve";
+import { solveByGomoryMethod } from "./core/solve";
 
 const App = () => {
-  const tableaus = solve(sampleTableau5);
+  const tableaus = solveByGomoryMethod(sampleTableau5, 20, true);
 
   return (
     <Layout>
