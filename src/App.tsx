@@ -6,11 +6,15 @@ import {
   sampleTableau3,
   sampleTableau4,
   sampleTableau5,
+  sampleTableau6,
 } from "./const/tableaus";
-import { solveByGomoryMethod } from "./core/solve";
+import { solveByTwoPhaseMethod } from "./core/solve";
 
 const App = () => {
-  const tableaus = solveByGomoryMethod(sampleTableau5, 20, true);
+  const tableaus = [
+    sampleTableau6,
+    ...solveByTwoPhaseMethod(sampleTableau6, 20, true),
+  ];
 
   return (
     <Layout>

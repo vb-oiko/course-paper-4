@@ -128,3 +128,17 @@ export const sampleTableau5 = new Tableau({
   equationCount: 2,
   calculationStrategy: GdcCalculationStrategy,
 });
+
+export const sampleTableau6 = new Tableau({
+  varRow: ["x_1", "x_2", "s_1", "s_2", "s_3", "p"],
+  rows: [
+    [5, 2, 1, 0, 0, 0, 14],
+    [2, 5, 0, 1, 0, 0, 16],
+    [1, 0, 0, 0, -1, 0, 3],
+    [-3, -5, 0, 0, 0, 1, 0],
+  ],
+  varColumn: ["x_1", "x_2", "s_3", "p"],
+  varCount: 6,
+  equationCount: 3,
+  calculationStrategy: GdcCalculationStrategy,
+});
