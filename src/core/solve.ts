@@ -41,9 +41,7 @@ export const solveByGomoryMethod = (
     iterations += 1;
   } while (iterations < maxIterations);
 
-  return showAllTableaus
-    ? [...resultTableaus, currentTableau]
-    : [currentTableau];
+  return showAllTableaus ? resultTableaus : [currentTableau];
 };
 
 export const solveByTwoPhaseMethod = (
