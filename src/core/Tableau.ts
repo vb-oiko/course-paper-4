@@ -1,11 +1,5 @@
 import { CalculationStrategy } from "./CalculationStrategy/CalculationStrategy";
-import {
-  gcd,
-  getFractionPart,
-  getPositiveRemainder,
-  insert,
-  remove,
-} from "./utils";
+import { getFractionPart, insert, remove } from "./utils";
 
 export type TableauRow = number[];
 
