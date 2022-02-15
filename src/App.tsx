@@ -8,7 +8,7 @@ import {
   sampleTableau5,
   sampleTableau6,
 } from "./const/tableaus";
-import { solveByTwoPhaseMethod } from "./core/solve";
+import { solveByTwoPhaseMethod } from "./core/methods/solveByTwoPhaseMethod";
 
 const App = () => {
   const tableaus = [
