@@ -8,13 +8,16 @@ import {
   sampleTableau5,
   sampleTableau6,
 } from "./const/tableaus";
+import { BranchAndBoundNode } from "./core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { solveByTwoPhaseMethod } from "./core/methods/solveByTwoPhaseMethod";
 
+const tableau = sampleTableau5;
+
+const node = new BranchAndBoundNode(tableau);
+console.warn(node);
+
 const App = () => {
-  const tableaus = [
-    sampleTableau6,
-    ...solveByTwoPhaseMethod(sampleTableau6, 20, false),
-  ];
+  const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
 
   return (
     <Layout>
