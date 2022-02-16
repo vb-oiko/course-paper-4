@@ -270,7 +270,7 @@ export class Tableau {
     );
   }
 
-  createCuttingPlaneVarName() {
+  createVarName(prefix: string) {
     const maxIdx = Math.max(
       ...this.varRow
         .map((varName) => varName.split("_"))
@@ -278,12 +278,15 @@ export class Tableau {
         .filter((idx) => !isNaN(idx))
     );
 
-    return `g_${maxIdx + 1}`;
+    return `${prefix}_${maxIdx + 1}`;
   }
 
   addCuttingPlane(newRow: number[]): Tableau {
-    const newSlackVarName = this.createCuttingPlaneVarName();
+    return this.addEquation(newRow, "g");
+  }
 
+  addEquation(newRow: number[], varNamePrefix: string): Tableau {
+    const newSlackVarName = this.createVarName(varNamePrefix);
     const extendedRows = this.rows.map((row) => insert(row, 0, -2));
 
     const rows = insert(extendedRows, newRow, -1);

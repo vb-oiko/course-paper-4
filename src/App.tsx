@@ -10,6 +10,7 @@ import {
 } from "./const/tableaus";
 import { BranchAndBoundNode } from "./core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { solveByTwoPhaseMethod } from "./core/methods/solveByTwoPhaseMethod";
+import { solveByGomoryMethod } from "./core/methods/solveByGomoryMethod";
 
 const tableau = sampleTableau5;
 
