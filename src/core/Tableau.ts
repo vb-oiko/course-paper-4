@@ -306,4 +306,14 @@ export class Tableau {
       calculationStrategy: this.calculationStrategy,
     });
   }
+
+  getColumnIndexByVarName(varName: string): number | null {
+    const idx = this.varRow.findIndex((name) => name === varName);
+    return idx === -1 ? null : idx;
+  }
+
+  getRowIndexByVarName(varName: string): number | null {
+    const idx = this.varColumn.findIndex((name) => name === varName);
+    return idx === -1 ? null : idx;
+  }
 }

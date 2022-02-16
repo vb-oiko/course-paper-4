@@ -1,5 +1,5 @@
-import { Tableau } from "../../Tableau";
-import { getSolutionObject } from "../../utils";
+import { Tableau, TableauRow } from "../../Tableau";
+import { getFractionPart, getSolutionObject } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export class BranchAndBoundNode {
@@ -9,8 +9,9 @@ export class BranchAndBoundNode {
   LowerBound: number;
   isSolutionFeasible: boolean;
   isEndingNode: boolean;
-  fractionalSolution: Record<string, number>;
+  optimalSolution: Record<string, number>;
   integerSolution: Record<string, number>;
+  varWithLargestFraction: [string, number];
 
   constructor(tableau: Tableau) {
     this.sourceTableau = tableau;
@@ -32,7 +33,7 @@ export class BranchAndBoundNode {
       ? this.getTargetFunctionValue(this.getIntegerSolution())
       : 0;
 
-    this.fractionalSolution = getSolutionObject(
+    this.optimalSolution = getSolutionObject(
       this.targetTableau.varColumn,
       this.targetTableau.solution
     );
@@ -41,6 +42,10 @@ export class BranchAndBoundNode {
       this.targetTableau.varColumn,
       this.getIntegerSolution()
     );
+
+    this.varWithLargestFraction = this.getVarWithLargestFraction();
+
+    console.warn(this.getBranchedNodes());
   }
 
   getIntegerSolution() {
@@ -57,16 +62,70 @@ export class BranchAndBoundNode {
           return 0;
         }
 
-        const rowIdx = this.targetTableau.varColumn.findIndex(
-          (solutionVarName) => solutionVarName === varName
-        );
+        const rowIdx = this.targetTableau.getRowIndexByVarName(varName);
 
-        if (rowIdx === -1) {
+        if (rowIdx === null) {
           return 0;
         }
 
         return -targetRow[colIdx] * solution[rowIdx];
       })
       .reduce((current, previous) => current + previous, 0);
+  }
+
+  getVarWithLargestFraction() {
+    return Object.entries(this.optimalSolution).reduce((a, b) =>
+      getFractionPart(a[1]) > getFractionPart(b[1]) ? a : b
+    );
+  }
+
+  getBranchedNodes() {
+    const [varName, value] = this.varWithLargestFraction;
+
+    const upperValue = Math.ceil(value);
+    const lowerValue = Math.floor(value);
+
+    const upperBoundRow = this.createNewEquationRow(varName, upperValue, -1);
+    const lowerBoundRow = this.createNewEquationRow(varName, lowerValue, 1);
+
+    const upperBoundTableau = this.targetTableau.addEquation(
+      upperBoundRow,
+      "s"
+    );
+    const lowerBoundTableau = this.targetTableau.addEquation(
+      lowerBoundRow,
+      "s"
+    );
+
+    return [upperBoundTableau, lowerBoundTableau];
+  }
+
+  createNewEquationRow(
+    varName: string,
+    value: number,
+    slackVarValue: number
+  ): TableauRow {
+    const columnIdx = this.targetTableau.getColumnIndexByVarName(varName);
+    const newRowLength = this.targetTableau.varRow.length + 2;
+
+    return new Array(newRowLength).fill(null).map((_, idx) => {
+      if (idx === columnIdx) {
+        return 1;
+      }
+
+      if (idx === newRowLength - 3) {
+        return slackVarValue;
+      }
+
+      if (idx === newRowLength - 1) {
+        return value;
+      }
+
+      return 0;
+    });
+  }
+
+  getTableaus(): Tableau[] {
+    return [this.sourceTableau, this.targetTableau, ...this.getBranchedNodes()];
   }
 }

@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { Layout } from "./components/Layout";
+
 import { TableauComponent } from "./components/TableauComponent";
 import {
   sampleTableau1,
@@ -7,18 +10,19 @@ import {
   sampleTableau4,
   sampleTableau5,
   sampleTableau6,
+  sampleTableau7,
 } from "./const/tableaus";
 import { BranchAndBoundNode } from "./core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { solveByTwoPhaseMethod } from "./core/methods/solveByTwoPhaseMethod";
 import { solveByGomoryMethod } from "./core/methods/solveByGomoryMethod";
 
-const tableau = sampleTableau5;
+const tableau = sampleTableau7;
 
 const node = new BranchAndBoundNode(tableau);
-console.warn(node);
+const tableaus = node.getTableaus();
 
 const App = () => {
-  const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
+  // const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
 
   return (
     <Layout>
