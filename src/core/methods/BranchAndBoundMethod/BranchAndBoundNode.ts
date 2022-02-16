@@ -1,4 +1,5 @@
 import { Tableau } from "../../Tableau";
+import { getSolutionObject } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export class BranchAndBoundNode {
@@ -8,6 +9,8 @@ export class BranchAndBoundNode {
   LowerBound: number;
   isSolutionFeasible: boolean;
   isEndingNode: boolean;
+  fractionalSolution: Record<string, number>;
+  integerSolution: Record<string, number>;
 
   constructor(tableau: Tableau) {
     this.sourceTableau = tableau;
@@ -28,6 +31,16 @@ export class BranchAndBoundNode {
     this.LowerBound = this.isSolutionFeasible
       ? this.getTargetFunctionValue(this.getIntegerSolution())
       : 0;
+
+    this.fractionalSolution = getSolutionObject(
+      this.targetTableau.varColumn,
+      this.targetTableau.solution
+    );
+
+    this.integerSolution = getSolutionObject(
+      this.targetTableau.varColumn,
+      this.getIntegerSolution()
+    );
   }
 
   getIntegerSolution() {
