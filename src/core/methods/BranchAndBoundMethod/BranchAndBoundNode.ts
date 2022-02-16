@@ -1,5 +1,5 @@
 import { Tableau, TableauRow } from "../../Tableau";
-import { getFractionPart, getSolutionObject } from "../../utils";
+import { getFractionPart, getSolutionObject, insert } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export class BranchAndBoundNode {
@@ -80,24 +80,31 @@ export class BranchAndBoundNode {
   }
 
   getBranchedNodes() {
-    const [varName, value] = this.varWithLargestFraction;
-
-    const upperValue = Math.ceil(value);
-    const lowerValue = Math.floor(value);
-
-    const upperBoundRow = this.createNewEquationRow(varName, upperValue, -1);
-    const lowerBoundRow = this.createNewEquationRow(varName, lowerValue, 1);
-
-    const upperBoundTableau = this.targetTableau.addEquation(
-      upperBoundRow,
-      "s"
-    );
-    const lowerBoundTableau = this.targetTableau.addEquation(
-      lowerBoundRow,
-      "s"
-    );
+    const upperBoundTableau = this.getBranchedTableau(true);
+    const lowerBoundTableau = this.getBranchedTableau(false);
 
     return [upperBoundTableau, lowerBoundTableau];
+  }
+
+  getBranchedTableau(isUpperConstraint: boolean): Tableau {
+    const [varName, value] = this.varWithLargestFraction;
+
+    const boundValue = isUpperConstraint ? Math.ceil(value) : Math.floor(value);
+
+    const boundRow = this.createNewEquationRow(
+      varName,
+      boundValue,
+      isUpperConstraint ? -1 : 1
+    );
+
+    const boundTableau = this.sourceTableau.addEquation(boundRow, "s");
+    boundTableau.rows[boundTableau.rows.length - 1] = insert(
+      this.sourceTableau.rows[this.sourceTableau.rows.length - 1],
+      0,
+      -2
+    );
+
+    return boundTableau;
   }
 
   createNewEquationRow(
