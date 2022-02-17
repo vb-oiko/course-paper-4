@@ -83,7 +83,7 @@ export class BranchAndBoundNode {
     const upperBoundTableau = this.getBranchedTableau(true);
     const lowerBoundTableau = this.getBranchedTableau(false);
 
-    return [upperBoundTableau, lowerBoundTableau];
+    return { upperBoundTableau, lowerBoundTableau };
   }
 
   getBranchedTableau(isUpperConstraint: boolean): Tableau {
@@ -132,7 +132,11 @@ export class BranchAndBoundNode {
     });
   }
 
-  getTableaus(): Tableau[] {
-    return [this.sourceTableau, this.targetTableau, ...this.getBranchedNodes()];
+  getTableaus(): Record<string, Tableau> {
+    return {
+      sourceTableau: this.sourceTableau,
+      targetTableau: this.targetTableau,
+      ...this.getBranchedNodes(),
+    };
   }
 }

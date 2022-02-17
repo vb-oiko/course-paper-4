@@ -8,7 +8,7 @@ import { SimplexMethodExample } from "./components/SimplexMethodExample";
 const App = () => {
   return (
     <Layout>
-      <SimplexMethodExample />
+      <BranchAndBoundExample />
     </Layout>
   );
 };
