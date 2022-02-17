@@ -16,6 +16,7 @@ export type BranchAndBoundNodeTableauType =
 export class BranchAndBoundNode {
   sourceTableau: Tableau;
   targetTableau: Tableau;
+  tableaus: Tableau[];
   upperBound: number;
   lowerBound: number;
   isSolutionFeasible: boolean;
@@ -30,13 +31,10 @@ export class BranchAndBoundNode {
     bestIntegerSolution?: string
   ) {
     this.sourceTableau = tableau;
-    const [targetTableau] = solveByTwoPhaseMethod(
-      this.sourceTableau,
-      undefined,
-      false
-    );
+    const tableaus = solveByTwoPhaseMethod(this.sourceTableau, undefined, true);
 
-    this.targetTableau = targetTableau;
+    this.targetTableau = tableaus[tableaus.length - 1];
+    this.tableaus = tableaus;
     this.isSolutionFeasible = this.targetTableau.feasible;
     this.isEndingNode = !this.isSolutionFeasible;
 
@@ -160,11 +158,7 @@ export class BranchAndBoundNode {
     });
   }
 
-  getTableaus(): Record<BranchAndBoundNodeTableauType, Tableau> {
-    return {
-      sourceTableau: this.sourceTableau,
-      targetTableau: this.targetTableau,
-      ...this.getBranchedTableaus(),
-    };
+  getTableaus(): Tableau[] {
+    return this.tableaus;
   }
 }

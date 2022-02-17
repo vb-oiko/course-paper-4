@@ -8,7 +8,7 @@ export const solveByBranchAndBoundMethod = (
   let lowerBound = node.lowerBound;
   let bestIntegerSolution = node.bestIntegerSolution;
 
-  const { upperBoundTableau, lowerBoundTableau } = node.getTableaus();
+  const { upperBoundTableau, lowerBoundTableau } = node.getBranchedTableaus();
 
   const upperBoundNode = new BranchAndBoundNode(
     upperBoundTableau,
