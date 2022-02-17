@@ -20,7 +20,7 @@ export class BranchAndBoundNode {
   upperBound: number;
   lowerBound: number;
   isSolutionFeasible: boolean;
-  isEndingNode: boolean;
+  isBranchingPossible: boolean;
   optimalSolution: string;
   bestIntegerSolution: string;
   varWithLargestFraction: [string, number];
@@ -36,7 +36,7 @@ export class BranchAndBoundNode {
     this.targetTableau = tableaus[tableaus.length - 1];
     this.tableaus = tableaus;
     this.isSolutionFeasible = this.targetTableau.feasible;
-    this.isEndingNode = !this.isSolutionFeasible;
+    this.isBranchingPossible = this.isSolutionFeasible;
 
     this.upperBound = this.isSolutionFeasible
       ? this.getTargetFunctionValue(this.targetTableau.solution)
@@ -108,6 +108,7 @@ export class BranchAndBoundNode {
   getBranchedTableaus() {
     const upperBoundTableau = this.getBranchedTableau(true);
     const lowerBoundTableau = this.getBranchedTableau(false);
+    this.isBranchingPossible = false;
 
     return { upperBoundTableau, lowerBoundTableau };
   }

@@ -2,7 +2,6 @@ import React from "react";
 import { BranchAndBoundNode } from "../core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { TableauComponent } from "./TableauComponent";
 import { Collapse } from "./Collapse";
-import { camel2title } from "../core/utils";
 
 export interface BranchAndBoundNodeComponentProps {
   node: BranchAndBoundNode;
@@ -23,7 +22,7 @@ export const BranchAndBoundNodeComponent: React.FC<
         !node.isSolutionFeasible ? "NOT " : ""
       }feasible`}</div>
       <div className="mb-1">{`Branching is ${
-        node.isEndingNode ? "NOT " : ""
+        !node.isBranchingPossible ? "NOT " : ""
       }possible`}</div>
       <div className="mb-2"></div>
       <Collapse buttonTitle="Tableaus" collapsed>
