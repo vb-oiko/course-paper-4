@@ -23,7 +23,7 @@ export const remove = <T>(array: T[], position: number): T[] => {
 export const getSolutionObject = (
   varNameColumn: string[],
   values: number[]
-) => {
+): Record<string, number> => {
   if (varNameColumn.length !== values.length) {
     throw new Error("Variables and values arrays lengths are not equal");
   }
@@ -42,3 +42,18 @@ export const camel2title = (camelCase: string) =>
     .replace(/([A-Z])/g, (match) => ` ${match}`)
     .replace(/^./, (match) => match.toUpperCase())
     .trim();
+
+export const getSolutionAsString = (
+  varNameColumn: string[],
+  values: number[]
+) => {
+  if (varNameColumn.length !== values.length) {
+    throw new Error("Variables and values arrays lengths are not equal");
+  }
+
+  return varNameColumn
+    .map((varName, idx) => ({ varName, value: values[idx] }))
+    .filter(({ varName }) => varName.startsWith("x"))
+    .map(({ varName, value }) => `${varName} = ${value.toFixed(3)}`)
+    .join(", ");
+};

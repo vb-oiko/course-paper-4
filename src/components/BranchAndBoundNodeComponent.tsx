@@ -18,6 +18,12 @@ export const BranchAndBoundNodeComponent: React.FC<
 
   return (
     <>
+      <div className="mb-1">{`Upper bound: ${node.upperBound.toFixed(3)}  (${
+        node.optimalSolution
+      })`}</div>
+      <div className="mb-2">{`Lower bound: ${node.LowerBound.toFixed(3)}  (${
+        node.integerSolution
+      })`}</div>
       <Collapse buttonTitle="Tableaus" collapsed>
         {tableaus.map((tableau, idx) => (
           <div key={idx} className="mb-6">

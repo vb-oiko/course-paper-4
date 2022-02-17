@@ -1,5 +1,10 @@
 import { Tableau, TableauRow } from "../../Tableau";
-import { getFractionPart, getSolutionObject, insert } from "../../utils";
+import {
+  getFractionPart,
+  getSolutionAsString,
+  getSolutionObject,
+  insert,
+} from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export class BranchAndBoundNode {
@@ -9,8 +14,8 @@ export class BranchAndBoundNode {
   LowerBound: number;
   isSolutionFeasible: boolean;
   isEndingNode: boolean;
-  optimalSolution: Record<string, number>;
-  integerSolution: Record<string, number>;
+  optimalSolution: string;
+  integerSolution: string;
   varWithLargestFraction: [string, number];
 
   constructor(tableau: Tableau) {
@@ -33,12 +38,12 @@ export class BranchAndBoundNode {
       ? this.getTargetFunctionValue(this.getIntegerSolution())
       : 0;
 
-    this.optimalSolution = getSolutionObject(
+    this.optimalSolution = getSolutionAsString(
       this.targetTableau.varColumn,
       this.targetTableau.solution
     );
 
-    this.integerSolution = getSolutionObject(
+    this.integerSolution = getSolutionAsString(
       this.targetTableau.varColumn,
       this.getIntegerSolution()
     );
@@ -74,7 +79,12 @@ export class BranchAndBoundNode {
   }
 
   getVarWithLargestFraction() {
-    return Object.entries(this.optimalSolution).reduce((a, b) =>
+    const optimalSolution = getSolutionObject(
+      this.targetTableau.varColumn,
+      this.targetTableau.solution
+    );
+
+    return Object.entries(optimalSolution).reduce((a, b) =>
       getFractionPart(a[1]) > getFractionPart(b[1]) ? a : b
     );
   }
