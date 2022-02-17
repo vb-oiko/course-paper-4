@@ -29,7 +29,7 @@ const App = () => {
       {tableaus.map((tableau, idx) => (
         <div key={idx} className="mb-6">
           <div>{`Iteration: ${idx}`}</div>
-          <TableauComponent tableau={tableau} pivot={tableau.pivot()} />
+          <TableauComponent tableau={tableau} />
           {tableau.comments.map((comment, commentIdx) => (
             <div key={comment}>{comment}</div>
           ))}
