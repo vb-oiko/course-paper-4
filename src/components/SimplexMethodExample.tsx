@@ -1,9 +1,9 @@
-import { sampleTableau7 } from "../const/tableaus";
+import { sampleTableau7, sampleTableau8 } from "../const/tableaus";
 import { solveByTwoPhaseMethod } from "../core/methods/solveByTwoPhaseMethod";
 import { Collapse } from "./Collapse";
 import { TableauComponent } from "./TableauComponent";
 
-const tableau = sampleTableau7;
+const tableau = sampleTableau8;
 const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
 
 export const SimplexMethodExample = () => {

@@ -1,3 +1,4 @@
+import { DecimalCalculationStrategy } from "../core/CalculationStrategy/DecimalCalculationStrategy";
 import { GdcCalculationStrategy } from "../core/CalculationStrategy/GdcCalculationStrategy";
 import { Tableau } from "../core/Tableau";
 
@@ -123,7 +124,7 @@ export const sampleTableau5 = new Tableau({
     [2, 3, 0, 1, 0, 10],
     [-1, -1, 0, 0, 1, 0],
   ],
-  varColumn: ["x_1", "x_2", "p"],
+  varColumn: ["s_1", "s_2", "p"],
   varCount: 5,
   equationCount: 2,
   calculationStrategy: GdcCalculationStrategy,
@@ -137,21 +138,35 @@ export const sampleTableau6 = new Tableau({
     [1, 0, 0, 0, -1, 0, 3],
     [-3, -5, 0, 0, 0, 1, 0],
   ],
-  varColumn: ["x_1", "x_2", "s_3", "p"],
+  varColumn: ["s_1", "s_2", "s_3", "p"],
   varCount: 6,
   equationCount: 3,
   calculationStrategy: GdcCalculationStrategy,
 });
 
 export const sampleTableau7 = new Tableau({
+  varRow: ["x_1", "x_2", "s_1", "s_2", "p"],
+  rows: [
+    [8000, 4000, 1, 0, 0, 40000],
+    [15, 30, 0, 1, 0, 200],
+    [-100, -150, 0, 0, 1, 0],
+  ],
+  varColumn: ["s_1", "s_2", "p"],
+  varCount: 5,
+  equationCount: 2,
+  calculationStrategy: GdcCalculationStrategy,
+});
+
+export const sampleTableau8 = new Tableau({
   varRow: ["x_1", "x_2", "s_1", "s_2", "s_3", "p"],
   rows: [
     [8000, 4000, 1, 0, 0, 0, 40000],
     [15, 30, 0, 1, 0, 0, 200],
+    [0, 1, 0, 0, -1, 0, 6],
     [-100, -150, 0, 0, 0, 1, 0],
   ],
-  varColumn: ["x_1", "x_2", "p"],
+  varColumn: ["s_1", "s_2", "s_3", "p"],
   varCount: 6,
-  equationCount: 2,
+  equationCount: 3,
   calculationStrategy: GdcCalculationStrategy,
 });
