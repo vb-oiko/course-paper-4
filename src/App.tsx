@@ -20,10 +20,9 @@ const tableau = sampleTableau7;
 
 const node = new BranchAndBoundNode(tableau);
 const tableaus = node.getTableaus();
+// const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
 
 const App = () => {
-  // const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
-
   return (
     <Layout>
       {tableaus.map((tableau, idx) => (
