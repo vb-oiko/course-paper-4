@@ -1,5 +1,4 @@
 import React from "react";
-import cs from "classnames";
 import { BranchAndBoundNode } from "../core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { TableauComponent } from "./TableauComponent";
 import { Collapse } from "./Collapse";

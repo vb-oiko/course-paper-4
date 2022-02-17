@@ -1,10 +1,19 @@
 import { sampleTableau7 } from "../const/tableaus";
-import { BranchAndBoundNode } from "../core/methods/BranchAndBoundMethod/BranchAndBoundNode";
+import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import { BranchAndBoundNodeComponent } from "./BranchAndBoundNodeComponent";
 
 const tableau = sampleTableau7;
-const node = new BranchAndBoundNode(tableau);
+const nodes = solveByBranchAndBoundMethod(tableau);
 
 export const BranchAndBoundExample = () => {
-  return <BranchAndBoundNodeComponent node={node} />;
+  return (
+    <>
+      {nodes.map((node, idx) => (
+        <div key={idx} className="mb-6">
+          <div className="mb-2">{`Node ${idx}`}</div>
+          <BranchAndBoundNodeComponent node={node} />
+        </div>
+      ))}
+    </>
+  );
 };
