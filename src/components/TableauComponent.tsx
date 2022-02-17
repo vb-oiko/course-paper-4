@@ -1,5 +1,5 @@
 import React from "react";
-import { Tableau, Pivot } from "../core/Tableau";
+import { Tableau } from "../core/Tableau";
 import cs from "classnames";
 
 export interface TableauComponentProps {

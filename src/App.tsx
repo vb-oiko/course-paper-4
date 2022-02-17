@@ -15,6 +15,7 @@ import {
 import { BranchAndBoundNode } from "./core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { solveByTwoPhaseMethod } from "./core/methods/solveByTwoPhaseMethod";
 import { solveByGomoryMethod } from "./core/methods/solveByGomoryMethod";
+import { Collapse } from "./components/Collapse";
 
 const tableau = sampleTableau7;
 
@@ -27,11 +28,12 @@ const App = () => {
     <Layout>
       {tableaus.map((tableau, idx) => (
         <div key={idx} className="mb-6">
-          <div>{`Iteration: ${idx}`}</div>
-          <TableauComponent tableau={tableau} />
-          {tableau.comments.map((comment, commentIdx) => (
-            <div key={comment}>{comment}</div>
-          ))}
+          <Collapse buttonTitle={`Iteration: ${idx}`} collapsed>
+            <TableauComponent tableau={tableau} />
+            {tableau.comments.map((comment, commentIdx) => (
+              <div key={comment}>{comment}</div>
+            ))}
+          </Collapse>
         </div>
       ))}
     </Layout>
