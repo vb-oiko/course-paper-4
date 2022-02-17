@@ -26,9 +26,13 @@ export class BranchAndBoundNode {
 
   constructor(tableau: Tableau) {
     this.sourceTableau = tableau;
-    const tableaus = solveByTwoPhaseMethod(this.sourceTableau, undefined, true);
+    const [targetTableau] = solveByTwoPhaseMethod(
+      this.sourceTableau,
+      undefined,
+      false
+    );
 
-    this.targetTableau = tableaus[tableaus.length - 1];
+    this.targetTableau = targetTableau;
     this.isSolutionFeasible = this.targetTableau.feasible;
     this.isEndingNode = !this.isSolutionFeasible;
 
