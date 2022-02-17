@@ -6,5 +6,10 @@ export const solveByBranchAndBoundMethod = (
 ): BranchAndBoundNode[] => {
   const node = new BranchAndBoundNode(tableau);
 
-  return [node];
+  const { upperBoundTableau, lowerBoundTableau } = node.getTableaus();
+
+  const upperBoundNode = new BranchAndBoundNode(upperBoundTableau);
+  const lowerBoundNode = new BranchAndBoundNode(lowerBoundTableau);
+
+  return [node, upperBoundNode, lowerBoundNode];
 };

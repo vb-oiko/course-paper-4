@@ -20,9 +20,16 @@ export const BranchAndBoundNodeComponent: React.FC<
       <div className="mb-1">{`Upper bound: ${node.upperBound.toFixed(3)}  (${
         node.optimalSolution
       })`}</div>
-      <div className="mb-2">{`Lower bound: ${node.LowerBound.toFixed(3)}  (${
+      <div className="mb-1">{`Lower bound: ${node.LowerBound.toFixed(3)}  (${
         node.integerSolution
       })`}</div>
+      <div className="mb-1">{`Solution is ${
+        !node.isSolutionFeasible ? "NOT " : ""
+      }feasible`}</div>
+      <div className="mb-1">{`Branching is ${
+        node.isEndingNode ? "NOT " : ""
+      }possible`}</div>
+      <div className="mb-2"></div>
       <Collapse buttonTitle="Tableaus" collapsed>
         {tableaus.map((tableau, idx) => (
           <div key={idx} className="mb-6">

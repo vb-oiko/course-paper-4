@@ -7,6 +7,12 @@ import {
 } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
+export type BranchAndBoundNodeTableauType =
+  | "sourceTableau"
+  | "targetTableau"
+  | "upperBoundTableau"
+  | "lowerBoundTableau";
+
 export class BranchAndBoundNode {
   sourceTableau: Tableau;
   targetTableau: Tableau;
@@ -20,14 +26,10 @@ export class BranchAndBoundNode {
 
   constructor(tableau: Tableau) {
     this.sourceTableau = tableau;
-    const [targetTableau] = solveByTwoPhaseMethod(
-      this.sourceTableau,
-      undefined,
-      false
-    );
+    const tableaus = solveByTwoPhaseMethod(this.sourceTableau, undefined, true);
 
-    this.targetTableau = targetTableau;
-    this.isSolutionFeasible = targetTableau.feasible;
+    this.targetTableau = tableaus[tableaus.length - 1];
+    this.isSolutionFeasible = this.targetTableau.feasible;
     this.isEndingNode = !this.isSolutionFeasible;
 
     this.upperBound = this.isSolutionFeasible
@@ -50,7 +52,7 @@ export class BranchAndBoundNode {
 
     this.varWithLargestFraction = this.getVarWithLargestFraction();
 
-    console.warn(this.getBranchedNodes());
+    console.warn(this.getBranchedTableaus());
   }
 
   getIntegerSolution() {
@@ -89,7 +91,7 @@ export class BranchAndBoundNode {
     );
   }
 
-  getBranchedNodes() {
+  getBranchedTableaus() {
     const upperBoundTableau = this.getBranchedTableau(true);
     const lowerBoundTableau = this.getBranchedTableau(false);
 
@@ -142,11 +144,11 @@ export class BranchAndBoundNode {
     });
   }
 
-  getTableaus(): Record<string, Tableau> {
+  getTableaus(): Record<BranchAndBoundNodeTableauType, Tableau> {
     return {
       sourceTableau: this.sourceTableau,
       targetTableau: this.targetTableau,
-      ...this.getBranchedNodes(),
+      ...this.getBranchedTableaus(),
     };
   }
 }
