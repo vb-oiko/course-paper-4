@@ -20,8 +20,8 @@ export const BranchAndBoundNodeComponent: React.FC<
       <div className="mb-1">{`Upper bound: ${node.upperBound.toFixed(3)}  (${
         node.optimalSolution
       })`}</div>
-      <div className="mb-1">{`Lower bound: ${node.LowerBound.toFixed(3)}  (${
-        node.integerSolution
+      <div className="mb-1">{`Lower bound: ${node.lowerBound.toFixed(3)}  (${
+        node.bestIntegerSolution
       })`}</div>
       <div className="mb-1">{`Solution is ${
         !node.isSolutionFeasible ? "NOT " : ""

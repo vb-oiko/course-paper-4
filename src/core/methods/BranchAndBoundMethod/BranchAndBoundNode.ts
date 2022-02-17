@@ -17,14 +17,18 @@ export class BranchAndBoundNode {
   sourceTableau: Tableau;
   targetTableau: Tableau;
   upperBound: number;
-  LowerBound: number;
+  lowerBound: number;
   isSolutionFeasible: boolean;
   isEndingNode: boolean;
   optimalSolution: string;
-  integerSolution: string;
+  bestIntegerSolution: string;
   varWithLargestFraction: [string, number];
 
-  constructor(tableau: Tableau) {
+  constructor(
+    tableau: Tableau,
+    lowerBound?: number,
+    bestIntegerSolution?: string
+  ) {
     this.sourceTableau = tableau;
     const [targetTableau] = solveByTwoPhaseMethod(
       this.sourceTableau,
@@ -40,23 +44,31 @@ export class BranchAndBoundNode {
       ? this.getTargetFunctionValue(this.targetTableau.solution)
       : 0;
 
-    this.LowerBound = this.isSolutionFeasible
-      ? this.getTargetFunctionValue(this.getIntegerSolution())
-      : 0;
+    this.lowerBound = this.selectLowerBound(lowerBound);
 
     this.optimalSolution = getSolutionAsString(
       this.targetTableau.varColumn,
       this.targetTableau.solution
     );
 
-    this.integerSolution = getSolutionAsString(
-      this.targetTableau.varColumn,
-      this.getIntegerSolution()
-    );
+    this.bestIntegerSolution = bestIntegerSolution
+      ? bestIntegerSolution
+      : getSolutionAsString(
+          this.targetTableau.varColumn,
+          this.getIntegerSolution()
+        );
 
     this.varWithLargestFraction = this.getVarWithLargestFraction();
+  }
 
-    console.warn(this.getBranchedTableaus());
+  selectLowerBound(lowerBound?: number): number {
+    if (lowerBound) {
+      return lowerBound;
+    }
+    if (this.isSolutionFeasible) {
+      return this.getTargetFunctionValue(this.getIntegerSolution());
+    }
+    return 0;
   }
 
   getIntegerSolution() {
