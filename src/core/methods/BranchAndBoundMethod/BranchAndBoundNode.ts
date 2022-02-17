@@ -24,6 +24,7 @@ export class BranchAndBoundNode {
   optimalSolution: string;
   bestIntegerSolution: string;
   varWithLargestFraction: [string, number];
+  newConstraints: string;
 
   constructor(
     tableau: Tableau,
@@ -56,6 +57,7 @@ export class BranchAndBoundNode {
           this.getIntegerSolution()
         );
 
+    this.newConstraints = "";
     this.varWithLargestFraction = this.getVarWithLargestFraction();
   }
 
@@ -94,15 +96,21 @@ export class BranchAndBoundNode {
       .reduce((current, previous) => current + previous, 0);
   }
 
-  getVarWithLargestFraction() {
+  getVarWithLargestFraction(): [string, number] {
     const optimalSolution = getSolutionObject(
       this.targetTableau.varColumn,
       this.targetTableau.solution
     );
 
-    return Object.entries(optimalSolution).reduce((a, b) =>
+    const [varName, value] = Object.entries(optimalSolution).reduce((a, b) =>
       getFractionPart(a[1]) > getFractionPart(b[1]) ? a : b
     );
+
+    this.newConstraints = `${varName} <= ${Math.floor(
+      value
+    )}, ${varName} >= ${Math.ceil(value)}`;
+
+    return [varName, value];
   }
 
   getBranchedTableaus() {

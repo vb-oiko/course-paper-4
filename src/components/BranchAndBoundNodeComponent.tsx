@@ -21,9 +21,12 @@ export const BranchAndBoundNodeComponent: React.FC<
       <div className="mb-1">{`Solution is ${
         !node.isSolutionFeasible ? "NOT " : ""
       }feasible`}</div>
-      <div className="mb-1">{`Branching is ${
-        !node.isBranchingPossible ? "NOT " : ""
-      }possible`}</div>
+      <div className="mb-1">{`Possible new constraints: ${node.newConstraints}`}</div>
+      <div className="mb-1">
+        {node.isBranchingPossible
+          ? "Branching is possible"
+          : "Branching is not possible, or has been already done"}
+      </div>
       <div className="mb-2"></div>
       <Collapse buttonTitle="Tableaus" collapsed>
         {node.tableaus.map((tableau, idx) => (
