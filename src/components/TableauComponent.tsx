@@ -4,13 +4,13 @@ import cs from "classnames";
 
 export interface TableauComponentProps {
   tableau: Tableau;
-  pivot?: Pivot;
 }
 
 export const TableauComponent: React.FC<TableauComponentProps> = ({
   tableau,
-  pivot,
 }) => {
+  const pivot = tableau.pivot();
+
   return (
     <table className="m-4">
       <thead>
