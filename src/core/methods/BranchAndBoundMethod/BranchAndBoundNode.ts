@@ -27,7 +27,7 @@ export class BranchAndBoundNode {
   varWithLargestFraction: [string, number];
   newConstraints: string;
   isSolutionInteger: boolean;
-  comments: string[];
+  comments: (string | number)[];
 
   constructor(
     tableau: Tableau,
@@ -42,7 +42,6 @@ export class BranchAndBoundNode {
     this.targetTableau = tableaus[tableaus.length - 1];
     this.tableaus = tableaus;
     this.isSolutionFeasible = this.targetTableau.feasible;
-    this.isBranchingPossible = this.isSolutionFeasible;
 
     this.upperBound = this.isSolutionFeasible
       ? this.getTargetFunctionValue(this.targetTableau.solution)
@@ -65,6 +64,8 @@ export class BranchAndBoundNode {
     this.newConstraints = "";
     this.varWithLargestFraction = this.getVarWithLargestFraction();
     this.isSolutionInteger = this.checkIfSolutionInteger();
+    this.isBranchingPossible =
+      this.isSolutionFeasible && !this.isSolutionInteger;
     this.comments = [];
   }
 

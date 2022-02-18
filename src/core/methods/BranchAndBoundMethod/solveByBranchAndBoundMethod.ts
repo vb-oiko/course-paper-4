@@ -2,7 +2,7 @@ import { Tableau } from "../../Tableau";
 import { maxElement } from "../../utils";
 import { BranchAndBoundNode } from "./BranchAndBoundNode";
 
-const MAX_ITERATIONS = 3;
+const MAX_ITERATIONS = 4;
 
 export const solveByBranchAndBoundMethod = (
   tableau: Tableau
@@ -13,7 +13,7 @@ export const solveByBranchAndBoundMethod = (
   let iterations = 0;
 
   nodes.push(nextBranchingNode);
-  let lowerBound = nextBranchingNode.lowerBound;
+  let bestLowerBound = nextBranchingNode.lowerBound;
   let bestIntegerSolution = nextBranchingNode.bestIntegerSolution;
 
   while (!nextBranchingNode.isSolutionInteger && iterations < MAX_ITERATIONS) {
@@ -23,16 +23,29 @@ export const solveByBranchAndBoundMethod = (
     const upperBoundNode = new BranchAndBoundNode(
       upperBoundTableau,
       nodes.length,
-      lowerBound,
+      bestLowerBound,
       bestIntegerSolution
     );
     const lowerBoundNode = new BranchAndBoundNode(
       lowerBoundTableau,
       nodes.length,
-      lowerBound,
+      bestLowerBound,
       bestIntegerSolution
     );
     nodes.push(upperBoundNode, lowerBoundNode);
+
+    const integerSolutionNodes = nodes.filter((node) => node.isSolutionInteger);
+    if (integerSolutionNodes.length) {
+      const bestIntegerSolutionNode = maxElement(
+        integerSolutionNodes,
+        (nodeA, nodeB) => nodeA.upperBound > nodeB.upperBound
+      );
+
+      bestLowerBound = bestIntegerSolutionNode.upperBound;
+      bestIntegerSolution = bestIntegerSolutionNode.optimalSolution;
+      bestIntegerSolutionNode.lowerBound = bestLowerBound;
+      bestIntegerSolutionNode.bestIntegerSolution = bestIntegerSolution;
+    }
 
     const branchAbleNodes = nodes.filter((node) => node.isBranchingPossible);
 
