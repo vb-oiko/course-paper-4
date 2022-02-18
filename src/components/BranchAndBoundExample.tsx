@@ -3,7 +3,8 @@ import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMetho
 import { BranchAndBoundNodeComponent } from "./BranchAndBoundNodeComponent";
 
 const tableau = sampleTableau7;
-const nodes = solveByBranchAndBoundMethod(tableau);
+const { nodes, maximizedValue, solution } =
+  solveByBranchAndBoundMethod(tableau);
 
 export const BranchAndBoundExample = () => {
   return (
@@ -14,6 +15,8 @@ export const BranchAndBoundExample = () => {
           <BranchAndBoundNodeComponent node={node} />
         </div>
       ))}
+      <div className="mb-1 text-blue-600 font-semibold">{`Maximized value: ${maximizedValue}`}</div>
+      <div className="mb-1 text-blue-600 font-semibold">{`Solution: ${solution}`}</div>
     </>
   );
 };

@@ -48,7 +48,7 @@ export const BranchAndBoundNodeComponent: React.FC<
       </Collapse>
       <div className="mb-2"></div>
       {node.comments.map((comment, idx) => (
-        <div key={idx} className="mb-1 text-blue-600 font-semibold">
+        <div key={idx} className="mb-1">
           {comment}
         </div>
       ))}

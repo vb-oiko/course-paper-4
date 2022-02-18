@@ -4,9 +4,15 @@ import { BranchAndBoundNode } from "./BranchAndBoundNode";
 
 const MAX_ITERATIONS = 4;
 
+export interface BranchAndBoundMethodSolution {
+  nodes: BranchAndBoundNode[];
+  maximizedValue: number;
+  solution: string;
+}
+
 export const solveByBranchAndBoundMethod = (
   tableau: Tableau
-): BranchAndBoundNode[] => {
+): BranchAndBoundMethodSolution => {
   const nodes: BranchAndBoundNode[] = [];
 
   let nextBranchingNode = new BranchAndBoundNode(tableau, nodes.length);
@@ -47,7 +53,10 @@ export const solveByBranchAndBoundMethod = (
       bestIntegerSolutionNode.bestIntegerSolution = bestIntegerSolution;
     }
 
-    const branchAbleNodes = nodes.filter((node) => node.isBranchingPossible);
+    const branchAbleNodes = nodes.filter(
+      // eslint-disable-next-line no-loop-func
+      (node) => node.isBranchingPossible && node.upperBound > bestLowerBound
+    );
 
     if (branchAbleNodes.length === 0) {
       lowerBoundNode.comments.push("No more nodes to branch");
@@ -64,5 +73,9 @@ export const solveByBranchAndBoundMethod = (
     iterations += 1;
   }
 
-  return nodes;
+  return {
+    nodes,
+    maximizedValue: bestLowerBound,
+    solution: bestIntegerSolution,
+  };
 };
