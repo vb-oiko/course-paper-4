@@ -14,6 +14,7 @@ export type BranchAndBoundNodeTableauType =
   | "lowerBoundTableau";
 
 export class BranchAndBoundNode {
+  id: number;
   sourceTableau: Tableau;
   targetTableau: Tableau;
   tableaus: Tableau[];
@@ -28,9 +29,11 @@ export class BranchAndBoundNode {
 
   constructor(
     tableau: Tableau,
+    nodeId: number,
     lowerBound?: number,
     bestIntegerSolution?: string
   ) {
+    this.id = nodeId;
     this.sourceTableau = tableau;
     const tableaus = solveByTwoPhaseMethod(this.sourceTableau, undefined, true);
 
