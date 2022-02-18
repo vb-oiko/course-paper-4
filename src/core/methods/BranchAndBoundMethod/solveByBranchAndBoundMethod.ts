@@ -1,4 +1,5 @@
 import { Tableau } from "../../Tableau";
+import { maxElement } from "../../utils";
 import { BranchAndBoundNode } from "./BranchAndBoundNode";
 
 export const solveByBranchAndBoundMethod = (
@@ -6,12 +7,16 @@ export const solveByBranchAndBoundMethod = (
 ): BranchAndBoundNode[] => {
   const nodes: BranchAndBoundNode[] = [];
 
-  const node = new BranchAndBoundNode(tableau, nodes.length);
-  nodes.push(node);
-  let lowerBound = node.lowerBound;
-  let bestIntegerSolution = node.bestIntegerSolution;
+  let nextBranchingNode = new BranchAndBoundNode(tableau, nodes.length);
 
-  const { upperBoundTableau, lowerBoundTableau } = node.getBranchedTableaus();
+  nodes.push(nextBranchingNode);
+  let lowerBound = nextBranchingNode.lowerBound;
+  let bestIntegerSolution = nextBranchingNode.bestIntegerSolution;
+
+  // while(true)do{}
+
+  const { upperBoundTableau, lowerBoundTableau } =
+    nextBranchingNode.getBranchedTableaus();
 
   const upperBoundNode = new BranchAndBoundNode(
     upperBoundTableau,
@@ -26,6 +31,11 @@ export const solveByBranchAndBoundMethod = (
     bestIntegerSolution
   );
   nodes.push(upperBoundNode, lowerBoundNode);
+
+  nextBranchingNode = maxElement(
+    nodes.filter((node) => node.isBranchingPossible),
+    (nodeA, nodeB) => nodeA.upperBound > nodeB.upperBound
+  );
 
   return nodes;
 };

@@ -57,3 +57,18 @@ export const getSolutionAsString = (
     .map(({ varName, value }) => `${varName} = ${value.toFixed(3)}`)
     .join(", ");
 };
+
+export const maxElement = <T>(
+  array: T[],
+  isLarger: (a: T, b: T) => boolean
+): T => {
+  if (array.length === 0) {
+    throw new Error("Can't find the max element in an empty array");
+  }
+
+  return array.reduce(
+    (previous: T, current: T) =>
+      isLarger(current, previous) ? current : previous,
+    array[0]
+  );
+};
