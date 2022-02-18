@@ -1,3 +1,5 @@
+const SOLUTION_PRECISION = 2;
+
 export const gcd = (a: number, b: number): number => {
   if (!b) {
     return a;
@@ -54,7 +56,11 @@ export const getSolutionAsString = (
   return varNameColumn
     .map((varName, idx) => ({ varName, value: values[idx] }))
     .filter(({ varName }) => varName.startsWith("x"))
-    .map(({ varName, value }) => `${varName} = ${value.toFixed(3)}`)
+    .sort((a, b) => a.varName.localeCompare(b.varName))
+    .map(
+      ({ varName, value }) =>
+        `${varName} = ${value.toFixed(SOLUTION_PRECISION)}`
+    )
     .join(", ");
 };
 
