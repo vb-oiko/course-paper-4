@@ -12,6 +12,7 @@ import { TabLabel } from "./components/UI/TabLabel";
 import { TabList } from "./components/UI/TabList";
 import { TabPanels } from "./components/UI/TabPanels";
 import { TabPanel } from "./components/UI/TabPanel";
+import { InputTab } from "./components/InputTab";
 
 const App = () => {
   return (
@@ -23,7 +24,9 @@ const App = () => {
           <TabLabel>Integer Solution</TabLabel>
         </TabList>
         <TabPanels>
-          <TabPanel>Content 1</TabPanel>
+          <TabPanel>
+            <InputTab />
+          </TabPanel>
           <TabPanel>
             <SimplexMethodExample />
           </TabPanel>
