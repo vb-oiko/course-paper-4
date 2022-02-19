@@ -1,6 +1,6 @@
 import { Tableau, TableauRow } from ".";
 
-export const getLatexProblemStatement = (tableau: Tableau): string[] => {
+export const getLatexProblemStatement = (tableau: Tableau) => {
   const constraintRows = tableau.rows.slice(0, -1);
   const objectiveFunctionRow = tableau.rows[tableau.rows.length - 1];
   const varCount = tableau.varRow.filter((varName) => varName.startsWith("x")).length;
@@ -10,7 +10,7 @@ export const getLatexProblemStatement = (tableau: Tableau): string[] => {
     tableau.varRow,
     varCount
   );
-  return [objectiveFunction, ...constraints];
+  return { objectiveFunction, constraints };
 };
 
 export const getLatexObjectiveFunction = (row: TableauRow, varRow: string[], nonSlackVarCount: number): string => {

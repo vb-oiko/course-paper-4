@@ -11,9 +11,7 @@ const { nodes, maximizedValue, solution } = solveByBranchAndBoundMethod(tableau)
 export const BranchAndBoundExample = () => {
   return (
     <>
-      <div>
-        <LatexProblemStatement tableau={tableau} />
-      </div>
+      <LatexProblemStatement tableau={tableau} className="mb-2" />
       {nodes.map((node, idx) => (
         <div key={idx} className="mb-6">
           <div className="mb-2">{`Node ${idx}`}</div>
