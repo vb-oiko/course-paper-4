@@ -1,44 +1,73 @@
 import React from "react";
+import update from "immutability-helper";
 
 import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
-import { range } from "../core/utils";
+import { problem } from "../const/problem";
 
 export interface InputTabProps {}
 
 export const InputTab: React.FC<InputTabProps> = () => {
-  const handleChange = React.useCallback((newValue: number) => {
-    console.warn({ newValue });
-  }, []);
+  const [a, setA] = React.useState<number[][]>(problem.a);
+  const [b, setB] = React.useState<number[]>(problem.b);
+  const [p, setP] = React.useState<number[]>(problem.p);
 
-  const columns = range(5, 1);
-  const rows = range(3, 1);
+  const handleChangeA = React.useCallback(
+    (rowIdx: number, colIdx: number) => (value: number) => {
+      setA(update(a, { [rowIdx]: { [colIdx]: { $set: value } } }));
+    },
+    []
+  );
+
+  const handleChangeB = React.useCallback(
+    (colIdx: number) => (value: number) => {
+      setB(update(b, { [colIdx]: { $set: value } }));
+    },
+    []
+  );
+
+  const handleChangeP = React.useCallback(
+    (rowIdx: number) => (value: number) => {
+      setP(update(p, { [rowIdx]: { $set: value } }));
+    },
+    []
+  );
 
   return (
-    <div className="mt-1 grid grid-cols-7 gap-4">
-      <ColumnHeader>Номер виробу</ColumnHeader>
-      {columns.map((column, columnIdx) => (
-        <ColumnHeader key={`column-header-${column}`}>{`Тип ${column}`}</ColumnHeader>
-      ))}
-      <ColumnHeader>Кількість виробів у комплекті</ColumnHeader>
+    <div>
+      <div className="mt-1 grid grid-cols-7 gap-4">
+        <ColumnHeader>Номер виробу</ColumnHeader>
+        {b.map((_, columnIdx) => (
+          <ColumnHeader key={`column-header-${columnIdx + 1}`}>{`Тип ${columnIdx + 1}`}</ColumnHeader>
+        ))}
+        <ColumnHeader>Кількість виробів у комплекті</ColumnHeader>
 
-      {rows.map((row, rowIdx) => {
-        return (
-          <>
-            <RowHeader key={`row-${rowIdx}`}>{`Виріб ${row}`}</RowHeader>
-            {columns.map((column, columnIdx) => (
-              <NumberInput key={`a-${rowIdx}${columnIdx}`} value={0} onChange={handleChange} />
-            ))}
-            <NumberInput key={`p-${rowIdx}$`} value={0} onChange={handleChange} />
-          </>
-        );
-      })}
+        {a.map((row, rowIdx) => {
+          return (
+            <>
+              <RowHeader key={`row-${rowIdx + 1}`}>{`Виріб ${rowIdx + 1}`}</RowHeader>
+              {row.map((_, columnIdx) => (
+                <NumberInput
+                  key={`a-${rowIdx}${columnIdx}`}
+                  value={a[rowIdx][columnIdx]}
+                  onChange={handleChangeA(rowIdx, columnIdx)}
+                />
+              ))}
+              <NumberInput key={`p-${rowIdx}$`} value={p[rowIdx]} onChange={handleChangeP(rowIdx)} />
+            </>
+          );
+        })}
 
-      <RowHeader>Кількість підприємств</RowHeader>
-      {columns.map((column, columnIdx) => (
-        <NumberInput key={`b-${columnIdx}`} value={0} onChange={handleChange} />
-      ))}
+        <RowHeader>Кількість підприємств</RowHeader>
+        {b.map((_, columnIdx) => (
+          <NumberInput key={`b-${columnIdx + 1}`} value={b[columnIdx]} onChange={handleChangeB(columnIdx)} />
+        ))}
+      </div>
+
+      <pre className="mt-8">{JSON.stringify(a, null)}</pre>
+      <pre className="mt-8">{JSON.stringify(b, null)}</pre>
+      <pre className="mt-8">{JSON.stringify(p, null)}</pre>
     </div>
   );
 };
