@@ -1,5 +1,5 @@
-import { CalculationStrategy } from "./CalculationStrategy/CalculationStrategy";
-import { getFractionPart, insert, remove } from "./utils";
+import { CalculationStrategy } from "../CalculationStrategy/CalculationStrategy";
+import { getFractionPart, insert, remove } from "../utils";
 
 export type TableauRow = number[];
 
