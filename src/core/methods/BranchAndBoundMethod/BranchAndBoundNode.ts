@@ -22,6 +22,7 @@ export class BranchAndBoundNode {
   lowerBound: number;
   isSolutionFeasible: boolean;
   isBranchingPossible: boolean;
+  isBranchingDone: boolean;
   optimalSolution: string;
   bestIntegerSolution: string;
   varWithLargestFraction: [string, number];
@@ -67,6 +68,7 @@ export class BranchAndBoundNode {
     this.isBranchingPossible =
       this.isSolutionFeasible && !this.isSolutionInteger;
     this.comments = [];
+    this.isBranchingDone = false;
   }
 
   selectLowerBound(lowerBound?: number): number {
@@ -135,7 +137,7 @@ export class BranchAndBoundNode {
   getBranchedTableaus() {
     const upperBoundTableau = this.getBranchedTableau(true);
     const lowerBoundTableau = this.getBranchedTableau(false);
-    this.isBranchingPossible = false;
+    this.isBranchingDone = true;
 
     return { upperBoundTableau, lowerBoundTableau };
   }

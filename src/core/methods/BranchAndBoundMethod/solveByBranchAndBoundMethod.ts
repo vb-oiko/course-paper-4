@@ -55,7 +55,10 @@ export const solveByBranchAndBoundMethod = (
 
     const branchAbleNodes = nodes.filter(
       // eslint-disable-next-line no-loop-func
-      (node) => node.isBranchingPossible && node.upperBound > bestLowerBound
+      (node) =>
+        node.isBranchingPossible &&
+        !node.isBranchingDone &&
+        node.upperBound > bestLowerBound
     );
 
     if (branchAbleNodes.length === 0) {
