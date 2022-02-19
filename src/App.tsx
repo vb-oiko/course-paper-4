@@ -7,11 +7,11 @@ import { Layout } from "./components/Layout";
 
 import { BranchAndBoundExample } from "./components/BranchAndBoundExample";
 import { SimplexMethodExample } from "./components/SimplexMethodExample";
-import { TabGroup } from "./components/UI/TabGroup";
-import { TabLabel } from "./components/UI/TabLabel";
-import { TabList } from "./components/UI/TabList";
-import { TabPanels } from "./components/UI/TabPanels";
-import { TabPanel } from "./components/UI/TabPanel";
+import { TabGroup } from "./components/UI/Tabs/TabGroup";
+import { TabLabel } from "./components/UI/Tabs/TabLabel";
+import { TabList } from "./components/UI/Tabs/TabList";
+import { TabPanels } from "./components/UI/Tabs/TabPanels";
+import { TabPanel } from "./components/UI/Tabs/TabPanel";
 import { InputTab } from "./components/InputTab";
 
 const App = () => {
