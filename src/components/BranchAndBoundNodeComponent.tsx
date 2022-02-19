@@ -45,8 +45,8 @@ export const BranchAndBoundNodeComponent: React.FC<
       }possible`}</div>
       <div className="mb-2"></div>
       <Collapse buttonTitle="Tableaus" collapsed>
-        {node.tableaus.map((tableau) => (
-          <div key={node.id} className="mb-6">
+        {node.tableaus.map((tableau, idx) => (
+          <div key={`${node.id}-${idx}`} className="mb-6">
             <TableauComponent tableau={tableau} />
             {tableau.comments.map((comment, commentIdx) => (
               <div key={comment}>{comment}</div>
