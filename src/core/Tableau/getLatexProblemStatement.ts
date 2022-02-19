@@ -6,39 +6,37 @@ export const getLatexProblemStatement = (tableau: Tableau): string[] => {
 
   const varCount = tableau.varRow.filter((varName) => varName.startsWith("x")).length;
 
-  const constraints = constraintRows.map((row) => {
-    const chunks: string[] = [];
-
-    row.forEach((cell, idx) => {
-      if (idx < varCount && cell !== 0) {
-        chunks.push(getTerm(!chunks.length, tableau.varRow[idx], cell));
-        return;
-      }
-
-      if (idx === row.length - 1) {
-        chunks.push(String(cell));
-        return;
-      }
-
-      if (cell === 1) {
-        chunks.push("\\le");
-        return;
-      }
-
-      if (cell === -1) {
-        chunks.push("\\ge");
-        return;
-      }
-    });
-
-    return chunks.join(" ");
-  });
+  const constraints = constraintRows.map((row) => getLatexConstraint(row, tableau.varRow, varCount));
 
   return constraints;
 };
 
-export const getLatexConstraint = (row: TableauRow): string => {
-  return "";
+export const getLatexConstraint = (row: TableauRow, varRow: string[], nonSlackVarCount: number): string => {
+  const chunks: string[] = [];
+
+  row.forEach((cell, idx) => {
+    if (idx < nonSlackVarCount && cell !== 0) {
+      chunks.push(getTerm(!chunks.length, varRow[idx], cell));
+      return;
+    }
+
+    if (idx === row.length - 1) {
+      chunks.push(String(cell));
+      return;
+    }
+
+    if (cell === 1) {
+      chunks.push("\\le");
+      return;
+    }
+
+    if (cell === -1) {
+      chunks.push("\\ge");
+      return;
+    }
+  });
+
+  return chunks.join(" ");
 };
 
 export const getTerm = (isFirstTerm: boolean, varName: string, value: number) =>
