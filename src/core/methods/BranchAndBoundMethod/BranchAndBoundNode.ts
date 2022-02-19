@@ -38,7 +38,10 @@ export class BranchAndBoundNode {
   ) {
     this.id = nodeId;
     this.sourceTableau = tableau;
-    const tableaus = solveByTwoPhaseMethod(this.sourceTableau, undefined, true);
+    const tableaus = [
+      tableau,
+      ...solveByTwoPhaseMethod(this.sourceTableau, undefined, true),
+    ];
 
     this.targetTableau = tableaus[tableaus.length - 1];
     this.tableaus = tableaus;

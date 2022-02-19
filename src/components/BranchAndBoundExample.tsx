@@ -1,8 +1,8 @@
-import { sampleTableau7 } from "../const/tableaus";
+import { sampleTableau4, sampleTableau7 } from "../const/tableaus";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import { BranchAndBoundNodeComponent } from "./BranchAndBoundNodeComponent";
 
-const tableau = sampleTableau7;
+const tableau = sampleTableau4;
 const { nodes, maximizedValue, solution } =
   solveByBranchAndBoundMethod(tableau);
 
