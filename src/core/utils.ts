@@ -22,10 +22,7 @@ export const remove = <T>(array: T[], position: number): T[] => {
   return [...array.slice(0, position), ...array.slice(position + 1)];
 };
 
-export const getSolutionObject = (
-  varNameColumn: string[],
-  values: number[]
-): Record<string, number> => {
+export const getSolutionObject = (varNameColumn: string[], values: number[]): Record<string, number> => {
   if (varNameColumn.length !== values.length) {
     throw new Error("Variables and values arrays lengths are not equal");
   }
@@ -33,10 +30,7 @@ export const getSolutionObject = (
   return varNameColumn
     .map((varName, idx) => ({ varName, value: values[idx] }))
     .filter(({ varName }) => varName.startsWith("x"))
-    .reduce(
-      (previous, { varName, value }) => ({ ...previous, [varName]: value }),
-      {}
-    );
+    .reduce((previous, { varName, value }) => ({ ...previous, [varName]: value }), {});
 };
 
 export const camel2title = (camelCase: string) =>
@@ -45,10 +39,7 @@ export const camel2title = (camelCase: string) =>
     .replace(/^./, (match) => match.toUpperCase())
     .trim();
 
-export const getSolutionAsString = (
-  varNameColumn: string[],
-  values: number[]
-) => {
+export const getSolutionAsString = (varNameColumn: string[], values: number[]) => {
   if (varNameColumn.length !== values.length) {
     throw new Error("Variables and values arrays lengths are not equal");
   }
@@ -57,24 +48,16 @@ export const getSolutionAsString = (
     .map((varName, idx) => ({ varName, value: values[idx] }))
     .filter(({ varName }) => varName.startsWith("x"))
     .sort((a, b) => a.varName.localeCompare(b.varName))
-    .map(
-      ({ varName, value }) =>
-        `${varName} = ${value.toFixed(SOLUTION_PRECISION)}`
-    )
+    .map(({ varName, value }) => `${varName} = ${value.toFixed(SOLUTION_PRECISION)}`)
     .join(", ");
 };
 
-export const maxElement = <T>(
-  array: T[],
-  isLarger: (a: T, b: T) => boolean
-): T => {
+export const maxElement = <T>(array: T[], isLarger: (a: T, b: T) => boolean): T => {
   if (array.length === 0) {
     throw new Error("Can't find the max element in an empty array");
   }
 
-  return array.reduce(
-    (previous: T, current: T) =>
-      isLarger(current, previous) ? current : previous,
-    array[0]
-  );
+  return array.reduce((previous: T, current: T) => (isLarger(current, previous) ? current : previous), array[0]);
 };
+
+export const range = (length: number, start: number = 0) => new Array(length).fill(null).map((_, idx) => start + idx);
