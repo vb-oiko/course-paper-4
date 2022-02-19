@@ -1,6 +1,7 @@
 import { sampleTableau4, sampleTableau7 } from "../const/tableaus";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import { BranchAndBoundNodeComponent } from "./BranchAndBoundNodeComponent";
+import { InlineLatex } from "./InlineLatex";
 
 const tableau = sampleTableau4;
 const { nodes, maximizedValue, solution } =
@@ -16,7 +17,10 @@ export const BranchAndBoundExample = () => {
         </div>
       ))}
       <div className="mb-1 text-blue-600 font-semibold">{`Maximized value: ${maximizedValue}`}</div>
-      <div className="mb-1 text-blue-600 font-semibold">{`Solution: ${solution}`}</div>
+      <div className="mb-1 text-blue-600 font-semibold">
+        <span className="mr-2">{`Solution:`}</span>
+        <InlineLatex>{solution}</InlineLatex>
+      </div>
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { Tableau } from "../core/Tableau";
 import cs from "classnames";
+import { InlineLatex } from "./InlineLatex";
 
 export interface TableauComponentProps {
   tableau: Tableau;
@@ -25,7 +26,7 @@ export const TableauComponent: React.FC<TableauComponentProps> = ({
                       key={variable}
                       className="text-sm font-medium text-gray-900 px-6 py-2 text-center"
                     >
-                      {variable}
+                      <InlineLatex>{variable}</InlineLatex>
                     </th>
                   ))}
                   <th className="text-sm font-medium text-gray-900 px-6 py-2 text-center border-l">
@@ -42,9 +43,9 @@ export const TableauComponent: React.FC<TableauComponentProps> = ({
                     })}
                   >
                     <td className="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                      {`${tableau.starredRows[idx] ? "*" : ""}${
+                      <InlineLatex>{`${tableau.starredRows[idx] ? "*" : ""}${
                         tableau.varColumn[idx]
-                      } = ${tableau.solution[idx].toFixed(3)}`}
+                      } = ${tableau.solution[idx].toFixed(3)}`}</InlineLatex>
                     </td>
                     {row.map((element, jdx) => (
                       <td

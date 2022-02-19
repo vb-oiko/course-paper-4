@@ -2,14 +2,20 @@ import React from "react";
 import { BranchAndBoundNode } from "../core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { TableauComponent } from "./TableauComponent";
 import { Collapse } from "./Collapse";
+import { InlineLatex } from "./InlineLatex";
 
 export interface BranchAndBoundNodeComponentProps {
   node: BranchAndBoundNode;
 }
 
+const PRECISION = 3;
+
 export const BranchAndBoundNodeComponent: React.FC<
   BranchAndBoundNodeComponentProps
 > = ({ node }) => {
+  const upperBound = node.upperBound.toFixed(PRECISION);
+  const lowerBound = node.lowerBound.toFixed(PRECISION);
+
   return (
     <>
       <div className="mb-1">{`Solution is ${
@@ -17,13 +23,14 @@ export const BranchAndBoundNodeComponent: React.FC<
       }feasible`}</div>
       {node.isSolutionFeasible ? (
         <>
-          <div className="mb-1">{`Upper bound: ${node.upperBound.toFixed(
-            3
-          )}  (${node.optimalSolution})`}</div>
-          <div className="mb-1">{`Lower bound: ${node.lowerBound.toFixed(
-            3
-          )}  (${node.bestIntegerSolution})`}</div>
-
+          <div className="mb-1">
+            <span className="mr-2">{`Upper bound: ${lowerBound},`}</span>
+            <InlineLatex>{node.optimalSolution}</InlineLatex>
+          </div>
+          <div className="mb-1">
+            <span className="mr-2">{`Lower bound: ${lowerBound},`}</span>
+            <InlineLatex>{node.bestIntegerSolution}</InlineLatex>
+          </div>
           <div className="mb-1">{`Solution is ${
             !node.isSolutionInteger ? "NOT " : ""
           }integer`}</div>
