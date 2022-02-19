@@ -3,12 +3,26 @@ import { Tableau, TableauRow } from ".";
 export const getLatexProblemStatement = (tableau: Tableau): string[] => {
   const constraintRows = tableau.rows.slice(0, -1);
   const objectiveFunctionRow = tableau.rows[tableau.rows.length - 1];
-
   const varCount = tableau.varRow.filter((varName) => varName.startsWith("x")).length;
-
   const constraints = constraintRows.map((row) => getLatexConstraint(row, tableau.varRow, varCount));
+  const objectiveFunction = getLatexObjectiveFunction(
+    objectiveFunctionRow.map((value) => -value),
+    tableau.varRow,
+    varCount
+  );
+  return [objectiveFunction, ...constraints];
+};
 
-  return constraints;
+export const getLatexObjectiveFunction = (row: TableauRow, varRow: string[], nonSlackVarCount: number): string => {
+  const chunks: string[] = [];
+
+  row.forEach((cell, idx) => {
+    if (idx < nonSlackVarCount && cell !== 0) {
+      chunks.push(getTerm(!chunks.length, varRow[idx], cell));
+    }
+  });
+
+  return chunks.join(" ");
 };
 
 export const getLatexConstraint = (row: TableauRow, varRow: string[], nonSlackVarCount: number): string => {
