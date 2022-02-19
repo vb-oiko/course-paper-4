@@ -1,10 +1,5 @@
 import { Tableau, TableauRow } from "../../Tableau";
-import {
-  getFractionPart,
-  getSolutionAsString,
-  getSolutionObject,
-  insert,
-} from "../../utils";
+import { getFractionPart, getSolutionAsString, getSolutionObject, insert } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export type BranchAndBoundNodeTableauType =
@@ -30,46 +25,29 @@ export class BranchAndBoundNode {
   isSolutionInteger: boolean;
   comments: (string | number)[];
 
-  constructor(
-    tableau: Tableau,
-    nodeId: number,
-    lowerBound?: number,
-    bestIntegerSolution?: string
-  ) {
+  constructor(tableau: Tableau, nodeId: number, lowerBound?: number, bestIntegerSolution?: string) {
     this.id = nodeId;
     this.sourceTableau = tableau;
-    const tableaus = [
-      tableau,
-      ...solveByTwoPhaseMethod(this.sourceTableau, undefined, true),
-    ];
+    const tableaus = [tableau, ...solveByTwoPhaseMethod(this.sourceTableau, undefined, true)];
 
     this.targetTableau = tableaus[tableaus.length - 1];
     this.tableaus = tableaus;
     this.isSolutionFeasible = this.targetTableau.feasible;
 
-    this.upperBound = this.isSolutionFeasible
-      ? this.getTargetFunctionValue(this.targetTableau.solution)
-      : 0;
+    this.upperBound = this.isSolutionFeasible ? this.getTargetFunctionValue(this.targetTableau.solution) : 0;
 
     this.lowerBound = this.selectLowerBound(lowerBound);
 
-    this.optimalSolution = getSolutionAsString(
-      this.targetTableau.varColumn,
-      this.targetTableau.solution
-    );
+    this.optimalSolution = getSolutionAsString(this.targetTableau.varColumn, this.targetTableau.solution);
 
     this.bestIntegerSolution = bestIntegerSolution
       ? bestIntegerSolution
-      : getSolutionAsString(
-          this.targetTableau.varColumn,
-          this.getIntegerSolution()
-        );
+      : getSolutionAsString(this.targetTableau.varColumn, this.getIntegerSolution());
 
     this.newConstraints = "";
     this.varWithLargestFraction = this.getVarWithLargestFraction();
     this.isSolutionInteger = this.checkIfSolutionInteger();
-    this.isBranchingPossible =
-      this.isSolutionFeasible && !this.isSolutionInteger;
+    this.isBranchingPossible = this.isSolutionFeasible && !this.isSolutionInteger && this.upperBound > this.lowerBound;
     this.comments = [];
     this.isBranchingDone = false;
   }
@@ -89,8 +67,7 @@ export class BranchAndBoundNode {
   }
 
   getTargetFunctionValue(solution: number[]) {
-    const targetRow =
-      this.sourceTableau.rows[this.sourceTableau.rows.length - 1];
+    const targetRow = this.sourceTableau.rows[this.sourceTableau.rows.length - 1];
 
     return this.targetTableau.varRow
       .map((varName, colIdx) => {
@@ -110,31 +87,21 @@ export class BranchAndBoundNode {
   }
 
   getVarWithLargestFraction(): [string, number] {
-    const optimalSolution = getSolutionObject(
-      this.targetTableau.varColumn,
-      this.targetTableau.solution
-    );
+    const optimalSolution = getSolutionObject(this.targetTableau.varColumn, this.targetTableau.solution);
 
     const [varName, value] = Object.entries(optimalSolution).reduce((a, b) =>
       getFractionPart(a[1]) > getFractionPart(b[1]) ? a : b
     );
 
-    this.newConstraints = `${varName} <= ${Math.floor(
-      value
-    )}, ${varName} >= ${Math.ceil(value)}`;
+    this.newConstraints = `${varName} <= ${Math.floor(value)}, ${varName} >= ${Math.ceil(value)}`;
 
     return [varName, value];
   }
 
   checkIfSolutionInteger(): boolean {
-    const optimalSolution = getSolutionObject(
-      this.targetTableau.varColumn,
-      this.targetTableau.solution
-    );
+    const optimalSolution = getSolutionObject(this.targetTableau.varColumn, this.targetTableau.solution);
 
-    return Object.values(optimalSolution).every(
-      (value) => getFractionPart(value) === 0
-    );
+    return Object.values(optimalSolution).every((value) => getFractionPart(value) === 0);
   }
 
   getBranchedTableaus() {
@@ -150,11 +117,7 @@ export class BranchAndBoundNode {
 
     const boundValue = isUpperConstraint ? Math.ceil(value) : Math.floor(value);
 
-    const boundRow = this.createNewEquationRow(
-      varName,
-      boundValue,
-      isUpperConstraint ? -1 : 1
-    );
+    const boundRow = this.createNewEquationRow(varName, boundValue, isUpperConstraint ? -1 : 1);
 
     const boundTableau = this.sourceTableau.addEquation(boundRow, "s");
     boundTableau.rows[boundTableau.rows.length - 1] = insert(
@@ -166,11 +129,7 @@ export class BranchAndBoundNode {
     return boundTableau;
   }
 
-  createNewEquationRow(
-    varName: string,
-    value: number,
-    slackVarValue: number
-  ): TableauRow {
+  createNewEquationRow(varName: string, value: number, slackVarValue: number): TableauRow {
     const columnIdx = this.targetTableau.getColumnIndexByVarName(varName);
     const newRowLength = this.targetTableau.varRow.length + 2;
 
