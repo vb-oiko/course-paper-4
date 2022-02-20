@@ -52,11 +52,12 @@ export const createProductConstraints = (problem: Problem) => {
     -1,
     ...fill(productNumber - rowIdx - 1),
     ...fill(factoryNumber + 1),
+    p[rowIdx],
   ]);
 };
 
 export const createFactoryConstraints = (problem: Problem) => {
-  const { a, b, p } = problem;
+  const { b, p } = problem;
   const factoryNumber = b.length;
   const productNumber = p.length;
 
@@ -64,6 +65,11 @@ export const createFactoryConstraints = (problem: Problem) => {
     ...range(productNumber)
       .map(() => [...fill(rowIdx), 1, ...fill(factoryNumber - rowIdx - 1)])
       .flat(),
+    0,
+    ...fill(productNumber),
+    ...fill(rowIdx),
+    1,
+    ...fill(factoryNumber - rowIdx - 1),
     0,
     b[rowIdx],
   ]);
