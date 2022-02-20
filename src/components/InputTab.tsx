@@ -2,7 +2,7 @@ import React from "react";
 
 import { defaultAlphaZero, defaultProblem } from "../const/problem";
 import { getLatexFromProblem, Problem } from "../core/Problem";
-import { AppAction } from "../rdx/actions";
+import { AppAction, changeAlpha } from "../rdx/actions";
 import { AppState } from "../rdx/useAppState";
 import { InlineLatex } from "./InlineLatex";
 import { InputProblem } from "./InputProblem";
@@ -14,22 +14,19 @@ export interface InputTabProps {
 }
 
 export const InputTab: React.FC<InputTabProps> = ({ state, dispatch }) => {
-  const [crispProblemLatex, setCrispProblemLatex] = React.useState<string[]>([]);
-  const [alpha, setAlpha] = React.useState(defaultAlphaZero);
-
-  const handleAlphaChange = React.useCallback((value) => setAlpha(value), []);
+  const handleAlphaChange = React.useCallback((value) => dispatch(changeAlpha(value)), []);
 
   return (
     <div>
-      <InputProblem state={state} dispatch={dispatch} defaultProblem={defaultProblem}>
+      <InputProblem state={state} dispatch={dispatch}>
         <div className="mt-4">
           <label htmlFor="input-alpha">
             <span>Ступень недомінованості</span>
             <InlineLatex className="ml-1">{"\\alpha_0"}</InlineLatex>
             <NumberInput
               id="input-alpha"
-              key={`${alpha}`}
-              value={alpha}
+              key={`${state.alpha}`}
+              value={state.alpha}
               onChange={handleAlphaChange}
               className="ml-2 w-24 inline-block"
               min={0.5}

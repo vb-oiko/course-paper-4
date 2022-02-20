@@ -3,18 +3,16 @@ import React from "react";
 import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
-import { Problem } from "../core/Problem";
 import { Button } from "./UI/Button";
 import { AppAction, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
 import { AppState } from "../rdx/useAppState";
 
 export interface InputProblemProps {
-  defaultProblem: Problem;
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
 }
 
-export const InputProblem: React.FC<InputProblemProps> = ({ children, defaultProblem, state, dispatch }) => {
+export const InputProblem: React.FC<InputProblemProps> = ({ children, state, dispatch }) => {
   const handleChangeA = React.useCallback(
     (rowIdx: number, colIdx: number) => (value: number) => {
       dispatch(changeProblemA(rowIdx, colIdx, value));
