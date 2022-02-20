@@ -67,9 +67,9 @@ export const InputTab: React.FC<InputTabProps> = () => {
         ))}
       </div>
       <div className="mt-4">
-        {getLatexFromProblem(problem).map((statetment, idx) => (
-          <div>
-            <InlineLatex>{statetment}</InlineLatex>
+        {getLatexFromProblem(problem).map((statement, idx) => (
+          <div key={`statement-${idx}`}>
+            <InlineLatex>{statement}</InlineLatex>
           </div>
         ))}
       </div>
