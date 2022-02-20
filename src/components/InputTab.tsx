@@ -45,8 +45,8 @@ export const InputTab: React.FC<InputTabProps> = () => {
 
         {a.map((row, rowIdx) => {
           return (
-            <>
-              <RowHeader key={`row-${rowIdx + 1}`}>{`Виріб ${rowIdx + 1}`}</RowHeader>
+            <div key={`row-${rowIdx + 1}`}>
+              <RowHeader>{`Виріб ${rowIdx + 1}`}</RowHeader>
               {row.map((_, columnIdx) => (
                 <NumberInput
                   key={`a-${rowIdx}${columnIdx}`}
@@ -55,7 +55,7 @@ export const InputTab: React.FC<InputTabProps> = () => {
                 />
               ))}
               <NumberInput key={`p-${rowIdx}$`} value={p[rowIdx]} onChange={handleChangeP(rowIdx)} />
-            </>
+            </div>
           );
         })}
 
