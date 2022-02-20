@@ -10,4 +10,6 @@ const p = [1, 4, 2];
 
 const b = [10, 4, 60, 7, 5];
 
-export const problem: Problem = { a, b, p };
+export const defaultProblem: Problem = { a, b, p };
+
+export const defaultAlphaZero = 0.8;
