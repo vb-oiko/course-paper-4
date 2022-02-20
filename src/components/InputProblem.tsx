@@ -4,15 +4,16 @@ import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
 import { Button } from "./UI/Button";
-import { AppAction, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
+import { AppAction, changeAlpha, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
 import { AppState } from "../rdx/useAppState";
+import { InlineLatex } from "./InlineLatex";
 
 export interface InputProblemProps {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
 }
 
-export const InputProblem: React.FC<InputProblemProps> = ({ children, state, dispatch }) => {
+export const InputProblem: React.FC<InputProblemProps> = ({ state, dispatch }) => {
   const handleChangeA = React.useCallback(
     (rowIdx: number, colIdx: number) => (value: number) => {
       dispatch(changeProblemA(rowIdx, colIdx, value));
@@ -33,6 +34,8 @@ export const InputProblem: React.FC<InputProblemProps> = ({ children, state, dis
     },
     [dispatch]
   );
+
+  const handleAlphaChange = React.useCallback((value) => dispatch(changeAlpha(value)), []);
 
   const handleReset = React.useCallback(() => {
     dispatch(resetProblem());
@@ -79,7 +82,24 @@ export const InputProblem: React.FC<InputProblemProps> = ({ children, state, dis
           />
         ))}
       </div>
-      {children}
+
+      <div className="mt-4">
+        <label htmlFor="input-alpha">
+          <span>Ступень недомінованості</span>
+          <InlineLatex className="ml-1">{"\\alpha_0"}</InlineLatex>
+          <NumberInput
+            id="input-alpha"
+            key={`${state.alpha}`}
+            value={state.alpha}
+            onChange={handleAlphaChange}
+            className="ml-2 w-24 inline-block"
+            min={0.5}
+            max={1}
+            step={0.05}
+          />
+        </label>
+      </div>
+
       <div className="mt-4">
         <Button className="ml-2" onClick={handleReset} variant="secondary">
           Повернути початкові значення
