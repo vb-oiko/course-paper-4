@@ -12,7 +12,7 @@ export interface InputProblemProps {
   onSubmit: (problem: Problem) => void;
 }
 
-export const InputProblem: React.FC<InputProblemProps> = ({ onSubmit }) => {
+export const InputProblem: React.FC<InputProblemProps> = ({ onSubmit, children }) => {
   const [a, setA] = React.useState<number[][]>(problem.a);
   const [b, setB] = React.useState<number[]>(problem.b);
   const [p, setP] = React.useState<number[]>(problem.p);
@@ -60,18 +60,20 @@ export const InputProblem: React.FC<InputProblemProps> = ({ onSubmit }) => {
                   key={`a-${rowIdx}${columnIdx}`}
                   value={a[rowIdx][columnIdx]}
                   onChange={handleChangeA(rowIdx, columnIdx)}
+                  min={0}
                 />
               ))}
-              <NumberInput key={`p-${rowIdx}$`} value={p[rowIdx]} onChange={handleChangeP(rowIdx)} />
+              <NumberInput key={`p-${rowIdx}$`} value={p[rowIdx]} onChange={handleChangeP(rowIdx)} min={0} />
             </React.Fragment>
           );
         })}
 
         <RowHeader>Кількість підприємств</RowHeader>
         {b.map((_, columnIdx) => (
-          <NumberInput key={`b-${columnIdx + 1}`} value={b[columnIdx]} onChange={handleChangeB(columnIdx)} />
+          <NumberInput key={`b-${columnIdx + 1}`} value={b[columnIdx]} onChange={handleChangeB(columnIdx)} min={0} />
         ))}
       </div>
+      {children}
       <div className="mt-4">
         <Button onClick={handleSubmit}>Створити математичну модель</Button>
       </div>

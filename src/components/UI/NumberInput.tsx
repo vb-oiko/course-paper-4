@@ -1,11 +1,20 @@
 import React from "react";
+import cs from "classnames";
 
-export interface NumberInputProps {
+export interface NumberInputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "min" | "max" | "step" | "value" | "className" | "onChange"
+  > {
   value: number;
   onChange: (newValue: number) => void;
+  className?: string;
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
-export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange }) => {
+export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, className, ...restProps }) => {
   const [internalValue, setInternalValue] = React.useState(value);
 
   const handleChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
@@ -20,12 +29,16 @@ export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange }) => 
   );
 
   return (
-    <div className="mt-1">
+    <div className={className}>
       <input
+        {...restProps}
         value={internalValue}
         onChange={handleChange}
         type="number"
-        className="p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+        className={cs(
+          className,
+          "p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+        )}
       />
     </div>
   );
