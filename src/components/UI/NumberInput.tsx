@@ -17,23 +17,24 @@ export interface NumberInputProps
 export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, className, ...restProps }) => {
   const [internalValue, setInternalValue] = React.useState(value);
 
-  const handleChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-    (ev) => {
-      const value = Number(ev.target.value);
-      if (!isNaN(value)) {
-        setInternalValue(value);
-        onChange(value);
-      }
-    },
-    [onChange]
-  );
+  const handleChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>((ev) => {
+    const value = Number(ev.target.value);
+    if (!isNaN(value)) {
+      setInternalValue(value);
+    }
+  }, []);
+
+  const handleBlur = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(() => {
+    onChange(internalValue);
+  }, [internalValue, onChange]);
 
   return (
     <div className={className}>
       <input
         {...restProps}
         value={internalValue}
-        onChange={handleChange}
+        onInput={handleChange}
+        onBlur={handleBlur}
         type="number"
         className={cs(
           className,

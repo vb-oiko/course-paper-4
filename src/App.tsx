@@ -13,8 +13,11 @@ import { TabList } from "./components/UI/Tabs/TabList";
 import { TabPanels } from "./components/UI/Tabs/TabPanels";
 import { TabPanel } from "./components/UI/Tabs/TabPanel";
 import { InputTab } from "./components/InputTab";
+import { useAppState } from "./rdx/useAppState";
 
 const App = () => {
+  const { state, dispatch } = useAppState();
+
   return (
     <Layout>
       <TabGroup>
@@ -25,7 +28,7 @@ const App = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <InputTab />
+            <InputTab state={state} dispatch={dispatch} />
           </TabPanel>
           <TabPanel>
             <SimplexMethodExample />

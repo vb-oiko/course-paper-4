@@ -2,29 +2,26 @@ import React from "react";
 
 import { defaultAlphaZero, defaultProblem } from "../const/problem";
 import { getLatexFromProblem, Problem } from "../core/Problem";
+import { AppAction } from "../rdx/actions";
+import { AppState } from "../rdx/useAppState";
 import { InlineLatex } from "./InlineLatex";
 import { InputProblem } from "./InputProblem";
 import { NumberInput } from "./UI/NumberInput";
 
-export interface InputTabProps {}
+export interface InputTabProps {
+  state: AppState;
+  dispatch: React.Dispatch<AppAction>;
+}
 
-export const InputTab: React.FC<InputTabProps> = () => {
+export const InputTab: React.FC<InputTabProps> = ({ state, dispatch }) => {
   const [crispProblemLatex, setCrispProblemLatex] = React.useState<string[]>([]);
   const [alpha, setAlpha] = React.useState(defaultAlphaZero);
-
-  const handleSubmit = React.useCallback((value: Problem) => {
-    setCrispProblemLatex(getLatexFromProblem(value));
-  }, []);
-
-  const handleReset = React.useCallback(() => {
-    setAlpha(defaultAlphaZero);
-  }, []);
 
   const handleAlphaChange = React.useCallback((value) => setAlpha(value), []);
 
   return (
     <div>
-      <InputProblem onSubmit={handleSubmit} defaultProblem={defaultProblem} onReset={handleReset}>
+      <InputProblem state={state} dispatch={dispatch} defaultProblem={defaultProblem}>
         <div className="mt-4">
           <label htmlFor="input-alpha">
             <span>Ступень недомінованості</span>
@@ -49,7 +46,7 @@ export const InputTab: React.FC<InputTabProps> = () => {
       </p>
       <h3 className="mt-4 font-bold text-lg">Чітка задача</h3>
       <div className="mt-4">
-        {crispProblemLatex.map((statement) => (
+        {getLatexFromProblem(state.problem).map((statement) => (
           <div key={`statement-${statement}`}>
             <InlineLatex>{statement}</InlineLatex>
           </div>

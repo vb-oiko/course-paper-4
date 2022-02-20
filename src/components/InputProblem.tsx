@@ -1,81 +1,69 @@
 import React from "react";
-import update from "immutability-helper";
 
 import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
 import { Problem } from "../core/Problem";
 import { Button } from "./UI/Button";
+import { AppAction, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
+import { AppState } from "../rdx/useAppState";
 
 export interface InputProblemProps {
   defaultProblem: Problem;
-  onSubmit: (problem: Problem) => void;
-  onReset?: () => void;
+  state: AppState;
+  dispatch: React.Dispatch<AppAction>;
 }
 
-export const InputProblem: React.FC<InputProblemProps> = ({ onSubmit, children, defaultProblem, onReset }) => {
-  const [a, setA] = React.useState<number[][]>(defaultProblem.a);
-  const [b, setB] = React.useState<number[]>(defaultProblem.b);
-  const [p, setP] = React.useState<number[]>(defaultProblem.p);
-
+export const InputProblem: React.FC<InputProblemProps> = ({ children, defaultProblem, state, dispatch }) => {
   const handleChangeA = React.useCallback(
     (rowIdx: number, colIdx: number) => (value: number) => {
-      setA(update(a, { [rowIdx]: { [colIdx]: { $set: value } } }));
+      dispatch(changeProblemA(rowIdx, colIdx, value));
     },
-    [a]
+    [dispatch]
   );
 
   const handleChangeB = React.useCallback(
     (colIdx: number) => (value: number) => {
-      setB(update(b, { [colIdx]: { $set: value } }));
+      dispatch(changeProblemB(colIdx, value));
     },
-    [b]
+    [dispatch]
   );
 
   const handleChangeP = React.useCallback(
     (rowIdx: number) => (value: number) => {
-      setP(update(p, { [rowIdx]: { $set: value } }));
+      dispatch(changeProblemP(rowIdx, value));
     },
-    [p]
+    [dispatch]
   );
 
-  const handleSubmit = React.useCallback(() => {
-    onSubmit({ a, b, p });
-  }, [a, b, onSubmit, p]);
-
   const handleReset = React.useCallback(() => {
-    setA(defaultProblem.a);
-    setB(defaultProblem.b);
-    setP(defaultProblem.p);
-    if (onReset) {
-      onReset();
-    }
-  }, [defaultProblem.a, defaultProblem.b, defaultProblem.p, onReset]);
+    dispatch(resetProblem());
+  }, [dispatch]);
 
   return (
     <div>
       <div className="mt-1 grid grid-cols-7 gap-4">
         <ColumnHeader>Номер виробу</ColumnHeader>
-        {b.map((_, columnIdx) => (
+        {state.problem.b.map((_, columnIdx) => (
           <ColumnHeader key={`column-header-${columnIdx + 1}`}>{`Тип ${columnIdx + 1}`}</ColumnHeader>
         ))}
         <ColumnHeader>Кількість виробів у комплекті</ColumnHeader>
 
-        {a.map((row, rowIdx) => {
+        {state.problem.a.map((row, rowIdx) => {
           return (
             <React.Fragment key={`row-${rowIdx + 1}`}>
               <RowHeader>{`Виріб ${rowIdx + 1}`}</RowHeader>
               {row.map((_, columnIdx) => (
                 <NumberInput
-                  key={`a-${rowIdx}${columnIdx}-${a[rowIdx][columnIdx]}`}
-                  value={a[rowIdx][columnIdx]}
+                  key={`a-${rowIdx}${columnIdx}-${state.problem.a[rowIdx][columnIdx]}`}
+                  value={state.problem.a[rowIdx][columnIdx]}
                   onChange={handleChangeA(rowIdx, columnIdx)}
                   min={0}
                 />
               ))}
               <NumberInput
-                key={`p-${rowIdx}$-${p[rowIdx]}`}
-                value={p[rowIdx]}
+                key={`p-${rowIdx}$-${state.problem.p[rowIdx]}`}
+                value={state.problem.p[rowIdx]}
                 onChange={handleChangeP(rowIdx)}
                 min={0}
               />
@@ -84,13 +72,17 @@ export const InputProblem: React.FC<InputProblemProps> = ({ onSubmit, children, 
         })}
 
         <RowHeader>Кількість підприємств</RowHeader>
-        {b.map((_, columnIdx) => (
-          <NumberInput key={`b-${columnIdx + 1}`} value={b[columnIdx]} onChange={handleChangeB(columnIdx)} min={0} />
+        {state.problem.b.map((_, columnIdx) => (
+          <NumberInput
+            key={`b-${columnIdx + 1}-${state.problem.b[columnIdx]}`}
+            value={state.problem.b[columnIdx]}
+            onChange={handleChangeB(columnIdx)}
+            min={0}
+          />
         ))}
       </div>
       {children}
       <div className="mt-4">
-        <Button onClick={handleSubmit}>Створити математичну модель</Button>
         <Button className="ml-2" onClick={handleReset} variant="secondary">
           Повернути початкові значення
         </Button>
