@@ -45,7 +45,7 @@ export const InputTab: React.FC<InputTabProps> = () => {
 
         {a.map((row, rowIdx) => {
           return (
-            <div key={`row-${rowIdx + 1}`}>
+            <React.Fragment key={`row-${rowIdx + 1}`}>
               <RowHeader>{`Виріб ${rowIdx + 1}`}</RowHeader>
               {row.map((_, columnIdx) => (
                 <NumberInput
@@ -55,7 +55,7 @@ export const InputTab: React.FC<InputTabProps> = () => {
                 />
               ))}
               <NumberInput key={`p-${rowIdx}$`} value={p[rowIdx]} onChange={handleChangeP(rowIdx)} />
-            </div>
+            </React.Fragment>
           );
         })}
 
