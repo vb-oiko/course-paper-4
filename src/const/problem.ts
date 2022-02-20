@@ -1,3 +1,5 @@
+import { Problem } from "../core/Problem";
+
 const a = [
   [200, 100, 300, 50, 20],
   [70, 100, 300, 100, 400],
@@ -8,4 +10,4 @@ const p = [1, 4, 2];
 
 const b = [10, 4, 60, 7, 5];
 
-export const problem = { a, b, p };
+export const problem: Problem = { a, b, p };

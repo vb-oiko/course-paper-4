@@ -61,3 +61,5 @@ export const maxElement = <T>(array: T[], isLarger: (a: T, b: T) => boolean): T 
 };
 
 export const range = (length: number, start: number = 0) => new Array(length).fill(null).map((_, idx) => start + idx);
+
+export const fill = (length: number, filler: number = 0) => new Array(length).fill(null).map(() => filler);
