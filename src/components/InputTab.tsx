@@ -5,7 +5,8 @@ import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
 import { problem } from "../const/problem";
-import { getTableauFromProblem } from "../core/Problem";
+import { getLatexFromProblem } from "../core/Problem";
+import { InlineLatex } from "./InlineLatex";
 
 export interface InputTabProps {}
 
@@ -65,12 +66,13 @@ export const InputTab: React.FC<InputTabProps> = () => {
           <NumberInput key={`b-${columnIdx + 1}`} value={b[columnIdx]} onChange={handleChangeB(columnIdx)} />
         ))}
       </div>
-
-      <pre className="mt-4">{JSON.stringify(a, null)}</pre>
-      <pre className="mt-4">{JSON.stringify(b, null)}</pre>
-      <pre className="mt-4">{JSON.stringify(p, null)}</pre>
-
-      <pre className="mt-4">{JSON.stringify(getTableauFromProblem({ a, b, p }), null, 2)}</pre>
+      <div className="mt-4">
+        {getLatexFromProblem(problem).map((statetment, idx) => (
+          <div>
+            <InlineLatex>{statetment}</InlineLatex>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

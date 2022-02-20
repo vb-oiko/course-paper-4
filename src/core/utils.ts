@@ -63,3 +63,12 @@ export const maxElement = <T>(array: T[], isLarger: (a: T, b: T) => boolean): T 
 export const range = (length: number, start: number = 0) => new Array(length).fill(null).map((_, idx) => start + idx);
 
 export const fill = (length: number, filler: number = 0) => new Array(length).fill(null).map(() => filler);
+
+export const getTerm = (isFirstTerm: boolean, varName: string, value: number) =>
+  isFirstTerm && Math.sign(value) > 0
+    ? `${getCoefficient(value)} ${varName}`
+    : `${getSign(value)} ${getCoefficient(value)} ${varName}`;
+
+export const getSign = (value: number) => `${Math.sign(value) === 1 ? "+" : "-"}`;
+
+export const getCoefficient = (value: number) => `${Math.abs(value) === 1 ? "" : Math.abs(value)}`;

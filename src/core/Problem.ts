@@ -1,6 +1,6 @@
 import { GdcCalculationStrategy } from "./CalculationStrategy/GdcCalculationStrategy";
 import { Tableau } from "./Tableau";
-import { fill, range } from "./utils";
+import { fill, getTerm, range } from "./utils";
 
 export interface Problem {
   a: number[][];
@@ -76,7 +76,7 @@ export const createFactoryConstraints = (problem: Problem) => {
 };
 
 export const createObjectiveFunctionConstraint = (problem: Problem) => {
-  const { a, b, p } = problem;
+  const { b, p } = problem;
   const factoryNumber = b.length;
   const productNumber = p.length;
 
@@ -86,7 +86,7 @@ export const createObjectiveFunctionConstraint = (problem: Problem) => {
 export const getTableauFromProblem = (problem: Problem) => {
   validateProblemData(problem);
 
-  const { a, b, p } = problem;
+  const { b, p } = problem;
   const factoryNumber = b.length;
   const productNumber = p.length;
 
@@ -107,4 +107,30 @@ export const getTableauFromProblem = (problem: Problem) => {
     equationCount: factoryNumber + productNumber,
     calculationStrategy: GdcCalculationStrategy,
   });
+};
+
+export const getLatexFromProblem = (problem: Problem) => {
+  const { a, b, p } = problem;
+  const factoryNumber = b.length;
+  const productNumber = p.length;
+
+  const objectiveFunction = "x \\rightarrow \\max";
+
+  const productConstraints = a.map((row, rowIdx) =>
+    [
+      ...row.map((coefficient, colIdx) => getTerm(colIdx === 0, `x_{${rowIdx + 1}${colIdx + 1}}`, coefficient)),
+      getTerm(false, "x", -p[rowIdx]),
+      "\\ge 0",
+    ].join("")
+  );
+
+  const factoryConstraints = range(factoryNumber).map((colIdx) =>
+    [
+      ...range(productNumber).map((rowIdx) => getTerm(rowIdx === 0, `x_{${rowIdx + 1}${colIdx + 1}}`, 1)),
+      "\\le",
+      String(b[colIdx]),
+    ].join(" ")
+  );
+
+  return [objectiveFunction, ...productConstraints, ...factoryConstraints];
 };

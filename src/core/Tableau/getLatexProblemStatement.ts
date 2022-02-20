@@ -1,4 +1,5 @@
 import { Tableau, TableauRow } from ".";
+import { getTerm } from "../utils";
 
 export const getLatexProblemStatement = (tableau: Tableau) => {
   const constraintRows = tableau.rows.slice(0, -1);
@@ -52,12 +53,3 @@ export const getLatexConstraint = (row: TableauRow, varRow: string[], nonSlackVa
 
   return chunks.join(" ");
 };
-
-export const getTerm = (isFirstTerm: boolean, varName: string, value: number) =>
-  isFirstTerm && Math.sign(value) > 0
-    ? `${getCoefficient(value)} ${varName}`
-    : `${getSign(value)} ${getCoefficient(value)} ${varName}`;
-
-export const getSign = (value: number) => `${Math.sign(value) === 1 ? "+" : "-"}`;
-
-export const getCoefficient = (value: number) => `${Math.abs(value) === 1 ? "" : Math.abs(value)}`;
