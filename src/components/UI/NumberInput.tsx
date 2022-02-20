@@ -16,11 +16,18 @@ export interface NumberInputProps
 
 export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, className, ...restProps }) => {
   const [internalValue, setInternalValue] = React.useState(value);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>((ev) => {
     const value = Number(ev.target.value);
     if (!isNaN(value)) {
       setInternalValue(value);
+    }
+  }, []);
+
+  const handleKeyPress = React.useCallback<React.KeyboardEventHandler<HTMLInputElement>>((e) => {
+    if (e.keyCode === 13) {
+      inputRef.current?.blur();
     }
   }, []);
 
@@ -35,7 +42,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, class
         value={internalValue}
         onInput={handleChange}
         onBlur={handleBlur}
+        onKeyDown={handleKeyPress}
         type="number"
+        ref={inputRef}
         className={cs(
           className,
           "p-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
