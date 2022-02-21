@@ -2,34 +2,19 @@ import { Layout } from "./components/Layout";
 
 import { BranchAndBoundExample } from "./components/BranchAndBoundExample";
 import { SimplexMethodExample } from "./components/SimplexMethodExample";
-import { TabGroup } from "./components/UI/Tabs/TabGroup";
-import { TabLabel } from "./components/UI/Tabs/TabLabel";
-import { TabList } from "./components/UI/Tabs/TabList";
-import { TabPanels } from "./components/UI/Tabs/TabPanels";
-import { TabPanel } from "./components/UI/Tabs/TabPanel";
+import { Tab, TabGroup } from "./components/UI/Tabs/TabGroup";
+
 import { InputTab } from "./components/InputTab";
 
 const App = () => {
+  const tabs: Tab[] = [
+    { name: "Source data", component: <InputTab /> },
+    { name: "Simplex method", component: <SimplexMethodExample /> },
+    { name: "Branch and bound method", component: <BranchAndBoundExample /> },
+  ];
   return (
     <Layout>
-      <TabGroup>
-        <TabList>
-          <TabLabel>Source Data</TabLabel>
-          <TabLabel>Relaxed Solution</TabLabel>
-          <TabLabel>Integer Solution</TabLabel>
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <InputTab />
-          </TabPanel>
-          <TabPanel>
-            <SimplexMethodExample />
-          </TabPanel>
-          <TabPanel>
-            <BranchAndBoundExample />
-          </TabPanel>
-        </TabPanels>
-      </TabGroup>
+      <TabGroup tabs={tabs} />
     </Layout>
   );
 };
