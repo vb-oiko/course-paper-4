@@ -28,7 +28,7 @@ export const InputTab: React.FC<InputTabProps> = () => {
       <InputProblem />
       <p className="mt-4">
         Позначимо через <InlineLatex>{"x_{ij}"}</InlineLatex> - кількість підприємстві <InlineLatex>j</InlineLatex>-го
-        типу, на яких буде вироблятися виріб <InlineLatex>i</InlineLatex>-го типу, через <InlineLatex>Z</InlineLatex>{" "}
+        типу, на яких буде вироблятися виріб <InlineLatex>i</InlineLatex>-го типу, через <InlineLatex>x</InlineLatex>{" "}
         кількість комплектів.
       </p>
 
