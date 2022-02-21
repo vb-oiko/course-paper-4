@@ -1,8 +1,8 @@
 import React from "react";
 
 import { NumberInput } from "./UI/NumberInput";
-import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
-import { RowHeader } from "./UI/Tabs/Table/RowHeader";
+import { ColumnHeader } from "./UI/Table/ColumnHeader";
+import { RowHeader } from "./UI/Table/RowHeader";
 import { Button } from "./UI/Button";
 import { changeAlpha, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
 import { InlineLatex } from "./InlineLatex";

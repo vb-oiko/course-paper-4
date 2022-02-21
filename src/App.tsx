@@ -2,7 +2,7 @@ import { Layout } from "./components/Layout";
 
 import { BranchAndBoundExample } from "./components/BranchAndBoundExample";
 import { SimplexMethodExample } from "./components/SimplexMethodExample";
-import { Tab, TabGroup } from "./components/UI/Tabs/TabGroup";
+import { Tab, TabGroup } from "./components/UI/TabGroup";
 
 import { InputTab } from "./components/InputTab";
 
