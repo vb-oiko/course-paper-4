@@ -1,8 +1,8 @@
-import React from "react";
 import { defaultProblem, defaultAlphaZero } from "../const/problem";
 import { Problem } from "../core/Problem";
 import { AppAction } from "./actions";
 import update from "immutability-helper";
+import { Reducer } from "@reduxjs/toolkit";
 
 export interface AppState {
   problem: Problem;
@@ -11,7 +11,10 @@ export interface AppState {
 
 export const initialState: AppState = { problem: defaultProblem, alpha: defaultAlphaZero };
 
-const reducer = (state: AppState, action: AppAction): AppState => {
+export const reducer: Reducer<AppState, AppAction> = (state: AppState | undefined, action: AppAction): AppState => {
+  if (!state) {
+    return initialState;
+  }
   switch (action.type) {
     case "CHANGE_PROBLEM_A":
       return update(state, {
@@ -34,10 +37,4 @@ const reducer = (state: AppState, action: AppAction): AppState => {
     default:
       throw new Error();
   }
-};
-
-export const useAppState = () => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-
-  return { state, dispatch };
 };

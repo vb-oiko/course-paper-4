@@ -4,16 +4,18 @@ import { NumberInput } from "./UI/NumberInput";
 import { ColumnHeader } from "./UI/Tabs/Table/ColumnHeader";
 import { RowHeader } from "./UI/Tabs/Table/RowHeader";
 import { Button } from "./UI/Button";
-import { AppAction, changeAlpha, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
-import { AppState } from "../rdx/useAppState";
+import { changeAlpha, changeProblemA, changeProblemB, changeProblemP, resetProblem } from "../rdx/actions";
 import { InlineLatex } from "./InlineLatex";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAlpha, selectProblem } from "../rdx/selectors";
 
-export interface InputProblemProps {
-  state: AppState;
-  dispatch: React.Dispatch<AppAction>;
-}
+export interface InputProblemProps {}
 
-export const InputProblem: React.FC<InputProblemProps> = ({ state, dispatch }) => {
+export const InputProblem: React.FC<InputProblemProps> = () => {
+  const dispatch = useDispatch();
+  const problem = useSelector(selectProblem);
+  const alpha = useSelector(selectAlpha);
+
   const handleChangeA = React.useCallback(
     (rowIdx: number, colIdx: number) => (value: number) => {
       dispatch(changeProblemA(rowIdx, colIdx, value));
@@ -45,26 +47,26 @@ export const InputProblem: React.FC<InputProblemProps> = ({ state, dispatch }) =
     <div>
       <div className="mt-1 grid grid-cols-7 gap-4">
         <ColumnHeader>Номер виробу</ColumnHeader>
-        {state.problem.b.map((_, columnIdx) => (
+        {problem.b.map((_, columnIdx) => (
           <ColumnHeader key={`column-header-${columnIdx + 1}`}>{`Тип ${columnIdx + 1}`}</ColumnHeader>
         ))}
         <ColumnHeader>Кількість виробів у комплекті</ColumnHeader>
 
-        {state.problem.a.map((row, rowIdx) => {
+        {problem.a.map((row, rowIdx) => {
           return (
             <React.Fragment key={`row-${rowIdx + 1}`}>
               <RowHeader>{`Виріб ${rowIdx + 1}`}</RowHeader>
               {row.map((_, columnIdx) => (
                 <NumberInput
-                  key={`a-${rowIdx}${columnIdx}-${state.problem.a[rowIdx][columnIdx]}`}
-                  value={state.problem.a[rowIdx][columnIdx]}
+                  key={`a-${rowIdx}${columnIdx}-${problem.a[rowIdx][columnIdx]}`}
+                  value={problem.a[rowIdx][columnIdx]}
                   onChange={handleChangeA(rowIdx, columnIdx)}
                   min={0}
                 />
               ))}
               <NumberInput
-                key={`p-${rowIdx}$-${state.problem.p[rowIdx]}`}
-                value={state.problem.p[rowIdx]}
+                key={`p-${rowIdx}$-${problem.p[rowIdx]}`}
+                value={problem.p[rowIdx]}
                 onChange={handleChangeP(rowIdx)}
                 min={0}
               />
@@ -73,10 +75,10 @@ export const InputProblem: React.FC<InputProblemProps> = ({ state, dispatch }) =
         })}
 
         <RowHeader>Кількість підприємств</RowHeader>
-        {state.problem.b.map((_, columnIdx) => (
+        {problem.b.map((_, columnIdx) => (
           <NumberInput
-            key={`b-${columnIdx + 1}-${state.problem.b[columnIdx]}`}
-            value={state.problem.b[columnIdx]}
+            key={`b-${columnIdx + 1}-${problem.b[columnIdx]}`}
+            value={problem.b[columnIdx]}
             onChange={handleChangeB(columnIdx)}
             min={0}
           />
@@ -89,8 +91,8 @@ export const InputProblem: React.FC<InputProblemProps> = ({ state, dispatch }) =
           <InlineLatex className="ml-1">{"\\alpha_0"}</InlineLatex>
           <NumberInput
             id="input-alpha"
-            key={`${state.alpha}`}
-            value={state.alpha}
+            key={`${alpha}`}
+            value={alpha}
             onChange={handleAlphaChange}
             className="ml-2 w-24 inline-block"
             min={0.5}

@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { Tab } from "@headlessui/react";
-import className from "classnames";
-
 import { Layout } from "./components/Layout";
 
 import { BranchAndBoundExample } from "./components/BranchAndBoundExample";
@@ -13,11 +8,8 @@ import { TabList } from "./components/UI/Tabs/TabList";
 import { TabPanels } from "./components/UI/Tabs/TabPanels";
 import { TabPanel } from "./components/UI/Tabs/TabPanel";
 import { InputTab } from "./components/InputTab";
-import { useAppState } from "./rdx/useAppState";
 
 const App = () => {
-  const { state, dispatch } = useAppState();
-
   return (
     <Layout>
       <TabGroup>
@@ -28,7 +20,7 @@ const App = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <InputTab state={state} dispatch={dispatch} />
+            <InputTab />
           </TabPanel>
           <TabPanel>
             <SimplexMethodExample />
