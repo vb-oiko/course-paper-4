@@ -1,8 +1,8 @@
-import { sampleTableau4, sampleTableau7 } from "../const/tableaus";
-import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
-import { BranchAndBoundNodeComponent } from "./BranchAndBoundNodeComponent";
-import { InlineLatex } from "./InlineLatex";
-import { LatexProblemStatement } from "./LatexProblemStatement";
+import { sampleTableau4, sampleTableau7 } from "../../const/tableaus";
+import { solveByBranchAndBoundMethod } from "../../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
+import { BranchAndBoundNodeComponent } from "../BranchAndBoundNodeComponent";
+import { InlineLatex } from "../InlineLatex";
+import { LatexProblemStatement } from "../LatexProblemStatement";
 
 const tableau = sampleTableau4;
 

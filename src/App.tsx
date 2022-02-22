@@ -1,10 +1,10 @@
 import { Layout } from "./components/Layout";
 
-import { BranchAndBoundExample } from "./components/BranchAndBoundExample";
-import { SimplexMethodExample } from "./components/SimplexMethodExample";
+import { BranchAndBoundExample } from "./components/tabs/BranchAndBoundExample";
+import { SimplexMethodExample } from "./components/tabs/SimplexMethodExample";
 import { Tab, TabGroup } from "./components/UI/TabGroup";
 
-import { InputTab } from "./components/InputTab";
+import { InputTab } from "./components/tabs/InputTab";
 
 const App = () => {
   const tabs: Tab[] = [

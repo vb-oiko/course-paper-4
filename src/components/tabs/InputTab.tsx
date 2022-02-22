@@ -8,10 +8,10 @@ import {
   selectPessimistProblemLatex,
   selectProblemLatex,
   selectUpperBoundAlpha,
-} from "../rdx/selectors";
-import { InlineLatex } from "./InlineLatex";
-import { InputProblem } from "./InputProblem";
-import { LatexStatements } from "./LatexStatements";
+} from "../../rdx/selectors";
+import { InlineLatex } from "../InlineLatex";
+import { InputProblem } from "../InputProblem";
+import { LatexStatements } from "../LatexStatements";
 
 export interface InputTabProps {}
 
