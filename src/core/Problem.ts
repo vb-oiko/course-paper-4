@@ -134,3 +134,12 @@ export const getLatexFromProblem = (problem: Problem) => {
 
   return [objectiveFunction, ...productConstraints, ...factoryConstraints];
 };
+
+export const multiplyAMatrix = ({ a: baseA, b, p }: Problem, alpha: number) => {
+  const a = baseA.map((row) => row.map((value) => Math.floor(value * alpha)));
+  return { a, b, p };
+};
+
+export const getLatexFromAlphaLevelProblem = (problem: Problem, alpha: number) => {
+  return getLatexFromProblem(multiplyAMatrix(problem, alpha));
+};

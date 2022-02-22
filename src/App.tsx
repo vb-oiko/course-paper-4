@@ -1,16 +1,14 @@
 import { Layout } from "./components/Layout";
 
-import { BranchAndBoundExample } from "./components/tabs/BranchAndBoundExample";
-import { SimplexMethodExample } from "./components/tabs/SimplexMethodExample";
 import { Tab, TabGroup } from "./components/UI/TabGroup";
 
 import { InputTab } from "./components/tabs/InputTab";
+import { SolutionTab } from "./components/tabs/SolutionTab";
 
 const App = () => {
   const tabs: Tab[] = [
-    { name: "Source data", component: <InputTab /> },
-    { name: "Simplex method", component: <SimplexMethodExample /> },
-    { name: "Branch and bound method", component: <BranchAndBoundExample /> },
+    { name: "Вихідні дані", component: <InputTab /> },
+    { name: "Рішення", component: <SolutionTab /> },
   ];
   return (
     <Layout>

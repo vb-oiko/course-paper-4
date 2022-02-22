@@ -1,5 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { getLatexFromProblem, Problem } from "../core/Problem";
+import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
+import {
+  getLatexFromAlphaLevelProblem,
+  getLatexFromProblem,
+  getTableauFromProblem,
+  multiplyAMatrix,
+} from "../core/Problem";
 import { AppState } from "./reducer";
 
 export const selectProblemLatex = (state: AppState) => getLatexFromProblem(state.problem);
@@ -12,12 +18,26 @@ export const selectLowerBoundAlpha = (state: AppState) => 1 - Math.sqrt((1 - sta
 
 export const selectUpperBoundAlpha = (state: AppState) => 1 + Math.sqrt((1 - state.alpha) / state.alpha);
 
-const multiplyAMatrix = ({ a: baseA, b, p }: Problem, alpha: number) => {
-  const a = baseA.map((row) => row.map((value) => Math.floor(value * alpha)));
+export const selectOptimistProblemLatex = createSelector(
+  [selectProblem, selectUpperBoundAlpha],
+  getLatexFromAlphaLevelProblem
+);
 
-  return getLatexFromProblem({ a, b, p });
-};
+export const selectPessimistProblemLatex = createSelector(
+  [selectProblem, selectLowerBoundAlpha],
+  getLatexFromAlphaLevelProblem
+);
 
-export const selectOptimistProblemLatex = createSelector([selectProblem, selectUpperBoundAlpha], multiplyAMatrix);
+export const selectCrispBranchAndBoundSolution = createSelector([selectProblem], (problem) =>
+  solveByBranchAndBoundMethod(getTableauFromProblem(problem))
+);
 
-export const selectPessimistProblemLatex = createSelector([selectProblem, selectLowerBoundAlpha], multiplyAMatrix);
+export const selectOptimistBranchAndBoundSolution = createSelector(
+  [selectProblem, selectUpperBoundAlpha],
+  (problem, alpha) => solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, alpha)))
+);
+
+export const selectPessimistBranchAndBoundSolution = createSelector(
+  [selectProblem, selectLowerBoundAlpha],
+  (problem, alpha) => solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, alpha)))
+);
