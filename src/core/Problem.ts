@@ -80,7 +80,7 @@ export const createObjectiveFunctionConstraint = (problem: Problem) => {
   const factoryNumber = b.length;
   const productNumber = p.length;
 
-  return [...fill(factoryNumber * productNumber), 1, ...fill(factoryNumber + productNumber), 1, 0];
+  return [...fill(factoryNumber * productNumber), -1, ...fill(factoryNumber + productNumber), 1, 0];
 };
 
 export const getTableauFromProblem = (problem: Problem) => {
