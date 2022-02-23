@@ -1,5 +1,5 @@
-import { BranchAndBoundNode } from "../core/methods/BranchAndBoundMethod/BranchAndBoundNode";
 import { BranchAndBoundMethodSolution } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
+import { getSolutionAsString } from "../core/utils";
 import { InlineLatex } from "./InlineLatex";
 import { LatexStatements } from "./LatexStatements";
 
@@ -15,7 +15,7 @@ export const SolutionComponent: React.FC<SolutionComponentProps> = ({ title, pro
       <h3 className="mt-4 font-bold text-lg">{title}</h3>
       <LatexStatements statements={problemLatexStatements} className="mt-2" />
       <div className="mt-2">
-        <InlineLatex>{solution.solution}</InlineLatex>
+        <InlineLatex>{getSolutionAsString(solution.solution)}</InlineLatex>
       </div>
     </div>
   );

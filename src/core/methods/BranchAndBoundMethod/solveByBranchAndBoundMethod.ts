@@ -7,12 +7,10 @@ const MAX_ITERATIONS = 4;
 export interface BranchAndBoundMethodSolution {
   nodes: BranchAndBoundNode[];
   maximizedValue: number;
-  solution: string;
+  solution: Record<string, number>;
 }
 
-export const solveByBranchAndBoundMethod = (
-  tableau: Tableau
-): BranchAndBoundMethodSolution => {
+export const solveByBranchAndBoundMethod = (tableau: Tableau): BranchAndBoundMethodSolution => {
   const nodes: BranchAndBoundNode[] = [];
 
   let nextBranchingNode = new BranchAndBoundNode(tableau, nodes.length);
@@ -23,21 +21,10 @@ export const solveByBranchAndBoundMethod = (
   let bestIntegerSolution = nextBranchingNode.bestIntegerSolution;
 
   while (!nextBranchingNode.isSolutionInteger && iterations < MAX_ITERATIONS) {
-    const { upperBoundTableau, lowerBoundTableau } =
-      nextBranchingNode.getBranchedTableaus();
+    const { upperBoundTableau, lowerBoundTableau } = nextBranchingNode.getBranchedTableaus();
 
-    const upperBoundNode = new BranchAndBoundNode(
-      upperBoundTableau,
-      nodes.length,
-      bestLowerBound,
-      bestIntegerSolution
-    );
-    const lowerBoundNode = new BranchAndBoundNode(
-      lowerBoundTableau,
-      nodes.length,
-      bestLowerBound,
-      bestIntegerSolution
-    );
+    const upperBoundNode = new BranchAndBoundNode(upperBoundTableau, nodes.length, bestLowerBound, bestIntegerSolution);
+    const lowerBoundNode = new BranchAndBoundNode(lowerBoundTableau, nodes.length, bestLowerBound, bestIntegerSolution);
     nodes.push(upperBoundNode, lowerBoundNode);
 
     const integerSolutionNodes = nodes.filter((node) => node.isSolutionInteger);
@@ -55,10 +42,7 @@ export const solveByBranchAndBoundMethod = (
 
     const branchAbleNodes = nodes.filter(
       // eslint-disable-next-line no-loop-func
-      (node) =>
-        node.isBranchingPossible &&
-        !node.isBranchingDone &&
-        node.upperBound > bestLowerBound
+      (node) => node.isBranchingPossible && !node.isBranchingDone && node.upperBound > bestLowerBound
     );
 
     if (branchAbleNodes.length === 0) {
@@ -66,13 +50,8 @@ export const solveByBranchAndBoundMethod = (
       break;
     }
 
-    nextBranchingNode = maxElement(
-      branchAbleNodes,
-      (nodeA, nodeB) => nodeA.upperBound > nodeB.upperBound
-    );
-    nextBranchingNode.comments.push(
-      `Iteration: ${iterations}, selected as the next node to branch`
-    );
+    nextBranchingNode = maxElement(branchAbleNodes, (nodeA, nodeB) => nodeA.upperBound > nodeB.upperBound);
+    nextBranchingNode.comments.push(`Iteration: ${iterations}, selected as the next node to branch`);
     iterations += 1;
   }
 

@@ -39,16 +39,9 @@ export const camel2title = (camelCase: string) =>
     .replace(/^./, (match) => match.toUpperCase())
     .trim();
 
-export const getSolutionAsString = (varNameColumn: string[], values: number[]) => {
-  if (varNameColumn.length !== values.length) {
-    throw new Error("Variables and values arrays lengths are not equal");
-  }
-
-  return varNameColumn
-    .map((varName, idx) => ({ varName, value: values[idx] }))
-    .filter(({ varName }) => varName.startsWith("x"))
-    .sort((a, b) => a.varName.localeCompare(b.varName))
-    .map(({ varName, value }) => `${varName} = ${value.toFixed(SOLUTION_PRECISION)}`)
+export const getSolutionAsString = (solution: Record<string, number>) => {
+  return Object.entries(solution)
+    .map(([varName, value]) => `${varName} = ${value.toFixed(SOLUTION_PRECISION)}`)
     .join(", ");
 };
 

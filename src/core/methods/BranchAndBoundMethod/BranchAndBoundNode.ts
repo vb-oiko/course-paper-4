@@ -1,5 +1,5 @@
 import { Tableau, TableauRow } from "../../Tableau";
-import { getFractionPart, getSolutionAsString, getSolutionObject, insert } from "../../utils";
+import { getFractionPart, getSolutionObject, insert } from "../../utils";
 import { solveByTwoPhaseMethod } from "../solveByTwoPhaseMethod";
 
 export type BranchAndBoundNodeTableauType =
@@ -18,14 +18,14 @@ export class BranchAndBoundNode {
   isSolutionFeasible: boolean;
   isBranchingPossible: boolean;
   isBranchingDone: boolean;
-  optimalSolution: string;
-  bestIntegerSolution: string;
+  optimalSolution: Record<string, number>;
+  bestIntegerSolution: Record<string, number>;
   varWithLargestFraction: [string, number];
   newConstraints: string;
   isSolutionInteger: boolean;
   comments: (string | number)[];
 
-  constructor(tableau: Tableau, nodeId: number, lowerBound?: number, bestIntegerSolution?: string) {
+  constructor(tableau: Tableau, nodeId: number, lowerBound?: number, bestIntegerSolution?: Record<string, number>) {
     this.id = nodeId;
     this.sourceTableau = tableau;
     const tableaus = [tableau, ...solveByTwoPhaseMethod(this.sourceTableau, undefined, true)];
@@ -38,11 +38,11 @@ export class BranchAndBoundNode {
 
     this.lowerBound = this.selectLowerBound(lowerBound);
 
-    this.optimalSolution = getSolutionAsString(this.targetTableau.varColumn, this.targetTableau.solution);
+    this.optimalSolution = getSolutionObject(this.targetTableau.varColumn, this.targetTableau.solution);
 
     this.bestIntegerSolution = bestIntegerSolution
       ? bestIntegerSolution
-      : getSolutionAsString(this.targetTableau.varColumn, this.getIntegerSolution());
+      : getSolutionObject(this.targetTableau.varColumn, this.getIntegerSolution());
 
     this.newConstraints = "";
     this.varWithLargestFraction = this.getVarWithLargestFraction();
