@@ -18,3 +18,7 @@
 - https://math.semestr.ru/simplex/pmethod.php
 - https://math.semestr.ru/simplex/integer.php
 - http://web.tecnico.ulisboa.pt/mcasquilho/compute/_linpro/TaylorB_module_c.pdf
+
+### Charts
+
+- https://react-chartjs-2.netlify.app/
