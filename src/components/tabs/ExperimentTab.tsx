@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { getFactoryProductivityTransformProblem } from "../../core/experiment";
+import { getFactoryProductivityTransformProblem } from "../../core/experiment/problemTransformers";
 import { getLatexFromProblem } from "../../core/Problem";
 import { selectProblem } from "../../rdx/selectors";
 import { LatexStatements } from "../LatexStatements";

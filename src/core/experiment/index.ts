@@ -1,6 +1,5 @@
 import { solveByBranchAndBoundMethod } from "../methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import { getTableauFromProblem, Problem } from "../Problem";
-import update from "immutability-helper";
 
 export interface ExperimentResults {
   labels: string[];
@@ -21,7 +20,17 @@ export interface ExperimentParams {
   transformProblem: TransformProblem;
 }
 
-export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams) => {
+export interface DiagramData {
+  labels: string[];
+  datasets: DiagramDataset[];
+}
+
+export interface DiagramDataset {
+  label: string;
+  data: number[];
+}
+
+export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): DiagramData => {
   const { start, end, step, transformProblem } = params;
 
   const valuesCount = Math.floor((end - start) / step);
@@ -39,39 +48,10 @@ export const getExperimentSolutions = (sourceProblem: Problem, params: Experimen
 
   const labels = Array.from(new Set(solutions.map((solution) => Object.keys(solution)).flat()));
 
-  const datasets = labels.map((label) => ({
+  const datasets: DiagramDataset[] = labels.map((label) => ({
     label,
     data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
   }));
 
   return { labels: paramValues.map(String), datasets };
 };
-
-export const getFactoryTransformProblem =
-  (factoryIndex: number): TransformProblem =>
-  (problem: Problem, value: number) => {
-    return update(problem, { b: { [factoryIndex]: { $set: value } } });
-  };
-
-export const getProductTransformProblem =
-  (productIndex: number): TransformProblem =>
-  (problem: Problem, value: number) => {
-    return update(problem, { p: { [productIndex]: { $set: value } } });
-  };
-
-export const getProductProductivityTransformProblem =
-  (productIndex: number): TransformProblem =>
-  (problem: Problem, factor: number) => {
-    return update(problem, { a: { [productIndex]: { $apply: (row: number[]) => row.map((item) => item * factor) } } });
-  };
-
-export const getFactoryProductivityTransformProblem =
-  (columnIndex: number): TransformProblem =>
-  (problem: Problem, factor: number) => {
-    return update(problem, {
-      a: {
-        $apply: (rows: number[][]) =>
-          rows.map((row) => row.map((item, index) => (index === columnIndex ? item * factor : item))),
-      },
-    });
-  };
