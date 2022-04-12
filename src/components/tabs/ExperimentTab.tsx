@@ -35,24 +35,30 @@ export const options = {
 export const ExperimentTab: React.FC = () => {
   const problem = useSelector(selectProblem);
 
-  const diagramData: ChartData<"line", number[], string> = React.useMemo(() => {
-    const { labels, datasets } = getExperimentSolutions(problem, {
-      start: 0.5,
-      end: 1.5,
-      step: 0.1,
-      transformProblem: getFactoryProductivityTransformProblem(4),
-      paramToLabelMapper: (value: number) => `${Math.round(value * 100)}%`,
-      showX: false,
-    });
+  const experimentData = React.useMemo(
+    () =>
+      getExperimentSolutions(problem, {
+        start: 0.5,
+        end: 1.5,
+        step: 0.1,
+        transformProblem: getFactoryProductivityTransformProblem(4),
+        paramToLabelMapper: (value: number) => `${Math.round(value * 100)}%`,
+        showX: false,
+      }),
+    [problem]
+  );
+
+  const chartData: ChartData<"line", number[], string> = React.useMemo(() => {
+    const { labels, datasets } = experimentData;
     return {
       labels,
       datasets: datasets.map((dataset) => ({ ...dataset, ...getRandomColorProps() })),
     };
-  }, [problem]);
+  }, [experimentData]);
 
   return (
     <div>
-      <Line options={options} data={diagramData} />
+      <Line options={options} data={chartData} />
     </div>
   );
 };

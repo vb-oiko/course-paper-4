@@ -22,17 +22,17 @@ export interface ExperimentParams {
   showX?: boolean;
 }
 
-export interface DiagramData {
+export interface ExperimentData {
   labels: string[];
-  datasets: DiagramDataset[];
+  datasets: ExperimentDataset[];
 }
 
-export interface DiagramDataset {
+export interface ExperimentDataset {
   label: string;
   data: number[];
 }
 
-export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): DiagramData => {
+export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): ExperimentData => {
   const {
     start,
     end,
@@ -57,7 +57,7 @@ export const getExperimentSolutions = (sourceProblem: Problem, params: Experimen
 
   const labels = Array.from(new Set(solutions.map((solution) => Object.keys(solution)).flat()));
 
-  const datasets: DiagramDataset[] = labels
+  const datasets: ExperimentDataset[] = labels
     .map((label) => ({
       label,
       data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
