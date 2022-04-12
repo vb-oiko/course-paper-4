@@ -65,3 +65,15 @@ export const getTerm = (isFirstTerm: boolean, varName: string, value: number) =>
 export const getSign = (value: number) => `${Math.sign(value) === 1 ? "+" : "-"}`;
 
 export const getCoefficient = (value: number) => `${Math.abs(value) === 1 ? "" : Math.abs(value)}`;
+
+const randomColorNum = () => Math.floor(Math.random() * (235 - 52 + 1) + 52);
+
+export const getRandomColorProps = () => {
+  const r = randomColorNum();
+  const g = randomColorNum();
+  const b = randomColorNum();
+  const backgroundColor = `rgba(${r}, ${g}, ${b}, 0.75)`;
+  const borderColor = `rgba(${r}, ${g}, ${b}, 1)`;
+
+  return { backgroundColor, borderColor };
+};

@@ -12,8 +12,10 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { getRandomColorProps } from "../../core/utils";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -33,13 +35,18 @@ export const options = {
 export const ExperimentTab: React.FC = () => {
   const problem = useSelector(selectProblem);
 
-  const diagramData = React.useMemo(() => {
-    return getExperimentSolutions(problem, {
+  const diagramData: ChartData<"line", number[], string> = React.useMemo(() => {
+    const { labels, datasets } = getExperimentSolutions(problem, {
       start: 0.5,
       end: 1.5,
       step: 0.1,
       transformProblem: getFactoryProductivityTransformProblem(4),
+      paramToLabelMapper: (value: number) => `${Math.round(value * 100)}%`,
     });
+    return {
+      labels,
+      datasets: datasets.map((dataset) => ({ ...dataset, ...getRandomColorProps() })),
+    };
   }, [problem]);
 
   return (

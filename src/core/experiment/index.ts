@@ -18,6 +18,7 @@ export interface ExperimentParams {
   end: number;
   step: number;
   transformProblem: TransformProblem;
+  paramToLabelMapper?: (value: number) => string;
 }
 
 export interface DiagramData {
@@ -31,7 +32,7 @@ export interface DiagramDataset {
 }
 
 export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): DiagramData => {
-  const { start, end, step, transformProblem } = params;
+  const { start, end, step, transformProblem, paramToLabelMapper = (value: number) => `${value}` } = params;
 
   const valuesCount = Math.floor((end - start) / step);
   if (valuesCount < 0) {
@@ -53,5 +54,5 @@ export const getExperimentSolutions = (sourceProblem: Problem, params: Experimen
     data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
   }));
 
-  return { labels: paramValues.map(String), datasets };
+  return { labels: paramValues.map(paramToLabelMapper), datasets };
 };
