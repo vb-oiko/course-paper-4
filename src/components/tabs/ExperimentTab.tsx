@@ -42,6 +42,7 @@ export const ExperimentTab: React.FC = () => {
       step: 0.1,
       transformProblem: getFactoryProductivityTransformProblem(4),
       paramToLabelMapper: (value: number) => `${Math.round(value * 100)}%`,
+      showX: false,
     });
     return {
       labels,
