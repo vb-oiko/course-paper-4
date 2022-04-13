@@ -11,11 +11,6 @@ const tableClasses = "border border-gray-900 py-0.5 px-1 text-center";
 export const ExperimentTable: React.FC<ExperimentTableProps> = ({ experimentData, className }) => {
   const { labels, datasets } = experimentData;
 
-  const sortedDatasets = React.useMemo(
-    () => datasets.sort((datasetA, datasetB) => (datasetA.label < datasetB.label ? -1 : 1)),
-    [datasets]
-  );
-
   return (
     <table className={`border-collapse ${className}`}>
       <thead>
@@ -27,7 +22,7 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({ experimentData
         </tr>
       </thead>
       <tbody>
-        {sortedDatasets.map((dataset) => (
+        {datasets.map((dataset) => (
           <tr>
             <td className={tableClasses}>{dataset.label}</td>
             {dataset.data.map((item) => (

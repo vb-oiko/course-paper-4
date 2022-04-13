@@ -62,7 +62,8 @@ export const getExperimentSolutions = (sourceProblem: Problem, params: Experimen
       label,
       data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
     }))
-    .filter((diagramSet) => diagramSet.label !== "x" || showX);
+    .filter((diagramSet) => diagramSet.label !== "x" || showX)
+    .sort((datasetA, datasetB) => (datasetA.label < datasetB.label ? -1 : 1));
 
   return { labels: paramValues.map(paramToLabelMapper), datasets };
 };
