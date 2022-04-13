@@ -17,16 +17,22 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({ experimentData
         <tr>
           <th className={tableClasses}></th>
           {labels.map((label) => (
-            <th className={tableClasses}>{label}</th>
+            <th key={label} className={tableClasses}>
+              {label}
+            </th>
           ))}
         </tr>
       </thead>
       <tbody>
         {datasets.map((dataset) => (
-          <tr>
-            <td className={tableClasses}>{dataset.label}</td>
-            {dataset.data.map((item) => (
-              <td className={tableClasses}>{item}</td>
+          <tr key={dataset.label}>
+            <td key={`cell-${dataset.label}-header`} className={tableClasses}>
+              {dataset.label}
+            </td>
+            {dataset.data.map((item, index) => (
+              <td key={`cell-${dataset.label}-${index}-${item}`} className={tableClasses}>
+                {item}
+              </td>
             ))}
           </tr>
         ))}
