@@ -19,7 +19,6 @@ export interface ExperimentParams {
   step: number;
   transformProblem: TransformProblem;
   paramToLabelMapper?: (value: number) => string;
-  showX?: boolean;
 }
 
 export interface ExperimentData {
@@ -33,14 +32,7 @@ export interface ExperimentDataset {
 }
 
 export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): ExperimentData => {
-  const {
-    start,
-    end,
-    step,
-    transformProblem,
-    paramToLabelMapper = (value: number) => `${value}`,
-    showX = false,
-  } = params;
+  const { start, end, step, transformProblem, paramToLabelMapper = (value: number) => `${value}` } = params;
 
   const valuesCount = Math.floor((end - start) / step);
   if (valuesCount < 0) {
@@ -62,7 +54,6 @@ export const getExperimentSolutions = (sourceProblem: Problem, params: Experimen
       label,
       data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
     }))
-    .filter((diagramSet) => diagramSet.label !== "x" || showX)
     .sort((datasetA, datasetB) => (datasetA.label < datasetB.label ? -1 : 1));
 
   return { labels: paramValues.map(paramToLabelMapper), datasets };

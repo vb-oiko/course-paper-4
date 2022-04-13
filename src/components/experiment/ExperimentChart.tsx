@@ -48,5 +48,15 @@ export const ExperimentChart: React.FC<ExperimentChartProps> = ({ experimentData
       datasets: datasets.map((dataset) => ({ ...dataset, ...getRandomColorProps() })),
     };
   }, [experimentData]);
-  return <Line options={options} data={chartData} className={className} />;
+
+  const chartRef = React.useRef<any>(null);
+
+  React.useEffect(() => {
+    if (chartRef.current) {
+      chartRef.current.getDatasetMeta(0).hidden = true;
+      chartRef.current.update();
+    }
+  }, []);
+
+  return <Line options={options} data={chartData} className={className} ref={chartRef} />;
 };
