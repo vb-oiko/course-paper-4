@@ -14,9 +14,13 @@ export const ExperimentTab: React.FC = () => {
     return experimentParams && getExperimentSolutions(problem, experimentParams);
   }, [experimentParams, problem]);
 
+  const handleExperimentParamsChange = React.useCallback((experimentParams: ExperimentParams) => {
+    setExperimentParams(experimentParams);
+  }, []);
+
   return (
     <div className="mb-4">
-      <ExperimentSelect onChange={setExperimentParams} />
+      <ExperimentSelect onChange={handleExperimentParamsChange} />
       {experimentData && (
         <div className="mt-4">
           <ExperimentChart experimentData={experimentData} />

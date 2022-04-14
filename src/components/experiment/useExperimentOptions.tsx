@@ -20,8 +20,14 @@ const productTypeOptions: ExperimentParamOptions[] = [
   { value: 2, label: "Виріб 3-го типу" },
 ];
 
+export const percentLabelMapper = (value: number) => `${Math.round(value * 100)}%`;
+
 const experimentOptions: ExperimentOptions[] = [
-  { value: 0, label: "Зміна продуктивності підприємств визначеного типу", paramOptions: factoryTypeOptions },
+  {
+    value: 0,
+    label: "Зміна продуктивності підприємств визначеного типу",
+    paramOptions: factoryTypeOptions,
+  },
   {
     value: 1,
     label: "Зміна продуктивності при виробництві продукту зазначеного типу",

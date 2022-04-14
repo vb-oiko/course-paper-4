@@ -22,7 +22,7 @@ export const ExperimentSelect: React.FC<ExperimentSelectProps> = ({ className, o
 
   React.useEffect(() => {
     onChange(initialParams);
-  });
+  }, []);
 
   const [experimentIndex, setExperimentIndex] = React.useState(0);
   const [paramIndex, setParamIndex] = React.useState(0);
