@@ -1,26 +1,27 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { ExperimentParams, getExperimentSolutions } from "../../core/experiment";
+import { ExperimentData, ExperimentParams, getExperimentSolutions } from "../../core/experiment";
 import { selectProblem } from "../../rdx/selectors";
 import { ExperimentChart } from "../experiment/ExperimentChart";
 import { ExperimentSelect } from "../experiment/ExperimentSelect";
 import { ExperimentTable } from "../experiment/ExperimentTable";
+import { useExperimentState } from "../experiment/useExperimentState";
 
 export const ExperimentTab: React.FC = () => {
   const problem = useSelector(selectProblem);
-  const [experimentParams, setExperimentParams] = React.useState<ExperimentParams>();
+  const { selectExperimentParams, state } = useExperimentState();
 
-  const experimentData = React.useMemo(() => {
-    return experimentParams && getExperimentSolutions(problem, experimentParams);
-  }, [experimentParams, problem]);
+  const [experimentData, setExperimentData] = React.useState<ExperimentData>();
 
-  const handleExperimentParamsChange = React.useCallback((experimentParams: ExperimentParams) => {
-    setExperimentParams(experimentParams);
-  }, []);
+  React.useEffect(() => {
+    console.warn(state);
+
+    setExperimentData(getExperimentSolutions(problem, selectExperimentParams()));
+  }, [selectExperimentParams, problem, state, state.experimentIndex, state.paramIndex]);
 
   return (
     <div className="mb-4">
-      <ExperimentSelect onChange={handleExperimentParamsChange} />
+      <ExperimentSelect />
       {experimentData && (
         <div className="mt-4">
           <ExperimentChart experimentData={experimentData} />

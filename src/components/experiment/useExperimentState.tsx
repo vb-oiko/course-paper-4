@@ -40,17 +40,15 @@ export const useExperimentState = () => {
     return EXPERIMENT_OPTIONS[state.experimentIndex].paramOptions;
   }, [state.experimentIndex]);
 
-  const selectExperimentParams = (): ExperimentParams => {
-    return {
-      start: 0.5,
-      end: 1.5,
-      step: 0.1,
-      transformProblem: getFactoryProductivityTransformProblem(0),
-      paramToLabelMapper: (value: number) => `${Math.round(value * 100)}%`,
-    };
-  };
+  const selectExperimentParams = React.useCallback((): ExperimentParams => {
+    const experiment = EXPERIMENT_OPTIONS[state.experimentIndex];
 
-  console.warn(state);
+    return {
+      ...experiment.paramRange,
+      transformProblem: experiment.problemTransformer(state.paramIndex),
+      paramToLabelMapper: experiment.paramToLabelMapper,
+    };
+  }, [state.experimentIndex, state.paramIndex]);
 
   return { state, setExperimentIndex, setParamIndex, selectExperimentParams, selectParamOptions };
 };
