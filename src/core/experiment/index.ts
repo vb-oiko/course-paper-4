@@ -13,12 +13,13 @@ export interface Dataset {
 
 export type TransformProblem = (problem: Problem, param: number) => Problem;
 
+export type LabelMapper = (value: number) => string;
 export interface ExperimentParams {
   start: number;
   end: number;
   step: number;
   transformProblem: TransformProblem;
-  paramToLabelMapper?: (value: number) => string;
+  paramToLabelMapper?: LabelMapper;
 }
 
 export interface ExperimentData {

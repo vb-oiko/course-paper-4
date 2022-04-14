@@ -2,7 +2,8 @@ import React from "react";
 import { ExperimentParams } from "../../core/experiment";
 import { getFactoryProductivityTransformProblem } from "../../core/experiment/problemTransformers";
 import { SelectInput } from "../UI/SelectInput";
-import { useExperimentOptions } from "./useExperimentOptions";
+import { experimentOptions } from "./useExperimentOptions";
+import { useExperimentState } from "./useExperimentState";
 
 export interface ExperimentSelectProps {
   onChange: (experimentParams: ExperimentParams) => void;
@@ -18,34 +19,18 @@ const initialParams = {
 };
 
 export const ExperimentSelect: React.FC<ExperimentSelectProps> = ({ className, onChange }) => {
-  const { experimentOptions } = useExperimentOptions();
+  const { state, setExperimentIndex, setParamIndex, selectParamOptions } = useExperimentState();
 
   React.useEffect(() => {
     onChange(initialParams);
   }, []);
 
-  const [experimentIndex, setExperimentIndex] = React.useState(0);
-  const [paramIndex, setParamIndex] = React.useState(0);
-
-  const handleExperimentIndexChange = React.useCallback((newValue: number) => {
-    setExperimentIndex(newValue);
-    setParamIndex(0);
-  }, []);
-
-  const handleParamIndexChange = React.useCallback((newValue: number) => {
-    setParamIndex(newValue);
-  }, []);
+  const paramOptions = selectParamOptions();
 
   return (
     <div className={`grid grid-cols-2 gap-2 ${className}`}>
-      <SelectInput value={experimentIndex} onChange={handleExperimentIndexChange} options={experimentOptions} />
-      {experimentOptions[experimentIndex].paramOptions && (
-        <SelectInput
-          value={paramIndex}
-          onChange={handleParamIndexChange}
-          options={experimentOptions[experimentIndex].paramOptions!}
-        />
-      )}
+      <SelectInput value={state.experimentIndex} onChange={setExperimentIndex} options={experimentOptions} />
+      {paramOptions && <SelectInput value={state.paramIndex} onChange={setParamIndex} options={paramOptions!} />}
     </div>
   );
 };
