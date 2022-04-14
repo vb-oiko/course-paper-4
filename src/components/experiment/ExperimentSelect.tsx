@@ -2,7 +2,7 @@ import React from "react";
 import { ExperimentParams } from "../../core/experiment";
 import { getFactoryProductivityTransformProblem } from "../../core/experiment/problemTransformers";
 import { SelectInput } from "../UI/SelectInput";
-import { experimentOptions } from "./useExperimentOptions";
+import { EXPERIMENT_OPTIONS } from "./experimentOptions";
 import { useExperimentState } from "./useExperimentState";
 
 export interface ExperimentSelectProps {
@@ -29,7 +29,7 @@ export const ExperimentSelect: React.FC<ExperimentSelectProps> = ({ className, o
 
   return (
     <div className={`grid grid-cols-2 gap-2 ${className}`}>
-      <SelectInput value={state.experimentIndex} onChange={setExperimentIndex} options={experimentOptions} />
+      <SelectInput value={state.experimentIndex} onChange={setExperimentIndex} options={EXPERIMENT_OPTIONS} />
       {paramOptions && <SelectInput value={state.paramIndex} onChange={setParamIndex} options={paramOptions!} />}
     </div>
   );

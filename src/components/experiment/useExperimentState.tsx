@@ -1,7 +1,7 @@
 import React from "react";
 import { ExperimentParams } from "../../core/experiment";
 import { getFactoryProductivityTransformProblem } from "../../core/experiment/problemTransformers";
-import { experimentOptions } from "./useExperimentOptions";
+import { EXPERIMENT_OPTIONS } from "./experimentOptions";
 
 export interface ExperimentState {
   experimentIndex: number;
@@ -37,7 +37,7 @@ export const useExperimentState = () => {
     [state]
   );
   const selectParamOptions = React.useCallback(() => {
-    return experimentOptions[state.experimentIndex].paramOptions;
+    return EXPERIMENT_OPTIONS[state.experimentIndex].paramOptions;
   }, [state.experimentIndex]);
 
   const selectExperimentParams = (): ExperimentParams => {
