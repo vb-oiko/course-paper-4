@@ -7,9 +7,16 @@ import { Reducer } from "@reduxjs/toolkit";
 export interface AppState {
   problem: Problem;
   alpha: number;
+  experimentIndex: number;
+  paramIndex: number;
 }
 
-export const initialState: AppState = { problem: defaultProblem, alpha: defaultAlphaZero };
+export const initialState: AppState = {
+  problem: defaultProblem,
+  alpha: defaultAlphaZero,
+  experimentIndex: 0,
+  paramIndex: 0,
+};
 
 export const reducer: Reducer<AppState, AppAction> = (state: AppState | undefined, action: AppAction): AppState => {
   if (!state) {
@@ -31,6 +38,15 @@ export const reducer: Reducer<AppState, AppAction> = (state: AppState | undefine
     case "CHANGE_ALPHA":
       return update(state, {
         alpha: { $set: action.payload.value },
+      });
+    case "SET_EXPERIMENT_INDEX":
+      return update(state, {
+        experimentIndex: { $set: action.payload.experimentIndex },
+        paramIndex: { $set: 0 },
+      });
+    case "SET_PARAM_INDEX":
+      return update(state, {
+        paramIndex: { $set: action.payload.paramIndex },
       });
     case "RESET_PROBLEM":
       return initialState;

@@ -1,4 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { EXPERIMENT_OPTIONS } from "../components/experiment/experimentOptions";
+import { getExperimentSolutions } from "../core/experiment";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import {
   getLatexFromAlphaLevelProblem,
@@ -40,4 +42,26 @@ export const selectOptimistBranchAndBoundSolution = createSelector(
 export const selectPessimistBranchAndBoundSolution = createSelector(
   [selectProblem, selectLowerBoundAlpha],
   (problem, alpha) => solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, alpha)))
+);
+
+export const selectExperimentIndex = (state: AppState) => state.experimentIndex;
+
+export const selectParamIndex = (state: AppState) => state.paramIndex;
+
+export const selectParamOptions = createSelector(
+  selectExperimentIndex,
+  (experimentIndex) => EXPERIMENT_OPTIONS[experimentIndex].paramOptions
+);
+
+export const selectExperimentData = createSelector(
+  [selectExperimentIndex, selectParamIndex, selectProblem],
+  (experimentIndex, paramIndex, problem) => {
+    const experiment = EXPERIMENT_OPTIONS[experimentIndex];
+
+    return getExperimentSolutions(problem, {
+      ...experiment.paramRange,
+      transformProblem: experiment.problemTransformer(paramIndex),
+      paramToLabelMapper: experiment.paramToLabelMapper,
+    });
+  }
 );
