@@ -1,3 +1,4 @@
+import { ParamRange } from "../../components/experiment/experimentOptions";
 import { solveByBranchAndBoundMethod } from "../methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import { getTableauFromProblem, Problem } from "../Problem";
 
@@ -32,30 +33,36 @@ export interface ExperimentDataset {
   data: number[];
 }
 
-export const getExperimentSolutions = (sourceProblem: Problem, params: ExperimentParams): ExperimentData => {
-  const { start, end, step, transformProblem, paramToLabelMapper = (value: number) => `${value}` } = params;
+export const getParamValues = (paramRange: ParamRange): number[] => {
+  const { start, end, step } = paramRange;
 
   const valuesCount = Math.floor((end - start) / step);
   if (valuesCount < 0) {
     throw new Error("Wrong experiment params");
   }
 
-  const paramValues = new Array(valuesCount + 1).fill(null).map((_, idx) => start + idx * step);
+  return new Array(valuesCount + 1).fill(null).map((_, idx) => start + idx * step);
+};
 
-  const problems = paramValues.map((param) => transformProblem(sourceProblem, param));
+export const getExperimentProblems = (
+  sourceProblem: Problem,
+  paramValues: number[],
+  transformProblem: TransformProblem
+): Problem[] => {
+  return paramValues.map((param) => transformProblem(sourceProblem, param));
+};
 
+export const getExperimentSolutions = (problems: Problem[]): ExperimentDataset[] => {
   const solutions = problems
     .map((problem) => solveByBranchAndBoundMethod(getTableauFromProblem(problem)))
     .map((solution) => solution.solution);
 
   const labels = Array.from(new Set(solutions.map((solution) => Object.keys(solution)).flat()));
 
-  const datasets: ExperimentDataset[] = labels
+  return labels
     .map((label) => ({
       label,
       data: solutions.map((solution) => (solution[label] ? solution[label] : 0)),
     }))
     .sort((datasetA, datasetB) => (datasetA.label < datasetB.label ? -1 : 1));
-
-  return { labels: paramValues.map(paramToLabelMapper), datasets };
 };

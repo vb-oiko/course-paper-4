@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { EXPERIMENT_OPTIONS } from "../components/experiment/experimentOptions";
-import { getExperimentSolutions } from "../core/experiment";
+import { getExperimentProblems, getExperimentSolutions, getParamValues } from "../core/experiment";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import {
   getLatexFromAlphaLevelProblem,
@@ -53,15 +53,35 @@ export const selectParamOptions = createSelector(
   (experimentIndex) => EXPERIMENT_OPTIONS[experimentIndex].paramOptions
 );
 
-export const selectExperimentData = createSelector(
-  [selectExperimentIndex, selectParamIndex, selectProblem],
-  (experimentIndex, paramIndex, problem) => {
-    const experiment = EXPERIMENT_OPTIONS[experimentIndex];
+export const selectExperiment = createSelector([selectExperimentIndex], (experimentIndex) => {
+  return EXPERIMENT_OPTIONS[experimentIndex];
+});
 
-    return getExperimentSolutions(problem, {
-      ...experiment.paramRange,
-      transformProblem: experiment.problemTransformer(paramIndex),
-      paramToLabelMapper: experiment.paramToLabelMapper,
-    });
+export const selectParamValues = createSelector([selectExperiment], (experiment) => {
+  return getParamValues(experiment.paramRange);
+});
+
+export const selectExperimentProblems = createSelector(
+  [selectExperiment, selectParamValues, selectProblem, selectParamIndex],
+  (experiment, paramValues, problem, paramIndex) => {
+    return getExperimentProblems(problem, paramValues, experiment.problemTransformer(paramIndex));
+  }
+);
+
+export const selectExperimentDatasets = createSelector([selectExperimentProblems], (problems) => {
+  return getExperimentSolutions(problems);
+});
+
+export const selectExperimentLabels = createSelector(
+  [selectExperiment, selectParamValues],
+  (experiment, paramValues) => {
+    return paramValues.map(experiment.paramToLabelMapper);
+  }
+);
+
+export const selectExperimentData = createSelector(
+  [selectExperimentLabels, selectExperimentDatasets],
+  (labels, datasets) => {
+    return { labels, datasets };
   }
 );
