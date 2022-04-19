@@ -12,13 +12,13 @@ export const ExperimentTab: React.FC = () => {
   return (
     <div className="mb-4">
       <ExperimentSelect />
+      {sourceData && <ExperimentTable experimentData={sourceData} className="mt-8 w-full" />}
       {experimentData && (
         <div className="mt-4">
+          <ExperimentTable experimentData={experimentData} className="my-8 w-full" />
           <ExperimentChart experimentData={experimentData} />
-          <ExperimentTable experimentData={experimentData} className="mt-8 w-full" />
         </div>
       )}
-      {sourceData && <ExperimentTable experimentData={sourceData} className="mt-8 w-full" />}
     </div>
   );
 };

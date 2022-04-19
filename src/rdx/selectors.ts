@@ -90,13 +90,12 @@ export const selectExperimentSourceData = createSelector(
   [selectExperimentProblems, selectExperiment, selectParamIndex, selectExperimentLabels],
   (problems, experiment, paramIndex, labels) => {
     const { type } = experiment;
-    if (type === "factory") {
+    if (type === "factory_productivity") {
       const data = problems.map((problemItem) => {
         return problemItem.a.map((row) => row[paramIndex]);
       });
-      const b = paramIndex + 1;
       const datasets = data[0].map((col, i) => ({
-        label: `a_{${b}${i + 1}}`,
+        label: `a_{${i + 1}${paramIndex + 1}}`,
         data: data.map((row) => Math.round(row[i])),
       }));
       return { labels, datasets };
