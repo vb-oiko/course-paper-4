@@ -100,5 +100,45 @@ export const selectExperimentSourceData = createSelector(
       }));
       return { labels, datasets };
     }
+
+    if (type === "product_productivity") {
+      const data = problems.map((problemItem) => {
+        return problemItem.a[paramIndex];
+      });
+
+      const datasets = data[0].map((col, i) => ({
+        label: `a_{${paramIndex + 1}${i + 1}}`,
+        data: data.map((row) => Math.round(row[i])),
+      }));
+      return { labels, datasets };
+    }
+
+    if (type === "product_set") {
+      const data = problems.map((problemItem) => {
+        return problemItem.p[paramIndex];
+      });
+
+      const datasets = [
+        {
+          label: `p_{${paramIndex + 1}}`,
+          data,
+        },
+      ];
+      return { labels, datasets };
+    }
+
+    if (type === "factory_number") {
+      const data = problems.map((problemItem) => {
+        return problemItem.b[paramIndex];
+      });
+
+      const datasets = [
+        {
+          label: `b_{${paramIndex + 1}}`,
+          data,
+        },
+      ];
+      return { labels, datasets };
+    }
   }
 );
