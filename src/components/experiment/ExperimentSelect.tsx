@@ -31,8 +31,20 @@ export const ExperimentSelect: React.FC<ExperimentSelectProps> = ({ className })
 
   return (
     <div className={`grid grid-cols-2 gap-2 ${className}`}>
-      <SelectInput value={experimentIndex} onChange={handleExperimentIndexChange} options={EXPERIMENT_OPTIONS} />
-      {paramOptions && <SelectInput value={paramIndex} onChange={handleParamIndexChange} options={paramOptions!} />}
+      <SelectInput
+        label="Експеримент"
+        value={experimentIndex}
+        onChange={handleExperimentIndexChange}
+        options={EXPERIMENT_OPTIONS}
+      />
+      {paramOptions && (
+        <SelectInput
+          label="Параметр, що змінюється"
+          value={paramIndex}
+          onChange={handleParamIndexChange}
+          options={paramOptions!}
+        />
+      )}
     </div>
   );
 };

@@ -112,33 +112,14 @@ export const selectExperimentSourceData = createSelector(
       }));
       return { labels, datasets };
     }
-
-    if (type === "product_set") {
-      const data = problems.map((problemItem) => {
-        return problemItem.p[paramIndex];
-      });
-
-      const datasets = [
-        {
-          label: `p_{${paramIndex + 1}}`,
-          data,
-        },
-      ];
-      return { labels, datasets };
-    }
-
-    if (type === "factory_number") {
-      const data = problems.map((problemItem) => {
-        return problemItem.b[paramIndex];
-      });
-
-      const datasets = [
-        {
-          label: `b_{${paramIndex + 1}}`,
-          data,
-        },
-      ];
-      return { labels, datasets };
-    }
   }
 );
+
+export const selectResultHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
+  const { type } = experiment;
+  if (type === "product_set") {
+    return `зміни значень розв'язку задачі в залежності від зміни кількості виробів ${
+      paramIndex + 1
+    }-го типу у комплекті `;
+  }
+});
