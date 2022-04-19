@@ -15,13 +15,6 @@ export interface Dataset {
 export type TransformProblem = (problem: Problem, param: number) => Problem;
 
 export type LabelMapper = (value: number) => string;
-export interface ExperimentParams {
-  start: number;
-  end: number;
-  step: number;
-  transformProblem: TransformProblem;
-  paramToLabelMapper?: LabelMapper;
-}
 
 export interface ExperimentData {
   labels: string[];

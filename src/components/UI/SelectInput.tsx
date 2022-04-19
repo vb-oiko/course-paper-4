@@ -15,7 +15,7 @@ export interface SelectOption {
 export const SelectInput: React.FC<SelectInputProps> = ({ value, onChange, options, label }) => {
   const handleInput = React.useCallback(
     (e: any) => {
-      const newValue = e.target.value as number;
+      const newValue = Number(e.target.value);
       onChange(newValue);
     },
     [onChange]

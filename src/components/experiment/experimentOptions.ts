@@ -7,11 +7,14 @@ import {
 } from "../../core/experiment/problemTransformers";
 import { SelectOption } from "../UI/SelectInput";
 
+export type ExperimentType = "factory" | "product";
+
 export interface ExperimentOption extends SelectOption {
   paramOptions?: ExperimentParamOptions[];
   problemTransformer: (indexValue: number) => TransformProblem;
   paramToLabelMapper: LabelMapper;
   paramRange: ParamRange;
+  type: ExperimentType;
 }
 
 export interface ParamRange {
@@ -65,6 +68,7 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     problemTransformer: getFactoryProductivityTransformProblem,
     paramToLabelMapper: percentLabelMapper,
     paramRange: MULTIPLIER_PARAM_RANGE,
+    type: "factory",
   },
   {
     value: 1,
@@ -73,6 +77,7 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     problemTransformer: getProductProductivityTransformProblem,
     paramToLabelMapper: percentLabelMapper,
     paramRange: MULTIPLIER_PARAM_RANGE,
+    type: "product",
   },
   {
     value: 2,
@@ -81,6 +86,7 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     problemTransformer: getProductTransformProblem,
     paramToLabelMapper: defaultLabelMapper,
     paramRange: PRODUCT_PARAM_RANGE,
+    type: "product",
   },
   {
     value: 3,
@@ -89,6 +95,7 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     problemTransformer: getFactoryTransformProblem,
     paramToLabelMapper: defaultLabelMapper,
     paramRange: FACTORY_PARAM_RANGE,
+    type: "factory",
   },
   // { value: 4, label: "Зміна ступеню недомінованості", problemTransformer: getFactoryTransformProblem },
 ];

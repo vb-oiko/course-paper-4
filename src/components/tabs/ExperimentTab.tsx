@@ -1,12 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectExperimentData } from "../../rdx/selectors";
+import { selectExperimentData, selectExperimentSourceData } from "../../rdx/selectors";
 import { ExperimentChart } from "../experiment/ExperimentChart";
 import { ExperimentSelect } from "../experiment/ExperimentSelect";
 import { ExperimentTable } from "../experiment/ExperimentTable";
 
 export const ExperimentTab: React.FC = () => {
   const experimentData = useSelector(selectExperimentData);
+  const sourceData = useSelector(selectExperimentSourceData);
 
   return (
     <div className="mb-4">
@@ -17,6 +18,7 @@ export const ExperimentTab: React.FC = () => {
           <ExperimentTable experimentData={experimentData} className="mt-8 w-full" />
         </div>
       )}
+      {sourceData && <ExperimentTable experimentData={sourceData} className="mt-8 w-full" />}
     </div>
   );
 };
