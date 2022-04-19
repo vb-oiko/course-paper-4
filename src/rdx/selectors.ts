@@ -117,9 +117,44 @@ export const selectExperimentSourceData = createSelector(
 
 export const selectResultHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
   const { type } = experiment;
+
   if (type === "product_set") {
-    return `зміни значень розв'язку задачі в залежності від зміни кількості виробів ${
+    return `змін значень розв'язку задачі в залежності від зміни кількості виробів ${
       paramIndex + 1
     }-го типу у комплекті `;
+  }
+
+  if (type === "factory_number") {
+    return `змін значень розв'язку задачі в залежності від зміни загальної кількості підприємств ${
+      paramIndex + 1
+    }-го типу `;
+  }
+
+  if (type === "factory_productivity") {
+    return `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) на підприємствах ${
+      paramIndex + 1
+    }-го типу для усіх продуктів`;
+  }
+
+  if (type === "product_productivity") {
+    return `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) при виробництві ${
+      paramIndex + 1
+    }-го виробу на підприємствах усіх типів`;
+  }
+});
+
+export const selectSourceHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
+  const { type } = experiment;
+
+  if (type === "factory_productivity") {
+    return `Таблиця вихідних значень експерименту при зміні продуктивності виробництва на підприємствах ${
+      paramIndex + 1
+    }-го типу для усіх типів продуктів у відсотках від початкових значень`;
+  }
+
+  if (type === "product_productivity") {
+    return `Таблиця вихідних значень експерименту при зміні продуктивності виробництва ${
+      paramIndex + 1
+    }-го виробу на підприємствах усіх типів у відсотках від початкових значень`;
   }
 });
