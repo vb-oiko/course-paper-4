@@ -34,7 +34,7 @@ export const getParamValues = (paramRange: ParamRange): number[] => {
     throw new Error("Wrong experiment params");
   }
 
-  return new Array(valuesCount + 1).fill(null).map((_, idx) => start + idx * step);
+  return new Array(valuesCount + 1).fill(null).map((_, idx) => Math.round((start + idx * step) * 100) / 100);
 };
 
 export const getExperimentProblems = (

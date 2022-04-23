@@ -10,15 +10,18 @@ import {
 } from "../core/Problem";
 import { AppState } from "./reducer";
 
+const getLowerBoundAlpha = (alpha: number) => 1 - Math.sqrt((1 - alpha) / alpha);
+const getUpperBoundAlpha = (alpha: number) => 1 + Math.sqrt((1 - alpha) / alpha);
+
 export const selectProblemLatex = (state: AppState) => getLatexFromProblem(state.problem);
 
 export const selectProblem = (state: AppState) => state.problem;
 
 export const selectAlpha = (state: AppState) => state.alpha;
 
-export const selectLowerBoundAlpha = (state: AppState) => 1 - Math.sqrt((1 - state.alpha) / state.alpha);
+export const selectLowerBoundAlpha = (state: AppState) => getLowerBoundAlpha(state.alpha);
 
-export const selectUpperBoundAlpha = (state: AppState) => 1 + Math.sqrt((1 - state.alpha) / state.alpha);
+export const selectUpperBoundAlpha = (state: AppState) => getUpperBoundAlpha(state.alpha);
 
 export const selectOptimistProblemLatex = createSelector(
   [selectProblem, selectUpperBoundAlpha],
@@ -36,12 +39,14 @@ export const selectCrispBranchAndBoundSolution = createSelector([selectProblem],
 
 export const selectOptimistBranchAndBoundSolution = createSelector(
   [selectProblem, selectUpperBoundAlpha],
-  (problem, alpha) => solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, alpha)))
+  (problem, upperAlphaBound) =>
+    solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, upperAlphaBound)))
 );
 
 export const selectPessimistBranchAndBoundSolution = createSelector(
   [selectProblem, selectLowerBoundAlpha],
-  (problem, alpha) => solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, alpha)))
+  (problem, lowerAlphaBound) =>
+    solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, lowerAlphaBound)))
 );
 
 export const selectExperimentIndex = (state: AppState) => state.experimentIndex;
@@ -80,8 +85,44 @@ export const selectExperimentLabels = createSelector(
 );
 
 export const selectExperimentData = createSelector(
-  [selectExperimentLabels, selectExperimentDatasets],
-  (labels, datasets) => {
+  [selectExperimentLabels, selectExperimentDatasets, selectExperiment, selectParamValues, selectProblem],
+  (labels, datasets, experiment, paramValues, problem) => {
+    const { type } = experiment;
+    if (type === "alpha") {
+      const optimistValues: number[] = [];
+      const pessimistValues: number[] = [];
+      const crispValues: number[] = [];
+
+      const {
+        solution: { x: crisp },
+      } = solveByBranchAndBoundMethod(getTableauFromProblem(problem));
+
+      paramValues.forEach((alpha) => {
+        const lowerAlphaBound = getLowerBoundAlpha(alpha);
+        const upperAlphaBound = getUpperBoundAlpha(alpha);
+
+        const {
+          solution: { x: lower },
+        } = solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, lowerAlphaBound)));
+
+        const {
+          solution: { x: upper },
+        } = solveByBranchAndBoundMethod(getTableauFromProblem(multiplyAMatrix(problem, upperAlphaBound)));
+        pessimistValues.push(lower);
+        optimistValues.push(upper);
+        crispValues.push(crisp);
+      });
+
+      return {
+        labels,
+        datasets: [
+          { label: "Задача оптиміста", data: optimistValues },
+          { label: "Чітка задача", data: crispValues },
+          { label: "Задача песиміста", data: pessimistValues },
+        ],
+      };
+    }
+
     return { labels, datasets };
   }
 );
