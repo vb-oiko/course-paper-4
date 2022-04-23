@@ -1,5 +1,6 @@
 import React from "react";
 import { ExperimentData } from "../../core/experiment";
+import { InlineLatex } from "../InlineLatex";
 
 export interface ExperimentTableProps {
   experimentData: ExperimentData;
@@ -32,7 +33,7 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
         {datasets.map((dataset) => (
           <tr key={dataset.label}>
             <td key={`cell-${dataset.label}-header`} className={tableClasses}>
-              {dataset.label}
+              <InlineLatex>{dataset.label}</InlineLatex>
             </td>
             {dataset.data.map((item, index) => (
               <td key={`cell-${dataset.label}-${index}-${item}`} className={tableClasses}>

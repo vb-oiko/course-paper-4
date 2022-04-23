@@ -22,3 +22,4 @@
 ### Charts
 
 - https://react-chartjs-2.netlify.app/
+- https://hankthemason.medium.com/using-chart-jss-legendcallback-and-generatelegend-with-react-hooks-4eb8a9f5ea4d
