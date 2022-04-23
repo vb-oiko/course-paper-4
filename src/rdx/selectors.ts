@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { EXPERIMENT_OPTIONS } from "../components/experiment/experimentOptions";
+import { ExperimentHeaders } from "../components/tabs/ExperimentTab";
 import { getExperimentProblems, getExperimentSolutions, getParamValues } from "../core/experiment";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
 import {
@@ -156,50 +157,67 @@ export const selectExperimentSourceData = createSelector(
   }
 );
 
-export const selectResultHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
-  const { type } = experiment;
+export const selectExperimentHeaders = createSelector(
+  [selectExperiment, selectParamIndex],
+  (experiment, paramIndex): ExperimentHeaders => {
+    const { type } = experiment;
 
-  if (type === "product_set") {
-    return `змін значень розв'язку задачі в залежності від зміни кількості виробів ${
-      paramIndex + 1
-    }-го типу у комплекті `;
+    if (type === "product_set") {
+      return {
+        resultHeader: `змін значень розв'язку задачі в залежності від зміни кількості виробів ${
+          paramIndex + 1
+        }-го типу у комплекті `,
+        sourceHeader: "",
+        cornerCell: `Кількість виробів ${paramIndex + 1}-го типу у комплекті`,
+      };
+    }
+
+    if (type === "factory_number") {
+      return {
+        resultHeader: `змін значень розв'язку задачі в залежності від зміни загальної кількості підприємств ${
+          paramIndex + 1
+        }-го типу `,
+        sourceHeader: "",
+        cornerCell: `Кількість підприємств ${paramIndex + 1}-го типу `,
+      };
+    }
+
+    if (type === "factory_productivity") {
+      return {
+        resultHeader: `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) на підприємствах ${
+          paramIndex + 1
+        }-го типу для усіх продуктів у відсотках від початкових значень`,
+        sourceHeader: `Таблиця вихідних значень експерименту при зміні продуктивності виробництва на підприємствах ${
+          paramIndex + 1
+        }-го типу для усіх типів продуктів у відсотках від початкових значень`,
+        cornerCell: `Відсоток зміни продуктивності на підприємствах ${paramIndex + 1}-го типу`,
+      };
+    }
+
+    if (type === "product_productivity") {
+      return {
+        resultHeader: `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) при виробництві ${
+          paramIndex + 1
+        }-го виробу на підприємствах усіх типів`,
+        sourceHeader: `Таблиця вихідних значень експерименту при зміні продуктивності виробництва ${
+          paramIndex + 1
+        }-го виробу на підприємствах усіх типів у відсотках від початкових значень`,
+        cornerCell: `Відсоток зміни продуктивності при виробництві виробу ${paramIndex + 1}-го типу`,
+      };
+    }
+
+    if (type === "alpha") {
+      return {
+        resultHeader: `змін значень розв'язку задачі оптиміста, чіткої задачі та задачі песиміста в залежності від зміни значення ступеню недомінованості`,
+        sourceHeader: "",
+        cornerCell: "Значення ступеню недомінованості",
+      };
+    }
+
+    return {
+      resultHeader: "",
+      sourceHeader: "",
+      cornerCell: "",
+    };
   }
-
-  if (type === "factory_number") {
-    return `змін значень розв'язку задачі в залежності від зміни загальної кількості підприємств ${
-      paramIndex + 1
-    }-го типу `;
-  }
-
-  if (type === "factory_productivity") {
-    return `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) на підприємствах ${
-      paramIndex + 1
-    }-го типу для усіх продуктів`;
-  }
-
-  if (type === "product_productivity") {
-    return `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) при виробництві ${
-      paramIndex + 1
-    }-го виробу на підприємствах усіх типів`;
-  }
-
-  if (type === "alpha") {
-    return `змін значень розв'язку задачі оптиміста, чіткої задачі та задачі песиміста в залежності від зміни значення ступеню недомінованості`;
-  }
-});
-
-export const selectSourceHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
-  const { type } = experiment;
-
-  if (type === "factory_productivity") {
-    return `Таблиця вихідних значень експерименту при зміні продуктивності виробництва на підприємствах ${
-      paramIndex + 1
-    }-го типу для усіх типів продуктів у відсотках від початкових значень`;
-  }
-
-  if (type === "product_productivity") {
-    return `Таблиця вихідних значень експерименту при зміні продуктивності виробництва ${
-      paramIndex + 1
-    }-го виробу на підприємствах усіх типів у відсотках від початкових значень`;
-  }
-});
+);
