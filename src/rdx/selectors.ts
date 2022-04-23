@@ -182,6 +182,10 @@ export const selectResultHeader = createSelector([selectExperiment, selectParamI
       paramIndex + 1
     }-го виробу на підприємствах усіх типів`;
   }
+
+  if (type === "alpha") {
+    return `змін значень розв'язку задачі оптиміста, чіткої задачі та задачі песиміста в залежності від зміни значення ступеню недомінованості`;
+  }
 });
 
 export const selectSourceHeader = createSelector([selectExperiment, selectParamIndex], (experiment, paramIndex) => {
