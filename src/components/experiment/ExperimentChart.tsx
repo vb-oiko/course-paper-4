@@ -53,10 +53,10 @@ export const ExperimentChart: React.FC<ExperimentChartProps> = ({ experimentData
 
   React.useEffect(() => {
     if (chartRef.current) {
-      chartRef.current.getDatasetMeta(0).hidden = true;
+      chartRef.current.getDatasetMeta(0).hidden = chartRef.current.getDatasetMeta(0).label === "x";
       chartRef.current.update();
     }
-  }, []);
+  }, [experimentData]);
 
   return <Line options={options} data={chartData} className={className} ref={chartRef} />;
 };
