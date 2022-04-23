@@ -5,6 +5,7 @@ import { InlineLatex } from "../InlineLatex";
 export interface ExperimentTableProps {
   experimentData: ExperimentData;
   className?: string;
+  headerClassName?: string;
   cornerCell?: string;
 }
 
@@ -14,6 +15,7 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
   experimentData,
   className,
   cornerCell,
+  headerClassName,
 }: ExperimentTableProps) => {
   const { labels, datasets } = experimentData;
 
@@ -23,7 +25,7 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
         <tr>
           <th className={`${tableClasses} w-48 px-4`}>{cornerCell}</th>
           {labels.map((label) => (
-            <th key={label} className={tableClasses}>
+            <th key={label} className={`${tableClasses} ${headerClassName}`}>
               {label}
             </th>
           ))}
