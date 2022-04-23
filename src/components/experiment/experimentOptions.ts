@@ -20,6 +20,13 @@ export interface ExperimentOption extends SelectOption {
   paramToLabelMapper: LabelMapper;
   paramRange: ParamRange;
   type: ExperimentType;
+  getHeaders: (paramIndex: number) => ExperimentHeaders;
+}
+
+export interface ExperimentHeaders {
+  resultHeader: string;
+  sourceHeader: string;
+  cornerCell: string;
 }
 
 export interface ParamRange {
@@ -80,6 +87,15 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     paramToLabelMapper: percentLabelMapper,
     paramRange: MULTIPLIER_PARAM_RANGE,
     type: "factory_productivity",
+    getHeaders: (paramIndex: number) => ({
+      resultHeader: `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) на підприємствах ${
+        paramIndex + 1
+      }-го типу для усіх продуктів у відсотках від початкових значень`,
+      sourceHeader: `Таблиця вихідних значень експерименту при зміні продуктивності виробництва на підприємствах ${
+        paramIndex + 1
+      }-го типу для усіх типів продуктів у відсотках від початкових значень`,
+      cornerCell: `Відсоток зміни продуктивності на підприємствах ${paramIndex + 1}-го типу`,
+    }),
   },
   {
     value: 1,
@@ -89,6 +105,15 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     paramToLabelMapper: percentLabelMapper,
     paramRange: MULTIPLIER_PARAM_RANGE,
     type: "product_productivity",
+    getHeaders: (paramIndex: number) => ({
+      resultHeader: `змін значень розв'язку задачі в залежності від зміни продуктивності (у відсотках) при виробництві ${
+        paramIndex + 1
+      }-го виробу на підприємствах усіх типів`,
+      sourceHeader: `Таблиця вихідних значень експерименту при зміні продуктивності виробництва ${
+        paramIndex + 1
+      }-го виробу на підприємствах усіх типів у відсотках від початкових значень`,
+      cornerCell: `Відсоток зміни продуктивності при виробництві виробу ${paramIndex + 1}-го типу`,
+    }),
   },
   {
     value: 2,
@@ -98,6 +123,13 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     paramToLabelMapper: defaultLabelMapper,
     paramRange: PRODUCT_PARAM_RANGE,
     type: "product_set",
+    getHeaders: (paramIndex: number) => ({
+      resultHeader: `змін значень розв'язку задачі в залежності від зміни кількості виробів ${
+        paramIndex + 1
+      }-го типу у комплекті `,
+      sourceHeader: "",
+      cornerCell: `Кількість виробів ${paramIndex + 1}-го типу у комплекті`,
+    }),
   },
   {
     value: 3,
@@ -107,6 +139,13 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     paramToLabelMapper: defaultLabelMapper,
     paramRange: FACTORY_PARAM_RANGE,
     type: "factory_number",
+    getHeaders: (paramIndex: number) => ({
+      resultHeader: `змін значень розв'язку задачі в залежності від зміни загальної кількості підприємств ${
+        paramIndex + 1
+      }-го типу `,
+      sourceHeader: "",
+      cornerCell: `Кількість підприємств ${paramIndex + 1}-го типу `,
+    }),
   },
   {
     value: 4,
@@ -115,5 +154,10 @@ export const EXPERIMENT_OPTIONS: ExperimentOption[] = [
     paramToLabelMapper: defaultLabelMapper,
     paramRange: ALPHA_PARAM_RANGE,
     type: "alpha",
+    getHeaders: (_paramIndex: number) => ({
+      resultHeader: `змін значень розв'язку задачі оптиміста, чіткої задачі та задачі песиміста в залежності від зміни значення ступеню недомінованості`,
+      sourceHeader: "",
+      cornerCell: "Значення ступеню недомінованості",
+    }),
   },
 ];
