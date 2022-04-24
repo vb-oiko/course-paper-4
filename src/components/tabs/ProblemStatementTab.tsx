@@ -10,7 +10,7 @@ export interface ProblemStatementTabProps {
 export const ProblemStatementTab: React.FC<ProblemStatementTabProps> = () => {
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Завдання про розподіл виробничої програми між підприємствами</h2>
+      <h2 className="text-lg font-semibold mb-4">Задача про розподіл виробничої програми між підприємствами</h2>
       <p className="mb-4">
         Один із видів кінцевої продукції, що випускається галуззю, комплектується з трьох видів виробів, які можна
         виготовляти на різних підприємствах. Кількість виробів кожного виду, що входить в комплект готової продукції,
