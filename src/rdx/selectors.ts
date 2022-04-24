@@ -3,12 +3,14 @@ import { EXPERIMENT_OPTIONS } from "../components/experiment/experimentOptions";
 import { ExperimentHeaders } from "../components/tabs/ExperimentTab";
 import { getExperimentProblems, getExperimentSolutions, getParamValues } from "../core/experiment";
 import { solveByBranchAndBoundMethod } from "../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
+import { solveByTwoPhaseMethod } from "../core/methods/solveByTwoPhaseMethod";
 import {
   getLatexFromAlphaLevelProblem,
   getLatexFromProblem,
   getTableauFromProblem,
   multiplyAMatrix,
 } from "../core/Problem";
+import { Tableau } from "../core/Tableau";
 import { AppState } from "./reducer";
 
 const getLowerBoundAlpha = (alpha: number) => 1 - Math.sqrt((1 - alpha) / alpha);
@@ -163,3 +165,8 @@ export const selectExperimentHeaders = createSelector(
     return experiment.getHeaders(paramIndex);
   }
 );
+
+export const selectSimplexTableaus = createSelector([selectProblem], (problem): Tableau[] => {
+  const tableau = getTableauFromProblem(problem);
+  return [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
+});

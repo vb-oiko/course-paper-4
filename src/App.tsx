@@ -6,12 +6,14 @@ import { InputTab } from "./components/tabs/InputTab";
 import { SolutionTab } from "./components/tabs/SolutionTab";
 import { ExperimentTab } from "./components/tabs/ExperimentTab";
 import { ProblemStatementTab } from "./components/tabs/ProblemStatementTab";
+import { SimplexMethodExample } from "./components/tabs/SimplexMethodExample";
 
 const App = () => {
   const tabs: Tab[] = [
     { name: "Постановка задачі", component: <ProblemStatementTab /> },
     { name: "Математична модель", component: <SolutionTab /> },
-    { name: "Рішення", component: <InputTab /> },
+    { name: "Дані та рішення", component: <InputTab /> },
+    { name: "Симплекс-метод", component: <SimplexMethodExample /> },
     { name: "Експерименти", component: <ExperimentTab /> },
   ];
   return (

@@ -1,20 +1,18 @@
-import { sampleTableau7, sampleTableau8 } from "../../const/tableaus";
-import { solveByTwoPhaseMethod } from "../../core/methods/solveByTwoPhaseMethod";
+import { useSelector } from "react-redux";
+import { selectSimplexTableaus } from "../../rdx/selectors";
 import { Collapse } from "../Collapse";
 import { TableauComponent } from "../TableauComponent";
 
-const tableau = sampleTableau8;
-const tableaus = [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
-
 export const SimplexMethodExample = () => {
+  const tableaus = useSelector(selectSimplexTableaus);
   return (
     <>
       {tableaus.map((tableau, idx) => (
         <div key={idx} className="mb-6">
-          <Collapse buttonTitle={`Iteration: ${idx}`} collapsed>
+          <Collapse buttonTitle={`Iteration: ${idx}`}>
             <TableauComponent tableau={tableau} />
             {tableau.comments.map((comment, commentIdx) => (
-              <div key={comment}>{comment}</div>
+              <div key={`${comment}-${commentIdx}`}>{comment}</div>
             ))}
           </Collapse>
         </div>
