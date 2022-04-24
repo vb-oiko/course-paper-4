@@ -1,14 +1,13 @@
-import { sampleTableau4, sampleTableau7 } from "../../const/tableaus";
-import { solveByBranchAndBoundMethod } from "../../core/methods/BranchAndBoundMethod/solveByBranchAndBoundMethod";
+import { useSelector } from "react-redux";
+import { getSolutionAsString } from "../../core/utils";
+import { selectBranchAndBoundSolution, selectTableau } from "../../rdx/selectors";
 import { BranchAndBoundNodeComponent } from "../BranchAndBoundNodeComponent";
 import { InlineLatex } from "../InlineLatex";
 import { LatexProblemStatement } from "../LatexProblemStatement";
 
-const tableau = sampleTableau4;
-
-const { nodes, maximizedValue, solution } = solveByBranchAndBoundMethod(tableau);
-
 export const BranchAndBoundExample = () => {
+  const tableau = useSelector(selectTableau);
+  const { nodes, maximizedValue, solution } = useSelector(selectBranchAndBoundSolution);
   return (
     <>
       <LatexProblemStatement tableau={tableau} className="mb-2" />
@@ -21,7 +20,7 @@ export const BranchAndBoundExample = () => {
       <div className="mb-1 text-blue-600 font-semibold">{`Maximized value: ${maximizedValue}`}</div>
       <div className="mb-1 text-blue-600 font-semibold">
         <span className="mr-2">{`Solution:`}</span>
-        <InlineLatex>{solution}</InlineLatex>
+        <InlineLatex>{getSolutionAsString(solution)}</InlineLatex>
       </div>
     </>
   );

@@ -166,7 +166,14 @@ export const selectExperimentHeaders = createSelector(
   }
 );
 
-export const selectSimplexTableaus = createSelector([selectProblem], (problem): Tableau[] => {
-  const tableau = getTableauFromProblem(problem);
+export const selectTableau = createSelector([selectProblem], (problem): Tableau => {
+  return getTableauFromProblem(problem);
+});
+
+export const selectSimplexTableaus = createSelector([selectTableau], (tableau): Tableau[] => {
   return [tableau, ...solveByTwoPhaseMethod(tableau, 20, true)];
+});
+
+export const selectBranchAndBoundSolution = createSelector([selectTableau], (tableau) => {
+  return solveByBranchAndBoundMethod(tableau);
 });
