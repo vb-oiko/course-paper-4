@@ -1,16 +1,6 @@
 import React from "react";
 import Latex from "react-latex";
-import { useSelector } from "react-redux";
-import {
-  selectProblemLatex,
-  selectOptimistProblemLatex,
-  selectPessimistProblemLatex,
-  selectCrispBranchAndBoundSolution,
-  selectOptimistBranchAndBoundSolution,
-  selectPessimistBranchAndBoundSolution,
-} from "../../rdx/selectors";
 import { InlineLatex } from "../InlineLatex";
-import { SolutionComponent } from "../SolutionComponent";
 
 export interface SolutionTabProps {}
 
@@ -85,35 +75,6 @@ export const SolutionTab: React.FC<SolutionTabProps> = () => {
           "$$ \\left(1 - \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij} \\le a_{ij} \\le \\left( 1+ \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij}$$"
         }
       </Latex>
-
-      <p>
-        Підставимо у математичну модель вихідні дані, запишемо чітку задачу та задачі оптиміста та песиміста та вирішимо
-        їх за допомогою симплекс-методу та методу гілок та границь{" "}
-      </p>
-
-      <div>
-        <SolutionComponent
-          title={"Чітка задача"}
-          problemLatexStatements={useSelector(selectProblemLatex)}
-          solution={useSelector(selectCrispBranchAndBoundSolution)}
-        />
-      </div>
-
-      <div>
-        <SolutionComponent
-          title={"Задача оптиміста"}
-          problemLatexStatements={useSelector(selectOptimistProblemLatex)}
-          solution={useSelector(selectOptimistBranchAndBoundSolution)}
-        />
-      </div>
-
-      <div>
-        <SolutionComponent
-          title={"Задача песиміста"}
-          problemLatexStatements={useSelector(selectPessimistProblemLatex)}
-          solution={useSelector(selectPessimistBranchAndBoundSolution)}
-        />
-      </div>
     </>
   );
 };
