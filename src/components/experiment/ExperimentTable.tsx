@@ -35,7 +35,7 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
         {datasets.map((dataset) => (
           <tr key={dataset.label}>
             <td key={`cell-${dataset.label}-header`} className={tableClasses}>
-              <InlineLatex>{dataset.label}</InlineLatex>
+              {dataset.label.includes("{") ? <InlineLatex>{dataset.label}</InlineLatex> : dataset.label}
             </td>
             {dataset.data.map((item, index) => (
               <td key={`cell-${dataset.label}-${index}-${item}`} className={tableClasses}>
