@@ -10,8 +10,8 @@ import { ProblemStatementTab } from "./components/tabs/ProblemStatementTab";
 const App = () => {
   const tabs: Tab[] = [
     { name: "Постановка задачі", component: <ProblemStatementTab /> },
+    { name: "Математична модель", component: <SolutionTab /> },
     { name: "Вихідні дані", component: <InputTab /> },
-    { name: "Рішення", component: <SolutionTab /> },
     { name: "Експерименти", component: <ExperimentTab /> },
   ];
   return (
