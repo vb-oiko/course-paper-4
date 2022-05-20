@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/course-paper-4/static/css/main.9b79ad15.css",
-    "main.js": "/course-paper-4/static/js/main.2fb92555.js",
+    "main.css": "/course-paper-4/static/css/main.5f0e7292.css",
+    "main.js": "/course-paper-4/static/js/main.b5d1ca5a.js",
     "static/js/787.ec8ee333.chunk.js": "/course-paper-4/static/js/787.ec8ee333.chunk.js",
     "index.html": "/course-paper-4/index.html",
-    "main.9b79ad15.css.map": "/course-paper-4/static/css/main.9b79ad15.css.map",
-    "main.2fb92555.js.map": "/course-paper-4/static/js/main.2fb92555.js.map",
+    "main.5f0e7292.css.map": "/course-paper-4/static/css/main.5f0e7292.css.map",
+    "main.b5d1ca5a.js.map": "/course-paper-4/static/js/main.b5d1ca5a.js.map",
     "787.ec8ee333.chunk.js.map": "/course-paper-4/static/js/787.ec8ee333.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9b79ad15.css",
-    "static/js/main.2fb92555.js"
+    "static/css/main.5f0e7292.css",
+    "static/js/main.b5d1ca5a.js"
   ]
 }
