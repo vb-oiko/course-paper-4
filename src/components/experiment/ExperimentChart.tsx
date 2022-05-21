@@ -20,15 +20,26 @@ export interface ExperimentChartProps {
   experimentData: ExperimentData;
   className?: string;
   title?: string;
+  fontSize?: number;
 }
 
-export const ExperimentChart: React.FC<ExperimentChartProps> = ({ experimentData, className, title }) => {
+export const ExperimentChart: React.FC<ExperimentChartProps> = ({
+  experimentData,
+  className,
+  title,
+  fontSize = 16,
+}) => {
   const options = React.useMemo(
     () => ({
       responsive: true,
       plugins: {
         legend: {
           position: "top" as const,
+          labels: {
+            font: {
+              size: fontSize,
+            },
+          },
         },
         ...(title && {
           title: {
@@ -36,6 +47,22 @@ export const ExperimentChart: React.FC<ExperimentChartProps> = ({ experimentData
             text: title,
           },
         }),
+      },
+      scales: {
+        x: {
+          ticks: {
+            font: {
+              size: fontSize,
+            },
+          },
+        },
+        y: {
+          ticks: {
+            font: {
+              size: fontSize,
+            },
+          },
+        },
       },
     }),
     [title]
