@@ -40,9 +40,9 @@ export const ProblemStatementTab: React.FC<ProblemStatementTabProps> = () => {
       </p>
 
       <p className="text-xl">
-        <Latex displayMode={true}>
-          {"$$ \\mu_{ij}(a_{ij}) = \\frac{1}{1 + \\frac{(a_{ij} - \\overline{a}_{ij})^2}{\\overline{a}_{ij}^2}}, $$"}
-        </Latex>
+        <InlineLatex standalone>
+          {"\\mu_{ij}(a_{ij}) = \\frac{1}{1 + \\frac{(a_{ij} - \\overline{a}_{ij})^2}{\\overline{a}_{ij}^2}},"}
+        </InlineLatex>
       </p>
 
       <p className="mb-4">

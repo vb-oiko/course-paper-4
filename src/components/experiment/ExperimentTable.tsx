@@ -1,5 +1,6 @@
 import React from "react";
 import { ExperimentData } from "../../core/experiment";
+import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 import { InlineLatex } from "../InlineLatex";
 
 export interface ExperimentTableProps {
@@ -19,8 +20,16 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
 }: ExperimentTableProps) => {
   const { labels, datasets } = experimentData;
 
+  const tableEl = React.useRef<HTMLTableElement>(null);
+
+  const copyToClipboard = useCopyToClipboard();
+
+  const handleClick = React.useCallback(() => {
+    copyToClipboard(tableEl.current ? tableEl.current.outerHTML : "");
+  }, [copyToClipboard]);
+
   return (
-    <table className={`border-collapse ${className}`}>
+    <table className={`border-collapse cursor-pointer ${className}`} ref={tableEl} onClick={handleClick}>
       <thead>
         <tr>
           <th className={`${tableClasses} w-48 px-4`}>{cornerCell}</th>
