@@ -12,6 +12,8 @@ export interface ExperimentTableProps {
 
 const tableClasses = "border border-gray-900 py-0.5 px-1 text-center";
 
+const REMOVE_CLASS_REGEX = /(table|td|th) class=".+?"/g;
+
 export const ExperimentTable: React.FC<ExperimentTableProps> = ({
   experimentData,
   className,
@@ -25,7 +27,10 @@ export const ExperimentTable: React.FC<ExperimentTableProps> = ({
   const copyToClipboard = useCopyToClipboard();
 
   const handleClick = React.useCallback(() => {
-    copyToClipboard(tableEl.current ? tableEl.current.outerHTML : "");
+    if (tableEl.current) {
+      const { outerHTML } = tableEl.current;
+      copyToClipboard(outerHTML.replace(REMOVE_CLASS_REGEX, "$1"));
+    }
   }, [copyToClipboard]);
 
   return (
