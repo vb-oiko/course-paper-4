@@ -65,13 +65,13 @@ export const SolutionTab: React.FC<SolutionTabProps> = () => {
 
       <InlineLatex standalone>
         {
-          "$$ \\overline{a}_{ij} - \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\overline{a}_{ij} \\le a_{ij} \\le \\overline{a}_{ij} + \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\overline{a}_{ij}$$"
+          " \\overline{a}_{ij} - \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\overline{a}_{ij} \\le a_{ij} \\le \\overline{a}_{ij} + \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\overline{a}_{ij}"
         }
       </InlineLatex>
 
       <InlineLatex standalone>
         {
-          "$$ \\left(1 - \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij} \\le a_{ij} \\le \\left( 1+ \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij}$$"
+          " \\left(1 - \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij} \\le a_{ij} \\le \\left( 1+ \\sqrt{\\frac{1-\\alpha_0}{\\alpha_0}} \\right) \\overline{a}_{ij}"
         }
       </InlineLatex>
     </>
